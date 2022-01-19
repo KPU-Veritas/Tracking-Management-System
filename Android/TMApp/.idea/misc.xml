@@ -3,8 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Final Project/Tracking-Management-System/Android/TMApp/app/src/main/res/layout/activity_main.xml" value="0.36614583333333334" />
+        <entry key="..\:/Final Project/Tracking-Management-System/Android/TMApp/app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="..\:/Final Project/Tracking-Management-System/Android/TMApp/app/src/main/res/layout/activity_signin.xml" value="0.4" />
+        <entry key="..\:/Final Project/Tracking-Management-System/Android/TMApp/app/src/main/res/layout/activity_signup.xml" value="0.4" />
       </map>
     </option>
   </component>

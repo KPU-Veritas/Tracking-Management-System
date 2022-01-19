@@ -52,7 +52,7 @@ class SigninActivity : AppCompatActivity() {
                 }
 
                 override fun onFailure(call: Call<responseSigninModel>, t: Throwable) {
-                    Log.e("LOGIN", t.message.toString())
+                    Log.e("SIGNIN", t.message.toString())
                     dialog.setTitle("에러")
                     dialog.setMessage("호출실패했습니다.")
                     dialog.show()
