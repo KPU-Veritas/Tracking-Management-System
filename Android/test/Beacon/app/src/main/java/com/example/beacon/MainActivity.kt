@@ -5,10 +5,10 @@ import android.app.AlertDialog
 import android.bluetooth.le.AdvertiseCallback
 import android.bluetooth.le.AdvertiseSettings
 import android.content.pm.PackageManager
-import android.os.Build
+import android.os.*
 import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import com.example.beacon.databinding.ActivityMainBinding
 import org.altbeacon.beacon.Beacon
 import org.altbeacon.beacon.BeaconParser
@@ -61,43 +61,45 @@ class MainActivity : AppCompatActivity() {
         val beaconParser = BeaconParser()
             .setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24,d:25-25")
         val beaconTransmitter = BeaconTransmitter(applicationContext, beaconParser)
+        val handler: Handler = object : Handler(Looper.getMainLooper()) {
+            override fun handleMessage(msg: Message) {
+                beaconTransmitter.startAdvertising(beacon, object : AdvertiseCallback() {
+                    override fun onStartSuccess(settingsInEffect: AdvertiseSettings) {
+                        super.onStartSuccess(settingsInEffect)
+                        Log.d(TAG, "onStartSuccess: ")
+                    }
+
+                    override fun onStartFailure(errorCode: Int) {
+                        super.onStartFailure(errorCode)
+                        Log.d(TAG, "onStartFailure: $errorCode")
+                    }
+                })
+                Toast.makeText(applicationContext,"스레드 실행 중",Toast.LENGTH_SHORT).show()
+            }
+        }
         binding.btnStart.setOnClickListener {
             isThread = true
             thread = object : Thread() {
                 override fun run() {
                     while (isThread) {
                         try {
-                            beaconTransmitter.startAdvertising(beacon, object : AdvertiseCallback() {
-                                override fun onStartSuccess(settingsInEffect: AdvertiseSettings) {
-                                    super.onStartSuccess(settingsInEffect)
-                                    Log.d(TAG, "onStartSuccess: ")
-                                }
-
-                                override fun onStartFailure(errorCode: Int) {
-                                    super.onStartFailure(errorCode)
-                                    Log.d(TAG, "onStartFailure: $errorCode")
-                                }
-                            })
-                            sleep(3000)
+                            handler.sendEmptyMessage(0)
+                            sleep(1000)
                         } catch (e: InterruptedException) {
                             e.printStackTrace()
                         }
-                        //handler.sendEmptyMessage(0)
                     }
                 }
             }
             (thread as Thread).start()
         }
         binding.btnStop.setOnClickListener {
-            isThread = false
             beaconTransmitter.stopAdvertising()
+            isThread = false
+            Toast.makeText(applicationContext,"스레드 종료",Toast.LENGTH_SHORT).show()
         }
     }
-    /*private val handler: Handler = object : Handler() {
-        override fun handleMessage(msg: Message) {
 
-        }
-    }*/
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions!!, grantResults)
         when (requestCode) {
