@@ -1,40 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-    <TextView
-        android:id="@+id/textViewBeaconCount"
-        android:text="0 visible beacons:"
-        android:textAlignment="center"
-        android:layout_width="match_parent"
-        android:layout_height="20dp"/>
-    <ListView
-        android:id="@+id/listViewBeaconList"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
-    </ListView>
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_weight="0">
+        android:orientation="horizontal">
+
         <Button
-            android:id="@+id/buttonRanging"
-            android:onClick="rangingButtonTapped"
-            android:text="Disable Ranging"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_weight="1">
-        </Button>
+            android:id="@+id/btn_start"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="센서 구동" />
+
         <Button
-            android:id="@+id/buttonMonitoring"
-            android:text="Disable Monitoring"
-            android:onClick="monitoringButtonTapped"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_weight="1">
-        </Button>
+            android:id="@+id/btn_stop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="센서 종료" />
     </LinearLayout>
+    <TextView
+        android:id="@+id/tv_thread"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="스레드 중지"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/beaconCount"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:text="0 visible beacons:"
+            android:textAlignment="center" />
+
+        <ListView
+            android:id="@+id/beaconList"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+        </ListView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/rangingButton"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:onClick="rangingButtonTapped"
+                android:text="Disable Ranging"></Button>
+
+            <Button
+                android:id="@+id/monitoringButton"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:onClick="monitoringButtonTapped"
+                android:text="Disable Monitoring"></Button>
+        </LinearLayout>
+
+    </LinearLayout>
+
 </LinearLayout>

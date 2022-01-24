@@ -4,7 +4,6 @@ import android.Manifest
 import android.app.AlertDialog
 import android.bluetooth.le.AdvertiseCallback
 import android.bluetooth.le.AdvertiseSettings
-import android.content.DialogInterface
 import android.content.pm.PackageManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -42,7 +41,7 @@ class MainActivity : AppCompatActivity() {
         }
         val beacon =
             Beacon.Builder() //.setId1("2f234454-cf6d-4a0f-adf2-f4911ba9ffa6")  // uuid for beacon
-                .setId1("19980930-0010-2307-2441-000000000001") // uuid for beacon
+                .setId1("19980930-0010-2307-2441-0000000000020") // uuid for beacon
                 .setId2("1") // major
                 .setId3("8") // minor
                 .setManufacturer(0x0118) // Radius Networks. 0x0118 : Change this for other beacon layouts // 0x004C : for iPhone

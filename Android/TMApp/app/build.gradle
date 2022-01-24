@@ -58,6 +58,6 @@ dependencies {
     implementation group: 'org.jetbrains.kotlinx', name: 'kotlinx-coroutines-android', version: 'latest.integration'
 
     // coroutine scopes
-    implementation group: 'androidx.lifecycle', name: 'lifecycle-runtime-ktx', version: 'latest.integration'
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.2.0"
 
 }
