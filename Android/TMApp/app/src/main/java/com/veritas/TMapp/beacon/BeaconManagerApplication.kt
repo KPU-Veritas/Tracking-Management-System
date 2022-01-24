@@ -39,7 +39,7 @@ class BeaconManagerApplication: Application() {
         // The example shows how to find iBeacon.
         beaconManager.getBeaconParsers().add(
             BeaconParser().
-            setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24"))
+            setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24,d:25-25"))
 
         // enabling debugging will send lots of verbose debug information from the library to Logcat
         // this is useful for troubleshooting problmes
