@@ -17,7 +17,7 @@ class SigninActivity : AppCompatActivity() {
     private var signinBinding: ActivitySigninBinding? = null
     private val binding get() = signinBinding!!
     var user: responseSigninModel? = null
-    var api = APIS.create()
+    private var api = APIS.create()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,10 +25,10 @@ class SigninActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.buttonSignin.setOnClickListener {
-            var email = binding.editTextEmailAddress.text.toString()
-            var password = binding.editTextPassword.text.toString()
-            var data = SigninModel(email,password)
-            var dialog = AlertDialog.Builder(this@SigninActivity)
+            val email = binding.editTextEmailAddress.text.toString()
+            val password = binding.editTextPassword.text.toString()
+            val data = SigninModel(email,password)
+            val dialog = AlertDialog.Builder(this@SigninActivity)
 
             api.requestSingin(data).enqueue(object: Callback<responseSigninModel> {
                 override fun onResponse(

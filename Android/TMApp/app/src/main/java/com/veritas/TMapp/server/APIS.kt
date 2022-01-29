@@ -29,7 +29,7 @@ interface APIS {
         private const val BASE_URL = "http://$ipv4:$portNumber"
 
         fun create(): APIS{
-            var gson: Gson = GsonBuilder().setLenient().create()
+            val gson: Gson = GsonBuilder().setLenient().create()
 
             return Retrofit.Builder()
                 .baseUrl(BASE_URL)
