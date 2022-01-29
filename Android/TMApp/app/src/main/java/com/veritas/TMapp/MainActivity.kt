@@ -96,10 +96,9 @@ class MainActivity : AppCompatActivity() {
             isThread = true
             thread = object : Thread() {
                 override fun run() {
-                    while (isThread) {
+                    if (isThread) {
                         try {
                             handler.sendEmptyMessage(0)
-                            sleep(1000)
                         } catch (e: InterruptedException) {
                             e.printStackTrace()
                         }
