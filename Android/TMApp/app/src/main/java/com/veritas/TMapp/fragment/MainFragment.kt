@@ -11,7 +11,7 @@ class MainFragment : Fragment()
 {
     private lateinit var beaconSensorManager: BeaconSensorManager
     private val uuid = "19980930-0010-2307-2441-000000000005"
-    private var flag = 0
+    private var flag : Boolean = true
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -22,15 +22,15 @@ class MainFragment : Fragment()
         beaconSensorManager = BeaconSensorManager()
         activity?.let { beaconSensorManager.init(uuid, it.applicationContext) }
         binding.btnStart.setOnClickListener {
-            if (flag==0) {
+            if (flag) {
                 beaconSensorManager.scannerChange(true)
                 binding.tvThread.text = "센서 작동 중"
-                flag = 1
+                flag = false
             }
             else{
                 beaconSensorManager.scannerChange(false)
                 binding.tvThread.text = "센서 중지 상태"
-                flag = 0
+                flag = true
             }
         }
         return binding.root
