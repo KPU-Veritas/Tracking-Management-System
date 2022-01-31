@@ -40,12 +40,12 @@ class BeaconSensorManager {
                 beaconTransmitter!!.startAdvertising(beacon, object : AdvertiseCallback() {
                     override fun onStartSuccess(settingsInEffect: AdvertiseSettings) {
                         super.onStartSuccess(settingsInEffect)
-                        Log.d(MainActivity.TAG, "onStartSuccess: ")
+                        Log.d(TAG, "onStartSuccess: ")
                     }
 
                     override fun onStartFailure(errorCode: Int) {
                         super.onStartFailure(errorCode)
-                        Log.d(MainActivity.TAG, "onStartFailure: $errorCode")
+                        Log.d(TAG, "onStartFailure: $errorCode")
                     }
                 })
             }

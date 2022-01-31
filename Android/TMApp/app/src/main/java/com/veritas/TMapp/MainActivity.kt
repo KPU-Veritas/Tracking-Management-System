@@ -15,6 +15,9 @@ import org.altbeacon.beacon.MonitorNotifier
 import com.veritas.TMapp.beacon.BeaconScannerApplication
 import com.veritas.TMapp.beacon.BeaconSensorManager
 import com.veritas.TMapp.databinding.ActivityMainBinding
+import com.veritas.TMapp.fragment.MainFragment
+import com.veritas.TMapp.fragment.MovementFragment
+import com.veritas.TMapp.fragment.OptionFragment
 
 class MainActivity : AppCompatActivity() {
     // 전역 변수로 바인딩 객체 선언
@@ -23,13 +26,6 @@ class MainActivity : AppCompatActivity() {
     private val binding get() = mBinding!!
 
     private lateinit var beaconScannerApplication: BeaconScannerApplication
-    private lateinit var beaconSensorManager: BeaconSensorManager
-    private val uuid = "19980930-0010-2307-2441-000000000005"
-
-    private var alertDialog: AlertDialog? = null
-    private var thread: Thread? = null
-    var isThread = false
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,8 +34,14 @@ class MainActivity : AppCompatActivity() {
         // getRoot 메서드로 레이아웃 내부의 최상위 위치 뷰의 인스턴스를 활용하여 생성된 뷰를 액티비티에 표시
         setContentView(binding.root)
 
+        val adapter = PagerAdapter(supportFragmentManager)
+        adapter.addFragment(MainFragment(), "메인")
+        adapter.addFragment(MovementFragment(), "동선 확인")
+        adapter.addFragment(OptionFragment(), "환경 설정")
+        binding.afterLoginViewpager.adapter = adapter
+        binding.afterLoginTablayout.setupWithViewPager(binding.afterLoginViewpager)
+
         beaconScannerApplication = application as BeaconScannerApplication
-        beaconSensorManager = BeaconSensorManager()
 
         // Set up a Live Data observer for beacon data
         val regionViewModel = BeaconManager.getInstanceForApplication(this).getRegionViewModel(beaconScannerApplication.region)
@@ -48,9 +50,8 @@ class MainActivity : AppCompatActivity() {
         // observer will be called each time a new list of beacons is ranged (typically ~1 second in the foreground)
         regionViewModel.rangedBeacons.observe(this, rangingObserver)
 
-        binding.beaconCount.text = "No beacons detected"
-        binding.beaconList.adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, arrayOf("--"))
-
+        //binding.beaconCount.text = "No beacons detected"
+        //binding.beaconList.adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, arrayOf("--"))
         if (checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             showDialogs(
                 "This app needs location access",
@@ -61,19 +62,7 @@ class MainActivity : AppCompatActivity() {
                 )
             )
         }
-
-        beaconSensorManager.init(uuid, applicationContext)
-
-        binding.btnStart.setOnClickListener {
-            beaconSensorManager.scannerChange(true)
-            binding.tvThread.text = "스레드 시작"
-        }
-        binding.btnStop.setOnClickListener {
-            beaconSensorManager.scannerChange(false)
-            binding.tvThread.text = "스레드 종료"
-        }
     }
-
     override fun onPause() {
         Log.d(TAG, "onPause")
         super.onPause()
@@ -92,11 +81,11 @@ class MainActivity : AppCompatActivity() {
             dialogTitle = "No beacons detected"
             dialogMessage = "didExitRegionEvent has fired"
             stateString = "outside"
-            binding.beaconCount.text = "Outside of the beacon region -- no beacons detected"
-            binding.beaconList.adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, arrayOf("--"))
+            //binding.beaconCount.text = "Outside of the beacon region -- no beacons detected"
+            //binding.beaconList.adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, arrayOf("--"))
         }
         else {
-            binding.beaconCount.text = "Inside the beacon region."
+            //binding.beaconCount.text = "Inside the beacon region."
         }
         Log.d(TAG, "monitoring state changed to : $stateString")
 
@@ -106,11 +95,11 @@ class MainActivity : AppCompatActivity() {
     private val rangingObserver = Observer<Collection<Beacon>> { beacons ->
         Log.d(TAG, "Ranged: ${beacons.count()} beacons")
         if (BeaconManager.getInstanceForApplication(this).rangedRegions.isNotEmpty()) {
-            binding.beaconCount.text = "Ranging enabled: ${beacons.count()} beacon(s) detected"
-            binding.beaconList.adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1,
+            //binding.beaconCount.text = "Ranging enabled: ${beacons.count()} beacon(s) detected"
+            /*binding.beaconList.adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1,
                 beacons
                     .sortedBy { it.distance }
-                    .map { "${it.id1}\nid2: ${it.id2} id3: ${it.id3}  rssi: ${it.rssi}\nest. distance: ${it.distance} m" }.toTypedArray())
+                    .map { "${it.id1}\nid2: ${it.id2} id3: ${it.id3}  rssi: ${it.rssi}\nest. distance: ${it.distance} m" }.toTypedArray())*/
         }
     }
 
@@ -118,14 +107,14 @@ class MainActivity : AppCompatActivity() {
         val beaconManager = BeaconManager.getInstanceForApplication(this)
         if (beaconManager.rangedRegions.isEmpty()) {
             beaconManager.startRangingBeacons(beaconScannerApplication.region)
-            binding.rangingButton.text = "Stop Ranging"
-            binding.beaconCount.text = "Ranging enabled -- awaiting first callback"
+            //binding.rangingButton.text = "Stop Ranging"
+            //binding.beaconCount.text = "Ranging enabled -- awaiting first callback"
         }
         else {
             beaconManager.stopRangingBeacons(beaconScannerApplication.region)
-            binding.rangingButton.text = "Start Ranging"
-            binding.beaconCount.text = "Ranging disabled -- no beacons detected"
-            binding.beaconList.adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, arrayOf("--"))
+            //binding.rangingButton.text = "Start Ranging"
+            //binding.beaconCount.text = "Ranging disabled -- no beacons detected"
+            //binding.beaconList.adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, arrayOf("--"))
         }
     }
 
@@ -137,14 +126,14 @@ class MainActivity : AppCompatActivity() {
             beaconManager.startMonitoring(beaconScannerApplication.region)
             dialogTitle = "Beacon monitoring started."
             dialogMessage = "You will see a dialog if a beacon is detected, and another if beacons then stop being detected."
-            binding.monitoringButton.text = "Stop Monitoring"
+            //binding.monitoringButton.text = "Stop Monitoring"
 
         }
         else {
             beaconManager.stopMonitoring(beaconScannerApplication.region)
             dialogTitle = "Beacon monitoring stopped."
             dialogMessage = "You will no longer see dialogs when becaons start/stop being detected."
-            binding.monitoringButton.text = "Start Monitoring"
+            //binding.monitoringButton.text = "Start Monitoring"
         }
         showDialogs(dialogTitle,dialogMessage,null)
     }
