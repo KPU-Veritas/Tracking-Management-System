@@ -9,7 +9,7 @@ import androidx.lifecycle.Observer
 import com.veritas.TMapp.MainActivity
 import org.altbeacon.beacon.*
 
-class BeaconManagerApplication: Application() {
+class BeaconScannerApplication: Application() {
     lateinit var region: Region
 
     override fun onCreate() {
