@@ -1,5 +1,6 @@
 package com.veritas.TMServer.dto;
 
+import com.veritas.TMServer.model.UserEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,4 +19,22 @@ public class UserDTO {
     private String phoneNumber;
     private String simpleAddress;
     private String detailAddress;
+
+    public UserDTO(final UserEntity entity) {
+        this.uuid = entity.getUuid();
+        this.username = entity.getUsername();
+        this.email = entity.getEmail();
+        this.phoneNumber = entity.getPhoneNumber();
+        this.detailAddress = entity.getDetailAddress();
+    }
+
+    public static UserEntity userEntity(final UserDTO dto) {
+        return UserEntity.builder()
+                .uuid(dto.getUuid())
+                .username(dto.getUsername())
+                .email(dto.getEmail())
+                .phoneNumber(dto.getPhoneNumber())
+                .detailAddress(dto.getDetailAddress())
+                .build();
+    }
 }

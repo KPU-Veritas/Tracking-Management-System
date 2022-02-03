@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Slf4j
 @RestController
 @RequestMapping("/auth")
@@ -67,6 +70,24 @@ public class UserController {
             return ResponseEntity.badRequest().body(responseDTO);
         }
 
+
+    }
+
+    @GetMapping("/userlist")
+    public ResponseEntity<?> userList(/*@RequestBody UserDTO userDTO*/){
+        //UserEntity user = userService.getByCredentials(userDTO.getEmail(), userDTO.getPassword());
+
+        // (1) 서비스 메서드의 userList메서드를 사용해 모든 유저 리스트 가져옴.
+        List<UserEntity> entities = userService.userList();
+
+        // (2) 자바 스트림을 이용해 리턴된 엔티티 리스트를 UserDTO리스트로 변환한다.
+        List<UserDTO> dtos = entities.stream().map(UserDTO::new).collect(Collectors.toList());
+
+        // (3) 변환된 UserDTO리스트를 이용해ResponseDTO를 초기화한다.
+        ResponseDTO<UserDTO> response = ResponseDTO.<UserDTO>builder().data(dtos).build();
+
+        // (4) ResponseDTO를 리턴한다.
+        return ResponseEntity.ok().body(response);
 
     }
 }
