@@ -7,14 +7,13 @@ import android.os.Handler
 import android.os.Looper
 import android.os.Message
 import android.util.Log
-import com.veritas.TMapp.MainActivity
 import org.altbeacon.beacon.Beacon
 import org.altbeacon.beacon.BeaconParser
 import org.altbeacon.beacon.BeaconTransmitter
 
 class BeaconSensorManager {
     var beacon: Beacon? = null
-    var beaconParser: BeaconParser? = null
+    private var beaconParser: BeaconParser? = null
     var beaconTransmitter: BeaconTransmitter? = null
     var handler: Handler? = null
     private var thread: Thread? = null

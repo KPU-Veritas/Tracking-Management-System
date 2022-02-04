@@ -6,14 +6,14 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import org.altbeacon.beacon.Beacon
 import org.altbeacon.beacon.BeaconManager
 import org.altbeacon.beacon.MonitorNotifier
 import com.veritas.TMapp.beacon.BeaconScannerApplication
-import com.veritas.TMapp.beacon.BeaconSensorManager
+import com.veritas.TMapp.database.AppDatabase
+import com.veritas.TMapp.database.DBController
 import com.veritas.TMapp.databinding.ActivityMainBinding
 import com.veritas.TMapp.fragment.MainFragment
 import com.veritas.TMapp.fragment.MovementFragment
@@ -26,6 +26,8 @@ class MainActivity : AppCompatActivity() {
     private val binding get() = mBinding!!
 
     private lateinit var beaconScannerApplication: BeaconScannerApplication
+    var db: AppDatabase?= null
+    private var dbController: DBController? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +35,9 @@ class MainActivity : AppCompatActivity() {
         mBinding = ActivityMainBinding.inflate(layoutInflater)
         // getRoot 메서드로 레이아웃 내부의 최상위 위치 뷰의 인스턴스를 활용하여 생성된 뷰를 액티비티에 표시
         setContentView(binding.root)
+
+        db = AppDatabase.getInstance(this)
+        dbController = DBController()
 
         val adapter = PagerAdapter(supportFragmentManager)
         adapter.addFragment(MainFragment(), "메인")
@@ -83,8 +88,7 @@ class MainActivity : AppCompatActivity() {
             stateString = "outside"
             //binding.beaconCount.text = "Outside of the beacon region -- no beacons detected"
             //binding.beaconList.adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, arrayOf("--"))
-        }
-        else {
+        } else {
             //binding.beaconCount.text = "Inside the beacon region."
         }
         Log.d(TAG, "monitoring state changed to : $stateString")
