@@ -20,6 +20,7 @@ class BeaconSensorManager {
     var isThread = false
 
     fun init(uuid:String, context: Context){
+        Log.d("INIT", "UUID: $uuid")
         beacon = Beacon.Builder()
             .setId1(uuid)
             .setId2("1")

@@ -1,14 +1,15 @@
 package com.veritas.TMapp
 
 import android.content.DialogInterface
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AlertDialog
 import com.veritas.TMapp.databinding.ActivitySignupBinding
 import com.veritas.TMapp.server.APIS
+import com.veritas.TMapp.server.ResponseSignupModel
 import com.veritas.TMapp.server.SignupModel
-import com.veritas.TMapp.server.responseSignupModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -16,7 +17,7 @@ import retrofit2.Response
 class SignupActivity : AppCompatActivity() {
     private var signupBinding: ActivitySignupBinding? = null
     private val binding get() = signupBinding!!
-    var user: responseSignupModel? = null
+    var user: ResponseSignupModel? = null
     private var api = APIS.create()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,6 +25,10 @@ class SignupActivity : AppCompatActivity() {
         signupBinding = ActivitySignupBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.buttonSearchAddress.setOnClickListener {
+            val intent = Intent(this@SignupActivity, FindAddressActivity::class.java)
+            startActivityForResult(intent, SEARCH_ADDRESS_ACTIVITY)
+        }
         binding.buttonSignup.setOnClickListener {
             val dialog = AlertDialog.Builder(this@SignupActivity)
             val password = binding.editTextPassword.text.toString()
@@ -44,10 +49,10 @@ class SignupActivity : AppCompatActivity() {
 
             val data = SignupModel(username,email,password,phoneNumber, simpleAddress, detailAddress)
 
-            api.requestSingup(data).enqueue(object: Callback<responseSignupModel>{
+            api.requestSingup(data).enqueue(object: Callback<ResponseSignupModel>{
                 override fun onResponse(
-                    call: Call<responseSignupModel>,
-                    response: Response<responseSignupModel>
+                    call: Call<ResponseSignupModel>,
+                    response: Response<ResponseSignupModel>
                 ) {
                     user = response.body()
 
@@ -66,7 +71,7 @@ class SignupActivity : AppCompatActivity() {
                     }
                 }
 
-                override fun onFailure(call: Call<responseSignupModel>, t: Throwable) {
+                override fun onFailure(call: Call<ResponseSignupModel>, t: Throwable) {
                     Log.e("SIGNUP", t.message.toString())
                     dialog.setTitle("에러")
                     dialog.setMessage("호출실패했습니다.")
@@ -78,5 +83,20 @@ class SignupActivity : AppCompatActivity() {
         binding.buttonCancel.setOnClickListener {
             finish()
         }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when(requestCode){
+            SEARCH_ADDRESS_ACTIVITY -> if (resultCode == RESULT_OK){
+                val data = intent.extras?.getString("data")
+                if(data!=null)
+                    binding.textViewSimpleAddress.text = data
+            }
+        }
+    }
+
+    companion object {
+        private const val SEARCH_ADDRESS_ACTIVITY = 10000
     }
 }

@@ -14,17 +14,17 @@ interface APIS {
     @Headers("accept: application/json", "content-type: application/json")
     fun requestSingin(
         @Body jsonParams: SigninModel
-    ): Call<responseSigninModel>
+    ): Call<ResponseSigninModel>
 
     @POST("/auth/signup/")  // 회원가입 요청
     @Headers("accept: application/json", "content-type: application/json")
     fun requestSingup(
         @Body jsonParams: SignupModel
-    ): Call<responseSignupModel>
+    ): Call<ResponseSignupModel>
 
 
     companion object{
-        private const val ipv4 = "192.168.41.229"
+        private const val ipv4 = "211.252.12.158"
         private const val portNumber = "8080"
         private const val BASE_URL = "http://$ipv4:$portNumber"
 
