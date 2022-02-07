@@ -43,7 +43,7 @@ export async function call(api, method, request) {
 }
 
 export async function signin(userDTO) {
-  const response = await call("/auth/signin", "POST", userDTO);
+  const response = await call("/auth/managersignin", "POST", userDTO);
     if (response.token) {
         // 로컬 스토리지에 토큰 저장
         localStorage.setItem(ACCESS_TOKEN, response.token);

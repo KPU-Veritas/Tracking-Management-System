@@ -62,4 +62,6 @@ public class ContactService {
     public List<ContactEntity> retrieve(final String uuid){
         return repository.findByUuid(uuid);
     }
+
+    public List<ContactEntity> contactList() { return repository.findAll(); }
 }

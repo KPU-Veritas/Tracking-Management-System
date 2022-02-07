@@ -94,4 +94,24 @@ public class UserController {
         return ResponseEntity.ok().body(response);
 
     }
+
+    @PostMapping("/managersignin")
+    public ResponseEntity<?> authenticate_2(@RequestBody UserDTO userDTO) {
+        UserEntity user = userService.getByManagerCredentials(userDTO.getEmail(), userDTO.getPassword());
+
+        if (user != null) {
+            final String token = tokenProvider.create(user);
+            final UserDTO responseUserDTO = UserDTO.builder()
+                    .username(user.getUsername())
+                    .uuid(user.getUuid())
+                    .token(token)
+                    .build();
+            return ResponseEntity.ok().body(responseUserDTO);
+        } else {
+            ResponseDTO responseDTO = ResponseDTO.builder()
+                    .error("Login failed.")
+                    .build();
+            return ResponseEntity.badRequest().body(responseDTO);
+        }
+    }
 }

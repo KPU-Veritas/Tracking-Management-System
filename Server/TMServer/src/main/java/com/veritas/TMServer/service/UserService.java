@@ -37,6 +37,14 @@ public class UserService {
         return null;
     }
 
+    public UserEntity getByManagerCredentials(final String email, final String password) {
+        String admin = "admin";
+        if (admin.equals(email)) {
+            return userRepository.findByEmailAndPassword(email, password);
+        }
+        else return null;
+    }
+
     public List<UserEntity> userList() {
         return userRepository.findAll();
     }

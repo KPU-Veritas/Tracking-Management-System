@@ -1,9 +1,4 @@
 import React from "react";
-import {
-    ListItem,
-    ListItemText,
-    InputBase,
-  } from "@material-ui/core";
 
 class UserList extends React.Component {
     constructor(props) {
@@ -13,9 +8,8 @@ class UserList extends React.Component {
 
     render() {
         const user = this.state.user;
-        <p>유저리스트임.</p>
         return (
-            <ul>{user.username}, {user.email}, {user.phoneNumber}, {user.detailAddress}</ul>
+            <ul>이름 : {user.username}, 이메일 : {user.email}, 전화번호 : {user.phoneNumber}, 주소 : {user.detailAddress}</ul>
         );
     }
 }
