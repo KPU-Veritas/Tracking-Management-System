@@ -24,7 +24,7 @@ interface APIS {
 
 
     companion object{
-        private const val ipv4 = "211.252.12.158"
+        private const val ipv4 = "192.168.42.176"
         private const val portNumber = "8080"
         private const val BASE_URL = "http://$ipv4:$portNumber"
 

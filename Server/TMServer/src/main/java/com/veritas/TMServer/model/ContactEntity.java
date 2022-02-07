@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 
@@ -15,9 +16,13 @@ import javax.persistence.*;
 @Table(name = "Contact")
 public class ContactEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USER_SEQ_GENERATOR")
-    private int id;
+    @GeneratedValue(generator = "system-uuid")
+    @GenericGenerator(name="system-uuid", strategy = "uuid")
+    private String id;
     private String uuid;
     private String contactTargetUuid;
-    private String dateTime;
+    private String date;
+    private String firstTime;
+    private String lastTime;
+    private boolean checked;
 }
