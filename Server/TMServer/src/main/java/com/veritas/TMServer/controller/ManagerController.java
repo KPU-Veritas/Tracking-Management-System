@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @RestController
 @RequestMapping("/system")
-@CrossOrigin(origins = "http://localhost:3000")     //CORS 규정 위반 에러 수정
+//@CrossOrigin(origins = "http://localhost:3000")     //CORS 규정 위반 에러 수정
 public class ManagerController {
     @Autowired
     private UserService userService;
