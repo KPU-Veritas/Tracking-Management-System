@@ -18,14 +18,14 @@
         android:theme="@style/Theme.TMApp"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".FindAddressActivity"
+            android:name=".sign.FindAddressActivity"
             android:exported="false" />
         <activity
-            android:name=".SignupActivity"
+            android:name=".sign.SignupActivity"
             android:exported="false" />
         <activity
-            android:name=".SigninActivity"
-            android:exported="true">
+            android:name=".sign.SigninActivity"
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -34,7 +34,8 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:exported="false"/>
+            android:exported="false">
+        </activity>
     </application>
 
 </manifest>

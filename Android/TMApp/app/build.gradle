@@ -52,6 +52,7 @@ dependencies {
     // Retrofit2로 서버와의 통신 구현
     implementation group: 'com.squareup.retrofit2', name: 'retrofit', version: 'latest.integration'
     implementation group: 'com.squareup.retrofit2', name: 'converter-gson', version: 'latest.integration'
+    implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: 'latest.integration'
 
     // beacon
     implementation group: 'org.altbeacon', name: 'android-beacon-library', version: 'latest.integration'

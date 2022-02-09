@@ -1,6 +1,8 @@
 package com.veritas.TMapp.server
 
 import android.os.Parcelable
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
 
 // POST
@@ -27,4 +29,14 @@ data class SignupModel( // 회원가입 시 정보를 보낼 때 사용
 
 data class ResponseSignupModel(
     val email: String?
+)
+
+@Entity(tableName = "tb_contacts")
+data class Contacts(
+    @PrimaryKey
+    var contact_target_uuid: String,
+    var uuid:String,
+    var date: String,
+    var firstTime: String,
+    var lastTime: String?
 )

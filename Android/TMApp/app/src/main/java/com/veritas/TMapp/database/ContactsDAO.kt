@@ -1,6 +1,7 @@
 package com.veritas.TMapp.database
 
 import androidx.room.*
+import com.veritas.TMapp.server.Contacts
 
 @Dao
 interface ContactsDAO {

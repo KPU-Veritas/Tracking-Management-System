@@ -1,4 +1,4 @@
-package com.veritas.TMapp;
+package com.veritas.TMapp.sign
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,6 +8,7 @@ import android.view.View
 import android.webkit.JavascriptInterface
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import com.veritas.TMapp.R
 
 class FindAddressActivity : AppCompatActivity() {
     private var browser: WebView? = null
