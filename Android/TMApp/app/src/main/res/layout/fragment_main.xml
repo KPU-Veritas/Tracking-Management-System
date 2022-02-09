@@ -19,4 +19,18 @@
         android:layout_weight="1"
         android:text="센서 중지 상태" />
 
+    <Button
+        android:id="@+id/btnScan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="스캔 버튼" />
+
+    <TextView
+        android:id="@+id/tvScan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="스캔 중지 상태" />
+
 </LinearLayout>

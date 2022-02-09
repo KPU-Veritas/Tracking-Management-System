@@ -27,8 +27,8 @@ class BeaconScannerApplication: Application() {
         beaconManager.backgroundScanPeriod = 1100
 
         region = Region("radius-uuid", null, null, null)
-        beaconManager.startMonitoring(region)
-        beaconManager.startRangingBeacons(region)
+        //beaconManager.startMonitoring(region)
+        //beaconManager.startRangingBeacons(region)
 
         val regionViewModel = BeaconManager.getInstanceForApplication(this).getRegionViewModel(region)
         regionViewModel.regionState.observeForever( centralMonitoringObserver)

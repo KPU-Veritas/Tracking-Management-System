@@ -43,14 +43,6 @@ class MainActivity : AppCompatActivity() {
 
         db = AppDatabase.getInstance(this)
         dbController = DBController()
-
-        val adapter = PagerAdapter(supportFragmentManager)
-        adapter.addFragment(MainFragment(user?.uuid.toString()), "메인")
-        adapter.addFragment(MovementFragment(), "동선 확인")
-        adapter.addFragment(OptionFragment(), "환경 설정")
-        binding.afterLoginViewpager.adapter = adapter
-        binding.afterLoginTablayout.setupWithViewPager(binding.afterLoginViewpager)
-
         beaconScannerApplication = application as BeaconScannerApplication
 
         // Set up a Live Data observer for beacon data
@@ -59,6 +51,14 @@ class MainActivity : AppCompatActivity() {
         regionViewModel.regionState.observe(this, monitoringObserver)
         // observer will be called each time a new list of beacons is ranged (typically ~1 second in the foreground)
         regionViewModel.rangedBeacons.observe(this, rangingObserver)
+        val beaconManager = BeaconManager.getInstanceForApplication(this)
+        val adapter = PagerAdapter(supportFragmentManager)
+        adapter.addFragment(MainFragment(user?.uuid.toString(),beaconScannerApplication,beaconManager), "메인")
+        adapter.addFragment(MovementFragment(), "동선 확인")
+        adapter.addFragment(OptionFragment(), "환경 설정")
+        binding.afterLoginViewpager.adapter = adapter
+        binding.afterLoginTablayout.setupWithViewPager(binding.afterLoginViewpager)
+
 
         //binding.beaconCount.text = "No beacons detected"
         //binding.beaconList.adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, arrayOf("--"))
