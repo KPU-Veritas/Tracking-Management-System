@@ -6,6 +6,7 @@ import android.util.Log
 import com.veritas.TMapp.server.ContactAPIS
 import com.veritas.TMapp.server.Contacts
 import com.veritas.TMapp.server.ServerSetting.processedUuid
+import okhttp3.internal.format
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -47,6 +48,8 @@ class DBController {
         try{
             val savedContacts = db.contactsDao().getAll()
             for(contact in savedContacts){
+                contact.contact_target_uuid = formatingUUID(contact.contact_target_uuid)
+                contact.uuid = formatingUUID(contact.uuid)
                 contactAPIS.postContact(contact).enqueue(object: Callback<String>{
                     override fun onResponse(call: Call<String>, response: Response<String>) {
                         if(response.code() == 200){
@@ -69,5 +72,9 @@ class DBController {
     }
     companion object{
         const val TAG = "db_contact"
+    }
+
+    private fun formatingUUID(uuid: String) : String{
+        return uuid.substring(0,8) + uuid.substring(9,13) + uuid.substring(14,18) + uuid.substring(19,23) + uuid.substring(24)
     }
 }
