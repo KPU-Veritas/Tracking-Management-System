@@ -25,7 +25,7 @@ public class ContactDTO {
         this.lastTime = entity.getLastTime();
         this.checked = isChecked();
     }
-    public static ContactEntity toEntity(final ContactDTO dto) {
+    public static ContactEntity contactEntity(final ContactDTO dto) {
         return ContactEntity.builder()
                 .id(dto.getId())
                 .contactTargetUuid(dto.getContactTargetUuid())

@@ -1,7 +1,7 @@
 package com.veritas.TMServer.service;
 
-import com.veritas.TMServer.model.ContactEntity;
-import com.veritas.TMServer.persistence.ContactRepository;
+import com.veritas.TMServer.model.InfectedEntity;
+import com.veritas.TMServer.persistence.InfectedRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,11 +11,11 @@ import java.util.Optional;
 
 @Slf4j
 @Service
-public class ContactService {
+public class InfectedService {
     @Autowired
-    private ContactRepository repository;
+    private InfectedRepository repository;
 
-    public List<ContactEntity> create(final ContactEntity entity){
+    public List<InfectedEntity> create(final InfectedEntity entity){
         validate(entity);
 
         repository.save(entity);
@@ -23,19 +23,7 @@ public class ContactService {
         return repository.findByUuid(entity.getUuid());
     }
 
-    public List<ContactEntity> update(final ContactEntity entity){
-        validate(entity);
-
-        final Optional<ContactEntity> original = repository.findById(entity.getId());
-
-        original.ifPresent(contact -> {
-            contact.setChecked(entity.isChecked());
-            repository.save(contact);
-        });
-        return retrieve(entity.getUuid());
-    }
-
-    public List<ContactEntity> delete(final ContactEntity entity){
+    public List<InfectedEntity> delete(final InfectedEntity entity){
         validate(entity);
 
         try{
@@ -46,8 +34,7 @@ public class ContactService {
         }
         return retrieve(entity.getUuid());
     }
-
-    private void validate(final ContactEntity entity) {
+    private void validate(final InfectedEntity entity) {
         if(entity == null) {
             log.warn("Entity cannot be null");
             throw new RuntimeException("Entity cannot be null");
@@ -59,9 +46,10 @@ public class ContactService {
         }
     }
 
-    public List<ContactEntity> retrieve(final String uuid){
+    public List<InfectedEntity> retrieve(final String uuid){
         return repository.findByUuid(uuid);
     }
-
-    public List<ContactEntity> contactList() { return repository.findAll(); }
+    public List<InfectedEntity> infectedList() {
+        return repository.findAll();
+    }
 }

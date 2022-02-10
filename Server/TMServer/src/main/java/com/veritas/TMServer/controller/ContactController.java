@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("contact")
+@RequestMapping("/contact")
 public class ContactController {
     @Autowired
     private ContactService service;
@@ -31,7 +31,7 @@ public class ContactController {
             @AuthenticationPrincipal String uuid,
             @RequestBody ContactDTO dto){
         try {
-            ContactEntity entity = ContactDTO.toEntity(dto);
+            ContactEntity entity = ContactDTO.contactEntity(dto);
             entity.setId(null);
             entity.setUuid(uuid);
             List<ContactEntity> entities = service.create(entity);
@@ -48,7 +48,7 @@ public class ContactController {
     @PutMapping
     public ResponseEntity<?> updateContact(@AuthenticationPrincipal String uuid,
                                            @RequestBody ContactDTO dto){
-        ContactEntity entity = ContactDTO.toEntity(dto);
+        ContactEntity entity = ContactDTO.contactEntity(dto);
         entity.setUuid(uuid);
         List<ContactEntity> entities = service.update(entity);
         List<ContactDTO> dtos = entities.stream().map(ContactDTO::new).collect(Collectors.toList());
@@ -62,7 +62,7 @@ public class ContactController {
             @RequestBody ContactDTO dto
     ){
         try{
-            ContactEntity entity = ContactDTO.toEntity(dto);
+            ContactEntity entity = ContactDTO.contactEntity(dto);
             entity.setUuid(uuid);
             List<ContactEntity> entities = service.delete(entity);
             List<ContactDTO> dtos = entities.stream().map(ContactDTO::new).collect(Collectors.toList());
