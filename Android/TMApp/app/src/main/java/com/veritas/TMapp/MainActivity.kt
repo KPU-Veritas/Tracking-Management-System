@@ -38,9 +38,6 @@ class MainActivity : AppCompatActivity() {
         // getRoot 메서드로 레이아웃 내부의 최상위 위치 뷰의 인스턴스를 활용하여 생성된 뷰를 액티비티에 표시
         setContentView(binding.root)
 
-        val intent = intent
-        user = intent.getParcelableExtra("user")
-
         db = AppDatabase.getInstance(this)
         dbController = DBController()
         beaconScannerApplication = application as BeaconScannerApplication
@@ -53,7 +50,7 @@ class MainActivity : AppCompatActivity() {
         regionViewModel.rangedBeacons.observe(this, rangingObserver)
         val beaconManager = BeaconManager.getInstanceForApplication(this)
         val adapter = PagerAdapter(supportFragmentManager)
-        adapter.addFragment(MainFragment(user?.uuid.toString(),beaconScannerApplication,beaconManager), "메인")
+        adapter.addFragment(MainFragment(beaconScannerApplication,beaconManager), "메인")
         adapter.addFragment(MovementFragment(), "동선 확인")
         adapter.addFragment(OptionFragment(), "환경 설정")
         binding.afterLoginViewpager.adapter = adapter

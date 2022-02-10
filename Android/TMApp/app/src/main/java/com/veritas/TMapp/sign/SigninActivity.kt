@@ -9,7 +9,7 @@ import com.veritas.TMapp.MainActivity
 import com.veritas.TMapp.databinding.ActivitySigninBinding
 import com.veritas.TMapp.server.SignAPIS
 import com.veritas.TMapp.server.ResponseSigninModel
-import com.veritas.TMapp.server.ServerSetting.setUUID
+import com.veritas.TMapp.server.ServerSetting.setUserInfo
 import com.veritas.TMapp.server.SigninModel
 import retrofit2.Call
 import retrofit2.Callback
@@ -18,7 +18,7 @@ import retrofit2.Response
 class SigninActivity : AppCompatActivity() {
     private var signinBinding: ActivitySigninBinding? = null
     private val binding get() = signinBinding!!
-    var user: ResponseSigninModel? = null
+    lateinit var user: ResponseSigninModel
     private var api = SignAPIS.create()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,19 +32,18 @@ class SigninActivity : AppCompatActivity() {
             val data = SigninModel(email,password)
             val dialog = AlertDialog.Builder(this@SigninActivity)
 
-            api.requestSingin(data).enqueue(object: Callback<ResponseSigninModel> {
+            api.requestSignin(data).enqueue(object: Callback<ResponseSigninModel> {
                 override fun onResponse(
                     call: Call<ResponseSigninModel>,
                     response: Response<ResponseSigninModel>
                 ) {
-                    user = response.body()
+                    user = response.body()!!
 
                     if(response.code() == 200){
                         Log.d("SIGNIN", "로그인 성공")
-                        Log.d("SIGNIN", "token : ${user?.token} \nuuid : ${user?.uuid} \nusername : ${user?.username}")
-                        setUUID(user!!.uuid.toString())
+                        Log.d("SIGNIN", "token : ${user.token} \nuuid : ${user.uuid} \nusername : ${user.username}")
+                        setUserInfo(user.uuid!!, user.token!!, user.username!!)
                         val intent = Intent(this@SigninActivity, MainActivity::class.java)
-                        intent.putExtra("user", user)
                         startActivity(intent)
                     }
                     else{

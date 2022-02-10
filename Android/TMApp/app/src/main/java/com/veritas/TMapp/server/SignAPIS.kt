@@ -14,13 +14,13 @@ import retrofit2.http.POST
 interface SignAPIS {
     @POST("/auth/signin/")  // 로그인 요청
     @Headers("accept: application/json", "content-type: application/json")
-    fun requestSingin(
+    fun requestSignin(
         @Body jsonParams: SigninModel
     ): Call<ResponseSigninModel>
 
     @POST("/auth/signup/")  // 회원가입 요청
     @Headers("accept: application/json", "content-type: application/json")
-    fun requestSingup(
+    fun requestSignup(
         @Body jsonParams: SignupModel
     ): Call<ResponseSignupModel>
 

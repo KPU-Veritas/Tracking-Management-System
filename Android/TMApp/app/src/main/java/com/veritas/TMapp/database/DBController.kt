@@ -1,55 +1,70 @@
 package com.veritas.TMapp.database
 
 import android.annotation.SuppressLint
+import android.database.sqlite.SQLiteConstraintException
 import android.util.Log
+import com.veritas.TMapp.server.ContactAPIS
 import com.veritas.TMapp.server.Contacts
-import com.veritas.TMapp.server.ServerSetting.uuid
+import com.veritas.TMapp.server.ServerSetting.processedUuid
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.*
 
 class DBController {
     @SuppressLint("SimpleDateFormat")
     private val dateFormat = SimpleDateFormat("yy-MM-dd")
+    @SuppressLint("SimpleDateFormat")
     private val timeFormat = SimpleDateFormat("hh:mm:ss")
+    private var contactAPIS = ContactAPIS.create()
 
-    fun setFirstTime(db:AppDatabase, contact_target_uuid:String){
+    fun recordTime(db:AppDatabase, contact_target_uuid:String){
         val now = System.currentTimeMillis()
         val date = Date(now)
         val currentDate = dateFormat.format(date)
-        val firstTime = timeFormat.format(date)
+        val currentTime = timeFormat.format(date)
 
-        var contact = db.contactsDao().getContactByUUID(contact_target_uuid)
+        try {
+            var contact = db.contactsDao().getContactByUUID(contact_target_uuid)
 
-        if(contact != null){
-            contact.firstTime = firstTime
-            db.contactsDao().update(contact)
-            Log.d(TAG, "$contact_target_uuid 처음 시간 업데이트 완료")
-        }else{
-            contact = Contacts(contact_target_uuid, uuid.toString(), currentDate, firstTime, null)
-            db.contactsDao().insertAll(contact)
-            Log.d(TAG, "$contact_target_uuid 처음 시간 생성 완료")
+            if(contact == null){
+                contact = Contacts(contact_target_uuid, processedUuid, currentDate, currentTime, null)
+                db.contactsDao().insertAll(contact)
+                Log.d(TAG, "$contact_target_uuid 처음 접촉 시간 등록")
+            }
+            else{
+                contact.lastTime = currentTime
+                db.contactsDao().update(contact)
+                Log.d(TAG, "$contact_target_uuid 마지막 접촉 시간 업데이트")
+            }
+        }catch (e:SQLiteConstraintException){
+            Log.d("SQLiteConstraintException", e.message.toString())
         }
     }
 
-    fun setLastTime(db: AppDatabase, uuid: String){
-        val now = System.currentTimeMillis()
-        val date = Date(now)
-        val lastTime = timeFormat.format(date)
+    fun sendAllContacts(db: AppDatabase){
+        try{
+            val savedContacts = db.contactsDao().getAll()
+            for(contact in savedContacts){
+                contactAPIS.postContact(contact).enqueue(object: Callback<String>{
+                    override fun onResponse(call: Call<String>, response: Response<String>) {
+                        if(response.code() == 200){
+                            Log.d(TAG, "${contact.contact_target_uuid} 전송 성공")
+                        }
+                        else{
+                            Log.d(TAG, "${contact.contact_target_uuid} 전송 실패")
+                        }
+                    }
 
-        val contact = db.contactsDao().getContactByUUID(uuid)
-        if (contact != null) {
-            contact.lastTime = lastTime
-            db.contactsDao().update(contact)
-            Log.d(TAG, "$uuid 마지막 시간 업데이트 완료")
-        }else{
-            Log.e(TAG, "처음 시간이 없습니다. 에러")
-        }
-    }
-
-    fun getAllContacts(db: AppDatabase){
-        val savedContacts = db.contactsDao().getAll()
-        for(contact in savedContacts){
-            Log.d("db_contact","${contact.contact_target_uuid}  ${contact.uuid}  ${contact.date}  ${contact.firstTime}  ${contact.lastTime}")
+                    override fun onFailure(call: Call<String>, t: Throwable) {
+                        Log.d("ContactPost", t.message.toString())
+                    }
+                })
+            }
+            db.contactsDao().deleteAll()
+        }catch (e:SQLiteConstraintException){
+            Log.d("SQLiteConstraintException", e.message.toString())
         }
     }
     companion object{

@@ -4,6 +4,7 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.veritas.TMapp.server.ServerSetting.ipv4
 import com.veritas.TMapp.server.ServerSetting.portNumber
+import com.veritas.TMapp.server.ServerSetting.token
 import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Retrofit
@@ -22,10 +23,10 @@ interface ContactAPIS {
     companion object{
         private const val BASE_URL = "http://$ipv4:$portNumber"
 
-        fun create(authToken: String): SignAPIS{
+        fun create(): ContactAPIS{
             val gson: Gson = GsonBuilder().setLenient().create()
 
-            val interceptor = AuthenticationInterceptor("Bearer $authToken")
+            val interceptor = AuthenticationInterceptor("Bearer $token")
             val httpClient = OkHttpClient.Builder()
                 .addInterceptor(interceptor)
                 .build()
@@ -35,7 +36,7 @@ interface ContactAPIS {
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .client(httpClient)
                 .build()
-                .create(SignAPIS::class.java)
+                .create(ContactAPIS::class.java)
         }
     }
 }

@@ -49,7 +49,7 @@ class SignupActivity : AppCompatActivity() {
 
             val data = SignupModel(username,email,password,phoneNumber, simpleAddress, detailAddress)
 
-            api.requestSingup(data).enqueue(object: Callback<ResponseSignupModel>{
+            api.requestSignup(data).enqueue(object: Callback<ResponseSignupModel>{
                 override fun onResponse(
                     call: Call<ResponseSignupModel>,
                     response: Response<ResponseSignupModel>
