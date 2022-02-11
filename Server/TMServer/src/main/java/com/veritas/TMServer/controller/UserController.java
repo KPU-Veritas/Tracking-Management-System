@@ -77,41 +77,5 @@ public class UserController {
 
     }
 
-    @GetMapping("/userlist")
-    public ResponseEntity<?> userList(/*@RequestBody UserDTO userDTO*/){
-        //UserEntity user = userService.getByCredentials(userDTO.getEmail(), userDTO.getPassword());
 
-        // (1) 서비스 메서드의 userList메서드를 사용해 모든 유저 리스트 가져옴.
-        List<UserEntity> entities = userService.userList();
-
-        // (2) 자바 스트림을 이용해 리턴된 엔티티 리스트를 UserDTO리스트로 변환한다.
-        List<UserDTO> dtos = entities.stream().map(UserDTO::new).collect(Collectors.toList());
-
-        // (3) 변환된 UserDTO리스트를 이용해ResponseDTO를 초기화한다.
-        ResponseDTO<UserDTO> response = ResponseDTO.<UserDTO>builder().data(dtos).build();
-
-        // (4) ResponseDTO를 리턴한다.
-        return ResponseEntity.ok().body(response);
-
-    }
-
-    @PostMapping("/managersignin")
-    public ResponseEntity<?> authenticate_2(@RequestBody UserDTO userDTO) {
-        UserEntity user = userService.getByManagerCredentials(userDTO.getEmail(), userDTO.getPassword());
-
-        if (user != null) {
-            final String token = tokenProvider.create(user);
-            final UserDTO responseUserDTO = UserDTO.builder()
-                    .username(user.getUsername())
-                    .uuid(user.getUuid())
-                    .token(token)
-                    .build();
-            return ResponseEntity.ok().body(responseUserDTO);
-        } else {
-            ResponseDTO responseDTO = ResponseDTO.builder()
-                    .error("Login failed.")
-                    .build();
-            return ResponseEntity.badRequest().body(responseDTO);
-        }
-    }
 }

@@ -42,8 +42,8 @@ export async function call(api, method, request) {
     });
 }
 
-export async function signin(userDTO) {
-  const response = await call("/auth/managersignin", "POST", userDTO);
+export async function signin(webDTO) {
+  const response = await call("/system/signin", "POST", webDTO);
     if (response.token) {
         // 로컬 스토리지에 토큰 저장
         localStorage.setItem(ACCESS_TOKEN, response.token);
@@ -57,6 +57,6 @@ export function signout() {
   window.location.href = "/login";
 }
 
-export function signup(userDTO) {
-  return call("/auth/signup", "POST", userDTO);
+export function signup(webDTO) {
+  return call("/system/signup", "POST", webDTO);
 }
