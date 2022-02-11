@@ -9,14 +9,12 @@ class InfectedList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {user: props.notice };
-        this.updateCheck = props.updateCheck;
     }
 
     checkboxEventHandler = (e) => {
         const thisUser = this.state.user;
         thisUser.managerCheck = !thisUser.managerCheck;
-        this.setState({ user: thisUser});
-        this.updateCheck(this.state.user);
+        call("/system/check", "PUT", thisUser);
     };
 
     render() {

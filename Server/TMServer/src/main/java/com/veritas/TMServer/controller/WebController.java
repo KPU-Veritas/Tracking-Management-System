@@ -173,7 +173,9 @@ public class WebController {
     public int check(@RequestBody InfectedDTO infectedDTO) {
         try {
             String id = infectedDTO.getId();
+            log.info(id);
             boolean managerCheck = infectedDTO.isManagerCheck();
+            log.info(String.valueOf(managerCheck));
             infectedService.updateCheck(id, managerCheck);
             return 1;
         }  catch (Exception e) {
