@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -17,13 +18,13 @@ public interface InfectedRepository extends JpaRepository<InfectedEntity, String
     @Query(value = "SELECT * FROM INFECTED WHERE MANAGER_CHECK = 0", nativeQuery = true)
     List<InfectedEntity> findAllManagerCheckFalse();
 
+    @Transactional
     @Modifying
-    @Query(value = "update infected set manager_check = '1' where id = :id;", nativeQuery = true)
-    void updateToTrueManagerCheck(@Param("id") String id);
+    @Query(value = "UPDATE INFECTED SET MANAGER_CHECK = '1' WHERE ID = :id", nativeQuery = true)
+    int updateToTrueManagerCheck(@Param("id") String id);
 
+    @Transactional
     @Modifying
-    @Query(value = "update infected set manager_check = '0' where id = :id;", nativeQuery = true)
-    default void updateToFalseManagerCheck(@Param("id") String id) {
-
-    }
+    @Query(value = "UPDATE INFECTED SET MANAGER_CHECK = '0' WHERE ID = :id", nativeQuery = true)
+    int updateToFalseManagerCheck(@Param("id") String id);
 }

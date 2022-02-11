@@ -41,8 +41,8 @@ public class InfectedService {
         }
 
         if(entity.getUuid() == null) {
-            log.warn("Unkown user.");
-            throw new RuntimeException("Unkown user.");
+            log.warn("Uknown user.");
+            throw new RuntimeException("Uknown user.");
         }
     }
 

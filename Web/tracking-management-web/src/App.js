@@ -44,9 +44,7 @@ class App extends React.Component {
 
   updateCount() {
     call("/system/notice", "GET", null).then((response) => {
-      if(response > 0) {
         this.setState({ notice: response })
-      }
     }
     );
   }
