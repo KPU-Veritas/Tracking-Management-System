@@ -10,10 +10,14 @@ import {
   Toolbar,
   Typography,
 } from "@material-ui/core";
+import Badge from '@mui/material/Badge';
+import MailIcon from '@mui/icons-material/Mail';
 import { call, signout } from "./service/ApiService"; // signout 추가
 import UserList from "./UserList";
 import Greeting from "./Greeting";
 import ContactList from "./ContactList";
+import InfectedList from "./InfectedList";
+
 
 class App extends React.Component {
   constructor(props) {
@@ -21,7 +25,9 @@ class App extends React.Component {
     this.state = {
       userList: [],
       contactList: [],
+      infectedList: [],
       page: 1,
+      notice : 0,
     };
   }
 
@@ -32,6 +38,29 @@ class App extends React.Component {
     call("/system/contactlist", "GET", null).then((response) =>
       this.setState({ contactList: response.data})
     );
+    this.updateCount = this.updateCount.bind(this);
+    setInterval(this.updateCount, 1000);
+  }
+
+  updateCount() {
+    call("/system/notice", "GET", null).then((response) => {
+      if(response > 0) {
+        this.setState({ notice: response })
+      }
+    }
+    );
+  }
+
+  getNoticeData() {
+    call("/system/noticelist", "GET", null).then((response) =>
+      this.setState({ noticeList: response.data})
+    );
+  }
+
+  getInfectedData() {
+    call("/infected/all", "GET", null).then((response) =>
+      this.setState({ infectedList: response.data})
+  );
   }
 
   mainPage = () => {
@@ -51,8 +80,16 @@ class App extends React.Component {
       page: 3,
     });
   };
+
+  noticeList = () => {
+    this.getInfectedData();
+    this.setState({
+      page: 4,
+    });
+  };
   
   render() {
+
     var greeting = 
       <Paper style={{ margin: 16 }}>
             <Greeting/>
@@ -84,6 +121,19 @@ class App extends React.Component {
       </Paper>
     );
 
+    var infectedList = this.state.infectedList.length > 0 && (
+      <Paper style={{ margin: 16 }}>
+        <List>
+          {this.state.infectedList.map((notice, idx) => (
+            <InfectedList
+              notice={notice}
+              key={idx}
+            />
+          ))}
+        </List>
+      </Paper>
+    );
+
     var navigationBar = (
       <AppBar position="static">
         <Toolbar>
@@ -100,6 +150,11 @@ class App extends React.Component {
               </Button>
               <Button color="inherit" onClick={this.contactList}>
                 접촉목록
+              </Button>
+              <Button onClick={this.noticeList}>
+              <Badge badgeContent={this.state.notice} color="primary">
+                <MailIcon color="action" />
+              </Badge>
               </Button>
             </Grid>
           </Grid>
@@ -136,6 +191,16 @@ class App extends React.Component {
         </Container>
       </div>
     );
+
+    var infectedListPage = (
+      <div>
+        <h1>확진알림</h1>
+        {navigationBar}
+        <Container maxwitdth="md">
+          <div className="InfectedList">{infectedList}</div>
+        </Container>
+      </div>
+    );
     
     var content;
 
@@ -143,6 +208,7 @@ class App extends React.Component {
       case 1: content = mainPage; break;
       case 2: content = userListPage; break;
       case 3: content = contactListPage; break;
+      case 4: content = infectedListPage; break;
     }
 
     

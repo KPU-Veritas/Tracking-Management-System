@@ -52,4 +52,25 @@ public class InfectedService {
     public List<InfectedEntity> infectedList() {
         return repository.findAll();
     }
+
+    public List<InfectedEntity> nonCheckedInfectedList() { return repository.findAllManagerCheckFalse(); }
+    public long managerNotice() { return repository.countAllManagerCheckFalse(); }
+    public void updateCheck(String id, boolean managerCheck) {
+        if(managerCheck) repository.updateToFalseManagerCheck(id);
+        else repository.updateToTrueManagerCheck(id);
+    }
+
+    public List<InfectedEntity> updateCheck(final InfectedEntity entity) {
+        validate(entity);
+
+        final Optional<InfectedEntity> original = repository.findById(entity.getId());
+
+        original.ifPresent(infected -> {
+            infected.setManagerCheck(entity.isManagerCheck());
+            repository.save(infected);
+        });
+
+        // 2.3.2 Retrieve Todo에서 만든 메서드를 이용해 유저의 모든 Todo 리스트를 리턴한다.
+        return infectedList();
+    }
 }

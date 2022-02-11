@@ -39,5 +39,6 @@ public class WebService {
         return null;
     }
 
+    public long countManager() { return webRepository.count(); }
 
 }

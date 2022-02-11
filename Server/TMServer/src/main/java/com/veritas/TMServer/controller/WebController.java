@@ -1,14 +1,13 @@
 package com.veritas.TMServer.controller;
 
-import com.veritas.TMServer.dto.ContactDTO;
-import com.veritas.TMServer.dto.ResponseDTO;
-import com.veritas.TMServer.dto.UserDTO;
-import com.veritas.TMServer.dto.WebDTO;
+import com.veritas.TMServer.dto.*;
 import com.veritas.TMServer.model.ContactEntity;
+import com.veritas.TMServer.model.InfectedEntity;
 import com.veritas.TMServer.model.UserEntity;
 import com.veritas.TMServer.model.WebEntity;
 import com.veritas.TMServer.security.TokenProvider;
 import com.veritas.TMServer.service.ContactService;
+import com.veritas.TMServer.service.InfectedService;
 import com.veritas.TMServer.service.UserService;
 import com.veritas.TMServer.service.WebService;
 import lombok.extern.slf4j.Slf4j;
@@ -36,9 +35,66 @@ public class WebController {
     private WebService webService;
 
     @Autowired
+    private InfectedService infectedService;
+
+    @Autowired
     private TokenProvider tokenProvider;
 
     private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+    @PostMapping("/signup")
+    public ResponseEntity<?> registerUser(@RequestBody WebDTO webDTO){
+        try {
+            if(webService.countManager() == 0) {
+                // 요청을 이용해 저장할 사용자 만들기
+                WebEntity web = WebEntity.builder()
+                        .email(webDTO.getEmail())
+                        .username(webDTO.getUsername())
+                        .password(passwordEncoder.encode(webDTO.getPassword()))
+                        .notice(webDTO.getNotice())
+                        .warningLevel(webDTO.getWarningLevel())
+                        .build();
+                // 서비스를 이용해 리포지터리에 사용자 저장
+                WebEntity registeredWeb = webService.create(web);
+                WebDTO responseWebDTO = WebDTO.builder()
+                        .email(registeredWeb.getEmail())
+                        .id(registeredWeb.getId())
+                        .username(registeredWeb.getUsername())
+                        .notice(0)
+                        .warningLevel(0)
+                        .build();
+                return ResponseEntity.ok().body(responseWebDTO);
+            }
+            else {
+                ResponseDTO responseDTO = ResponseDTO.builder().error("Already exists!").build();
+                return ResponseEntity.badRequest().body(responseDTO);
+            }
+        }catch(Exception e) {
+            // 사용자 정보는 항상 하나이므로 리스트로 만들어야 하는 ResponseDTO를 사용하지 않고 그냥 UserDTO 리턴
+            ResponseDTO responseDTO = ResponseDTO.builder().error(e.getMessage()).build();
+            return ResponseEntity.badRequest().body(responseDTO);
+        }
+    }
+
+    @PostMapping("/signin")
+    public ResponseEntity<?> authenticate(@RequestBody WebDTO webDTO) {
+        WebEntity web = webService.getByCredentials(webDTO.getEmail(), webDTO.getPassword(), passwordEncoder);
+
+        if (web != null) {
+            final String token = tokenProvider.createWebToken(web);
+            final UserDTO responseUserDTO = UserDTO.builder()
+                    .username(web.getUsername())
+                    .uuid(web.getId())
+                    .token(token)
+                    .build();
+            return ResponseEntity.ok().body(responseUserDTO);
+        } else {
+            ResponseDTO responseDTO = ResponseDTO.builder()
+                    .error("Login failed.")
+                    .build();
+            return ResponseEntity.badRequest().body(responseDTO);
+        }
+    }
 
     @GetMapping("/userlist")
     public ResponseEntity<?> userList(){
@@ -84,54 +140,46 @@ public class WebController {
             return ResponseEntity.badRequest().body(response);
         }
     }
-    @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@RequestBody WebDTO webDTO){
-    log.info("1번구간");
+
+    @GetMapping("/notice")
+    public long count() {
         try {
-            // 요청을 이용해 저장할 사용자 만들기
-            WebEntity web = WebEntity.builder()
-                    .email(webDTO.getEmail())
-                    .username(webDTO.getUsername())
-                    .password(passwordEncoder.encode(webDTO.getPassword()))
-                    .notice(webDTO.getNotice())
-                    .warningLevel(webDTO.getWarningLevel())
-                    .build();
-            // 서비스를 이용해 리포지터리에 사용자 저장
-            WebEntity registeredWeb = webService.create(web);
-            WebDTO responseWebDTO = WebDTO.builder()
-                    .email(registeredWeb.getEmail())
-                    .id(registeredWeb.getId())
-                    .username(registeredWeb.getUsername())
-                    .notice(0)
-                    .warningLevel(0)
-                    .build();
-            log.info("2번구간");
-            return ResponseEntity.ok().body(responseWebDTO);
-        }catch(Exception e) {
-            // 사용자 정보는 항상 하나이므로 리스트로 만들어야 하는 ResponseDTO를 사용하지 않고 그냥 UserDTO 리턴
-            ResponseDTO responseDTO = ResponseDTO.builder().error(e.getMessage()).build();
-            log.info("3번구간");
-            return ResponseEntity.badRequest().body(responseDTO);
+            return infectedService.managerNotice();
+        } catch(Exception e) {
+            return -1;
         }
     }
 
-    @PostMapping("/signin")
-    public ResponseEntity<?> authenticate(@RequestBody WebDTO webDTO) {
-        WebEntity web = webService.getByCredentials(webDTO.getEmail(), webDTO.getPassword(), passwordEncoder);
+    @GetMapping("/noticelist")
+    public ResponseEntity<?> noticeList() {
+        try {
+            List<InfectedEntity> entities = infectedService.nonCheckedInfectedList();
 
-        if (web != null) {
-            final String token = tokenProvider.createWebToken(web);
-            final UserDTO responseUserDTO = UserDTO.builder()
-                    .username(web.getUsername())
-                    .uuid(web.getId())
-                    .token(token)
-                    .build();
-            return ResponseEntity.ok().body(responseUserDTO);
-        } else {
-            ResponseDTO responseDTO = ResponseDTO.builder()
-                    .error("Login failed.")
-                    .build();
-            return ResponseEntity.badRequest().body(responseDTO);
+            List<InfectedDTO> dtos = entities.stream().map(InfectedDTO::new).collect(Collectors.toList());
+
+            ResponseDTO<InfectedDTO> response = ResponseDTO.<InfectedDTO>builder().data(dtos).build();
+
+            if (response != null) return ResponseEntity.ok().body(response);
+            else return ResponseEntity.badRequest().body(response);
+        }  catch (Exception e) {
+            String error = e.getMessage();
+            ResponseDTO<ContactDTO> response = ResponseDTO.<ContactDTO>builder().error(error).build();
+            return ResponseEntity.badRequest().body(response);
+        }
+
+    }
+
+    @PutMapping("/check")
+    public int check(@RequestBody InfectedDTO infectedDTO) {
+        try {
+            String id = infectedDTO.getId();
+            boolean managerCheck = infectedDTO.isManagerCheck();
+            infectedService.updateCheck(id, managerCheck);
+            return 1;
+        }  catch (Exception e) {
+            log.info("error!");
+            return 0;
         }
     }
+
 }

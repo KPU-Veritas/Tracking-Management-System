@@ -14,6 +14,7 @@ public class InfectedDTO {
     private String judgmentDate;
     private String estimatedDate;
     private String detailSituation;
+    private boolean managerCheck;
 
     public InfectedDTO(final InfectedEntity entity){
         this.id = entity.getId();
@@ -21,6 +22,7 @@ public class InfectedDTO {
         this.judgmentDate = entity.getJudgmentDate();
         this.estimatedDate = entity.getEstimatedDate();
         this.detailSituation = entity.getDetailSituation();
+        this.managerCheck = entity.isManagerCheck();
     }
 
     public static InfectedEntity infectedEntity(final InfectedDTO dto){
@@ -30,6 +32,7 @@ public class InfectedDTO {
                 .judgmentDate(dto.getJudgmentDate())
                 .estimatedDate(dto.getEstimatedDate())
                 .detailSituation(dto.getDetailSituation())
+                .managerCheck(dto.isManagerCheck())
                 .build();
     }
 }
