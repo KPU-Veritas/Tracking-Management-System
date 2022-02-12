@@ -17,14 +17,7 @@ import java.util.stream.Collectors;
 public class InfectedController {
     @Autowired
     private InfectedService service;
-    @GetMapping("/all")
-    public ResponseEntity<?> retrieveInfectedList(){
-        List<InfectedEntity> entities = service.infectedList();
-        List<InfectedDTO> dtos = entities.stream().map(InfectedDTO::new).collect(Collectors.toList());
-        ResponseDTO<InfectedDTO> response = ResponseDTO.<InfectedDTO>builder().data(dtos).build();
-        return ResponseEntity.ok(response);
-    }
-    @PostMapping
+    @PostMapping("/addinfected")
     public ResponseEntity<?> createInfected(
             @AuthenticationPrincipal String uuid,
             @RequestBody InfectedDTO dto){
@@ -43,7 +36,7 @@ public class InfectedController {
         }
     }
 
-    @DeleteMapping
+    @DeleteMapping("/deleteinfected")
     public ResponseEntity<?> deleteInfected(
             @AuthenticationPrincipal String uuid,
             @RequestBody InfectedDTO dto

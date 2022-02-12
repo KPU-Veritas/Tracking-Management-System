@@ -11,7 +11,6 @@ import com.veritas.TMServer.service.InfectedService;
 import com.veritas.TMServer.service.UserService;
 import com.veritas.TMServer.service.WebService;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

@@ -17,16 +17,8 @@ import java.util.stream.Collectors;
 public class ContactController {
     @Autowired
     private ContactService service;
-    @GetMapping
-    public ResponseEntity<?> retrieveContactList(
-            @AuthenticationPrincipal String uuid){
-        List<ContactEntity> entities = service.retrieve(uuid);
-        List<ContactDTO> dtos = entities.stream().map(ContactDTO::new).collect(Collectors.toList());
-        ResponseDTO<ContactDTO> response = ResponseDTO.<ContactDTO>builder().data(dtos).build();
-        return ResponseEntity.ok(response);
-    }
 
-    @PostMapping
+    @PostMapping("/recordcontact")
     public ResponseEntity<?> createContact(
             @AuthenticationPrincipal String uuid,
             @RequestBody ContactDTO dto){
@@ -45,18 +37,7 @@ public class ContactController {
         }
     }
 
-    @PutMapping
-    public ResponseEntity<?> updateContact(@AuthenticationPrincipal String uuid,
-                                           @RequestBody ContactDTO dto){
-        ContactEntity entity = ContactDTO.contactEntity(dto);
-        entity.setUuid(uuid);
-        List<ContactEntity> entities = service.update(entity);
-        List<ContactDTO> dtos = entities.stream().map(ContactDTO::new).collect(Collectors.toList());
-        ResponseDTO<ContactDTO> response = ResponseDTO.<ContactDTO>builder().data(dtos).build();
-        return ResponseEntity.ok(response);
-    }
-
-    @DeleteMapping
+    @DeleteMapping("/deletecontact")
     public ResponseEntity<?> deleteContact(
             @AuthenticationPrincipal String uuid,
             @RequestBody ContactDTO dto
