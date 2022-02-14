@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 public class ContactDTO {
-    private String id;
+    private Long id;
     private String contactTargetUuid;
     private String date;
     private String firstTime;

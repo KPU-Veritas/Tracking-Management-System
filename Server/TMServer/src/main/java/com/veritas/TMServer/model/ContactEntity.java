@@ -16,13 +16,13 @@ import javax.persistence.*;
 @Table(name = "Contact")
 public class ContactEntity {
     @Id
-    @GeneratedValue(generator = "system-uuid")
-    @GenericGenerator(name="system-uuid", strategy = "uuid")
-    private String id;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Long id;
     private String uuid;
     private String contactTargetUuid;
     private String date;
     private String firstTime;
     private String lastTime;
+    @Column(columnDefinition = "boolean default false")
     private boolean checked;
 }

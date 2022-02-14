@@ -26,7 +26,7 @@ public class ContactService {
     public List<ContactEntity> update(final ContactEntity entity){
         validate(entity);
 
-        final Optional<ContactEntity> original = repository.findById(entity.getId());
+        final Optional<ContactEntity> original = repository.findById(entity.getId().toString());
 
         original.ifPresent(contact -> {
             contact.setChecked(entity.isChecked());

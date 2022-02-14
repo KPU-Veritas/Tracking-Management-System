@@ -170,11 +170,11 @@ public class WebController {
 
     @PutMapping("/check")
     public int check(@RequestBody InfectedDTO infectedDTO) {
-            String id = infectedDTO.getId();
-            log.info(id);
+            Long id = infectedDTO.getId();
+            log.info(id.toString());
             boolean managerCheck = infectedDTO.isManagerCheck();
             log.info(String.valueOf(managerCheck));
-            infectedService.updateCheck(id, managerCheck);
+            infectedService.updateCheck(id.toString(), managerCheck);
             return 1;
 
 

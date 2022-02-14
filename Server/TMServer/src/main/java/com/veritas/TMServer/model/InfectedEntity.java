@@ -16,9 +16,8 @@ import javax.persistence.*;
 @Table(name = "Infected")
 public class InfectedEntity {
     @Id
-    @GeneratedValue(generator = "system-uuid")
-    @GenericGenerator(name="system-uuid", strategy = "uuid")
-    private String id;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Long id;
     private String uuid;
     private String judgmentDate;
     private String estimatedDate;
