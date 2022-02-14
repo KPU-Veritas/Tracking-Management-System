@@ -53,7 +53,7 @@ public class InfectedService {
         return repository.findAll();
     }
 
-    public List<InfectedEntity> nonCheckedInfectedList() { return repository.findAllManagerCheckFalse(); }
+    public List<InfectedEntity> nonCheckedInfectedList() { return repository.findAllManagerCheckFalse(); }      //현재 사용되지않음
     public long managerNotice() { return repository.countAllManagerCheckFalse(); }
 
     public void updateCheck(String id, boolean managerCheck) {

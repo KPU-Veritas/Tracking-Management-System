@@ -53,10 +53,10 @@ class App extends React.Component {
     call("/system/noticelist", "GET", null).then((response) =>
       this.setState({ noticeList: response.data})
     );
-  }
+  }   //현재사용되지않음
 
   getInfectedData() {
-    call("/infected/all", "GET", null).then((response) =>
+    call("/system/noticelist", "GET", null).then((response) =>
       this.setState({ infectedList: response.data})
   );
   }

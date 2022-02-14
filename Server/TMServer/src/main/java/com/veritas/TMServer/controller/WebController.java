@@ -152,7 +152,7 @@ public class WebController {
     @GetMapping("/noticelist")
     public ResponseEntity<?> noticeList() {
         try {
-            List<InfectedEntity> entities = infectedService.nonCheckedInfectedList();
+            List<InfectedEntity> entities = infectedService.infectedList();
 
             List<InfectedDTO> dtos = entities.stream().map(InfectedDTO::new).collect(Collectors.toList());
 
@@ -169,15 +169,17 @@ public class WebController {
     }
 
     @PutMapping("/check")
-    public int check(@RequestBody InfectedDTO infectedDTO) {
+    public ResponseEntity<?> check(@RequestBody InfectedDTO infectedDTO) {
+        try {
             Long id = infectedDTO.getId();
-            log.info(id.toString());
             boolean managerCheck = infectedDTO.isManagerCheck();
-            log.info(String.valueOf(managerCheck));
             infectedService.updateCheck(id.toString(), managerCheck);
-            return 1;
-
-
+            return null;
+        }  catch (Exception e) {
+            String error = e.getMessage();
+            ResponseDTO<ContactDTO> response = ResponseDTO.<ContactDTO>builder().error(error).build();
+            return ResponseEntity.badRequest().body(response);
+        }
     }
 
 }
