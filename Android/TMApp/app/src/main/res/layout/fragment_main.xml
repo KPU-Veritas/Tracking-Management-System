@@ -5,32 +5,29 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageButton
-        android:id="@+id/btnStart"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_weight="1"
-        app:srcCompat="@drawable/beacon_background" />
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tvThread"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="센서 중지 상태" />
+        <ImageButton
+            android:id="@+id/btnStart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="200dp"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/beacon_background" />
 
-    <Button
-        android:id="@+id/btnScan"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="스캔 버튼" />
-
-    <TextView
-        android:id="@+id/tvScan"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="스캔 중지 상태" />
+        <TextView
+            android:id="@+id/tvThread"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="200dp"
+            android:layout_weight="1"
+            android:text="비콘 중지 상태" />
+    </LinearLayout>
 
 </LinearLayout>

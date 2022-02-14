@@ -17,7 +17,6 @@ class MainFragment(
     private var beaconManager: BeaconManager,) : Fragment() {
     private lateinit var beaconSensorManager: BeaconSensorManager
     private var flag : Boolean = true
-    private var scanflag : Boolean = true
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -31,29 +30,20 @@ class MainFragment(
         binding.btnStart.setOnClickListener {
             if (flag) {
                 beaconSensorManager.scannerChange(true)
-                binding.tvThread.text = "센서 작동 중"
+                beaconManager.startMonitoring(beaconScannerApplication.region)
+                beaconManager.startRangingBeacons(beaconScannerApplication.region)
+                binding.tvThread.text = "비콘 활성화 상태"
                 flag = false
             }
             else{
                 beaconSensorManager.scannerChange(false)
-                binding.tvThread.text = "센서 중지 상태"
+                beaconManager.stopMonitoring(beaconScannerApplication.region)
+                beaconManager.stopRangingBeacons(beaconScannerApplication.region)
+                binding.tvThread.text = "비콘 중지 상태"
                 flag = true
             }
         }
-        binding.btnScan.setOnClickListener {
-            if (scanflag) {
-                beaconManager.startMonitoring(beaconScannerApplication.region)
-                beaconManager.startRangingBeacons(beaconScannerApplication.region)
-                binding.tvScan.text = "스캔 작동 중"
-                scanflag = false
-            }
-            else{
-                beaconManager.stopMonitoring(beaconScannerApplication.region)
-                beaconManager.stopRangingBeacons(beaconScannerApplication.region)
-                binding.tvScan.text = "스캔 중지 상태"
-                scanflag = true
-            }
-        }
+
         return binding.root
     }
 
