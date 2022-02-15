@@ -165,7 +165,7 @@ class MainActivity : AppCompatActivity() {
         }
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.R) {
             // Uncomment line below if targeting SDK 31
-            // permissions = arrayOf( Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.BLUETOOTH_SCAN)
+            permissions = arrayOf( Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.BLUETOOTH_SCAN)
             permissionRationale ="This app needs both fine location permission and nearby devices permission to detect beacons.  Please grant both now."
         }
         var allGranted = true
