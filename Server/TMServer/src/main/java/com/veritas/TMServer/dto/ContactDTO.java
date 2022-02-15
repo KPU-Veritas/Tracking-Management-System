@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class ContactDTO {
     private Long id;
+    private String uuid;
     private String contactTargetUuid;
     private String date;
     private String firstTime;
@@ -19,6 +20,7 @@ public class ContactDTO {
 
     public ContactDTO(final ContactEntity entity) {
         this.id = entity.getId();
+        this.uuid = entity.getUuid();
         this.contactTargetUuid = entity.getContactTargetUuid();
         this.date = entity.getDate();
         this.firstTime = entity.getFirstTime();

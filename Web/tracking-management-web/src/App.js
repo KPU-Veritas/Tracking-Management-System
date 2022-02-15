@@ -81,6 +81,14 @@ class App extends React.Component {
     }
   }
 
+  searchContact = (e) => {
+    if (e.key === "Enter") {
+      call("/system/searchcontact", "POST", this.state.search ).then((response) =>
+      this.setState({ contactList: response.data})
+      );
+    }
+  }
+
   mainPage = () => {
     this.setState({
       page: 1,
@@ -122,7 +130,7 @@ class App extends React.Component {
           {this.state.userList.map((user) => (
             <UserList
               user={user}
-              key={user.uuid}
+              key={user.id}
             />
           ))}
         </List>
@@ -142,13 +150,23 @@ class App extends React.Component {
     var contactList = this.state.contactList.length > 0 && (
       <Paper style={{ margin: 16 }}>
         <List>
-          {this.state.contactList.map((contact, idx) => (
+          {this.state.contactList.map((contact) => (
             <ContactList
               contact={contact}
-              key={idx}
+              key={contact.id}
             />
           ))}
         </List>
+        <InputBase
+            inputProps={{
+              "aria-label": "naked",
+            }}
+            type="text"
+            value={this.state.search}
+            fullWidth={true}
+            onChange={this.editEventHandler}
+            onKeyPress={this.searchContact}
+          />
       </Paper>
     );
 

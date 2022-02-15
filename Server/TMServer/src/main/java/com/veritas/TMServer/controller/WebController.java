@@ -108,6 +108,27 @@ public class WebController {
             return ResponseEntity.ok().body(response);
         }  catch (Exception e) {
             String error = e.getMessage();
+            ResponseDTO<UserDTO> response = ResponseDTO.<UserDTO>builder().error(error).build();
+
+            return ResponseEntity.badRequest().body(response);
+        }
+
+    }
+
+    @PostMapping("/searchcontact")
+    public ResponseEntity<?> searchContact(@RequestBody String uuid) {
+        uuid = uuid.replaceAll("\"", "");
+        log.info(uuid);
+        try {
+            List<ContactEntity> entities = contactService.searchList(uuid);
+
+            List<ContactDTO> dtos = entities.stream().map(ContactDTO::new).collect(Collectors.toList());
+
+            ResponseDTO<ContactDTO> response = ResponseDTO.<ContactDTO>builder().data(dtos).build();
+
+            return ResponseEntity.ok().body(response);
+        }  catch (Exception e) {
+            String error = e.getMessage();
             ResponseDTO<ContactDTO> response = ResponseDTO.<ContactDTO>builder().error(error).build();
 
             return ResponseEntity.badRequest().body(response);

@@ -1,6 +1,7 @@
 package com.veritas.TMServer.service;
 
 import com.veritas.TMServer.model.ContactEntity;
+import com.veritas.TMServer.model.UserEntity;
 import com.veritas.TMServer.persistence.ContactRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,6 +63,6 @@ public class ContactService {
     public List<ContactEntity> retrieve(final String uuid){
         return repository.findByUuid(uuid);
     }
-
     public List<ContactEntity> contactList() { return repository.findAll(); }
+    public List<ContactEntity> searchList(String uuid) { return repository.findSearchList(uuid);}
 }
