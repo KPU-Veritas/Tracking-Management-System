@@ -60,3 +60,8 @@ export function signout() {
 export function signup(webDTO) {
   return call("/system/signup", "POST", webDTO);
 }
+
+export function searchUser(userDTO) {
+  return call("/system/searchuser", "GET", userDTO );
+      
+}

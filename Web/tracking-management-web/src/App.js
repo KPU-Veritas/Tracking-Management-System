@@ -8,15 +8,16 @@ import {
   Button,
   AppBar,
   Toolbar,
-  Typography,
+  InputBase,
 } from "@material-ui/core";
 import Badge from '@mui/material/Badge';
 import MailIcon from '@mui/icons-material/Mail';
-import { call, signout } from "./service/ApiService"; // signout 추가
+import { call, signout, } from "./service/ApiService"; // signout 추가
 import UserList from "./UserList";
 import Greeting from "./Greeting";
 import ContactList from "./ContactList";
 import InfectedList from "./InfectedList";
+import { SystemSecurityUpdate } from "@mui/icons-material";
 
 
 class App extends React.Component {
@@ -28,24 +29,35 @@ class App extends React.Component {
       infectedList: [],
       page: 1,
       notice : 0,
+      search : null
     };
   }
 
   componentDidMount() {
-    call("/system/userlist", "GET", null).then((response) =>
-      this.setState({ userList: response.data})
-    );
-    call("/system/contactlist", "GET", null).then((response) =>
-      this.setState({ contactList: response.data})
-    );
     this.updateCount = this.updateCount.bind(this);
-    setInterval(this.updateCount, 1000);
+    /* setInterval(this.updateCount, 1000); */
   }
 
   updateCount() {
     call("/system/notice", "GET", null).then((response) => {
         this.setState({ notice: response })
     }
+    );
+  }
+
+  editEventHandler = (e) => {
+    this.setState({ search: e.target.value });
+  };
+
+  getUserData() {
+    call("/system/userlist", "GET", null).then((response) =>
+    this.setState({ userList: response.data})
+    );
+  }
+
+  getContactData() {
+    call("/system/contactlist", "GET", null).then((response) =>
+    this.setState({ contactList: response.data})
     );
   }
 
@@ -58,7 +70,15 @@ class App extends React.Component {
   getInfectedData() {
     call("/system/noticelist", "GET", null).then((response) =>
       this.setState({ infectedList: response.data})
-  );
+   );
+  }
+
+  searchUser = (e) => {
+    if (e.key === "Enter") {
+      call("/system/searchuser", "POST", this.state.search ).then((response) =>
+      this.setState({ userList: response.data})
+      );
+    }
   }
 
   mainPage = () => {
@@ -68,12 +88,14 @@ class App extends React.Component {
   };
 
   userList = () => {
+    this.getUserData();
     this.setState({
       page: 2,
     });
   };
 
   contactList = () => {
+    this.getContactData();
     this.setState({
       page: 3,
     });
@@ -87,6 +109,7 @@ class App extends React.Component {
   };
   
   render() {
+
 
     var greeting = 
       <Paper style={{ margin: 16 }}>
@@ -103,6 +126,16 @@ class App extends React.Component {
             />
           ))}
         </List>
+        <InputBase
+            inputProps={{
+              "aria-label": "naked",
+            }}
+            type="text"
+            value={this.state.search}
+            fullWidth={true}
+            onChange={this.editEventHandler}
+            onKeyPress={this.searchUser}
+          />
       </Paper>
     );
 

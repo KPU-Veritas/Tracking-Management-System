@@ -40,4 +40,5 @@ public class UserService {
     public List<UserEntity> userList() {
         return userRepository.findAll();
     }
+    public List<UserEntity> searchList(String username) { return userRepository.findSearchList(username);}
 }

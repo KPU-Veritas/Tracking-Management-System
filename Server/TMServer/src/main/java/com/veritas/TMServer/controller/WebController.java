@@ -95,20 +95,36 @@ public class WebController {
         }
     }
 
+    @PostMapping("/searchuser")
+    public ResponseEntity<?> searchUser(@RequestBody String name) {
+        name = name.replaceAll("\"", "");
+        try {
+            List<UserEntity> entities = userService.searchList(name);
+
+            List<UserDTO> dtos = entities.stream().map(UserDTO::new).collect(Collectors.toList());
+
+            ResponseDTO<UserDTO> response = ResponseDTO.<UserDTO>builder().data(dtos).build();
+
+            return ResponseEntity.ok().body(response);
+        }  catch (Exception e) {
+            String error = e.getMessage();
+            ResponseDTO<ContactDTO> response = ResponseDTO.<ContactDTO>builder().error(error).build();
+
+            return ResponseEntity.badRequest().body(response);
+        }
+
+    }
+
     @GetMapping("/userlist")
     public ResponseEntity<?> userList(){
 
         try {
-            // (1) 서비스 메서드의 userList메서드를 사용해 모든 유저 리스트 가져옴.
             List<UserEntity> entities = userService.userList();
 
-            // (2) 자바 스트림을 이용해 리턴된 엔티티 리스트를 UserDTO리스트로 변환한다.
             List<UserDTO> dtos = entities.stream().map(UserDTO::new).collect(Collectors.toList());
 
-            // (3) 변환된 UserDTO리스트를 이용해ResponseDTO를 초기화한다.
             ResponseDTO<UserDTO> response = ResponseDTO.<UserDTO>builder().data(dtos).build();
 
-            // (4) ResponseDTO를 리턴한다.
             return ResponseEntity.ok().body(response);
         }  catch (Exception e) {
             String error = e.getMessage();
@@ -121,16 +137,12 @@ public class WebController {
     @GetMapping("/contactlist")
     public ResponseEntity<?> contactList() {
         try {
-            // (1) 서비스 메서드의 contactList메서드를 사용해 모든 유저 리스트 가져옴.
             List<ContactEntity> entities = contactService.contactList();
 
-            // (2) 자바 스트림을 이용해 리턴된 엔티티 리스트를 ContactDTO리스트로 변환한다.
             List<ContactDTO> dtos = entities.stream().map(ContactDTO::new).collect(Collectors.toList());
 
-            // (3) 변환된 ContactDTO리스트를 이용해ResponseDTO를 초기화한다.
             ResponseDTO<ContactDTO> response = ResponseDTO.<ContactDTO>builder().data(dtos).build();
 
-            // (4) ResponseDTO를 리턴한다.
             if (response != null) return ResponseEntity.ok().body(response);
             else return ResponseEntity.badRequest().body(response);
         }  catch (Exception e) {
