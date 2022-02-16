@@ -9,11 +9,18 @@
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
     <!-- GPS와 네트워크를 이용한 위치 권한 -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <!-- 이전 장치에 대한 레거시 Bluetooth 사용 권한을 요청합니다. -->
+    <uses-permission android:name="android.permission.BLUETOOTH"
+        android:maxSdkVersion="30" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"
+        android:maxSdkVersion="30" />
     <!-- Needed only if your app looks for Bluetooth devices.
          You must add an attribute to this permission, or declare the
          ACCESS_FINE_LOCATION permission, depending on the results when you
          check location usage in your app. -->
     <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
+    <!-- Bluetooth 장치에서 장치를 검색할 수 있도록 설정하는 경우에만 필요합니다. -->
+    <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
     <!-- 앱이 이미 페어링된 Bluetooth 장치와 통신하는 경우에만 필요합니다. -->
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
 
