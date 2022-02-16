@@ -34,14 +34,12 @@ class BeaconScannerApplication: Application() {
         beaconManager.backgroundScanPeriod = 1100
 
         region = Region("radius-uuid", null, null, null)
-        //beaconManager.startMonitoring(region)
-        //beaconManager.startRangingBeacons(region)
 
         val regionViewModel = BeaconManager.getInstanceForApplication(this).getRegionViewModel(region)
         regionViewModel.regionState.observeForever( centralMonitoringObserver)
         regionViewModel.rangedBeacons.observeForever( centralRangingObserver)
     }
-
+    // 포그라운드 서비스 환경설정
     private fun setupForegroundService() {
         val builder = Notification.Builder(this, "BeaconReferenceApp")
         builder.setSmallIcon(com.veritas.TMapp.R.drawable.beacon_background)
@@ -83,9 +81,9 @@ class BeaconScannerApplication: Application() {
 
     private fun sendNotification() {
         val builder = NotificationCompat.Builder(this, "beacon-ref-notification-id")
-            .setContentTitle("Beacon Reference Application")
-            .setContentText("A beacon is nearby.")
-            .setSmallIcon(com.veritas.TMapp.R.drawable.beacon_background)
+            .setContentTitle("Beacon Reference Application")// 알림 제목
+            .setContentText("A beacon is nearby.")// 알림 본문 텍스트
+            .setSmallIcon(com.veritas.TMapp.R.drawable.beacon_background) // 알림 아이콘
         val stackBuilder = TaskStackBuilder.create(this)
         stackBuilder.addNextIntent(Intent(this, MainActivity::class.java))
         val resultPendingIntent = stackBuilder.getPendingIntent(

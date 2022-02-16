@@ -49,37 +49,26 @@ class MainActivity : AppCompatActivity() {
         // observer will be called each time a new list of beacons is ranged (typically ~1 second in the foreground)
         regionViewModel.rangedBeacons.observe(this, rangingObserver)
         val beaconManager = BeaconManager.getInstanceForApplication(this)
+        // 뷰페이저의 페이지뷰를 생성하기 위해 사용되는 어댑터 클래스
         val adapter = PagerAdapter(supportFragmentManager)
         adapter.addFragment(MainFragment(beaconScannerApplication,beaconManager, db!!, dbController!!), "메인")
         adapter.addFragment(MovementFragment(), "동선 확인")
         adapter.addFragment(OptionFragment(), "환경 설정")
         binding.afterLoginViewpager.adapter = adapter
         binding.afterLoginTablayout.setupWithViewPager(binding.afterLoginViewpager)
-
-
-        //binding.beaconCount.text = "No beacons detected"
-        //binding.beaconList.adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, arrayOf("--"))
-        if (checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            showDialogs(
-                "This app needs location access",
-                "Please grant location access so this app can detect beacons.",
-                requestPermissions(
-                    arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION),
-                    PERMISSION_REQUEST_COARSE_LOCATION
-                )
-            )
-        }
     }
+    // 다른 Activiy가 활성화 되었을 때 호출
     override fun onPause() {
         Log.d(TAG, "onPause")
         super.onPause()
     }
+    // Activity가 사용자와 상호작용하기 직전에 호출
     override fun onResume() {
         Log.d(TAG, "onResume")
         super.onResume()
         checkPermissions()
     }
-
+    // 비콘을 모니터링하고 모니터링 결과를 로그로 출력
     private val monitoringObserver = Observer<Int> { state ->
         var dialogTitle = "Beacons detected"
         var dialogMessage = "didEnterRegionEvent has fired"
@@ -88,10 +77,6 @@ class MainActivity : AppCompatActivity() {
             dialogTitle = "No beacons detected"
             dialogMessage = "didExitRegionEvent has fired"
             stateString = "outside"
-            //binding.beaconCount.text = "Outside of the beacon region -- no beacons detected"
-            //binding.beaconList.adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, arrayOf("--"))
-        } else {
-            //binding.beaconCount.text = "Inside the beacon region."
         }
         Log.d(TAG, "monitoring state changed to : $stateString")
 
@@ -108,7 +93,7 @@ class MainActivity : AppCompatActivity() {
                     .map { "${it.id1}\nid2: ${it.id2} id3: ${it.id3}  rssi: ${it.rssi}\nest. distance: ${it.distance} m" }.toTypedArray())*/
         }
     }
-
+    // 권한 요청 결과를 가져옴
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -122,6 +107,7 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun checkPermissions() {
+        // basepermissions are for M and higher
         var permissions = arrayOf( Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_BACKGROUND_LOCATION)
         var permissionRationale ="This app needs both fine location permission and background location permission to detect beacons in the background.  Please grant both now."
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
@@ -140,8 +126,8 @@ class MainActivity : AppCompatActivity() {
         if (!allGranted) {
             if (!shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
                 showDialogs(
-                    "Functionality limited",
-                    "Since location and device permissions have not been granted, this app will not be able to discover beacons.  Please go to Settings -> Applications -> Permissions and grant location and device discovery permissions to this app.",
+                    "This app needs permissions to detect beacons",
+                    permissionRationale,
                     requestPermissions(
                         permissions,
                         PERMISSION_REQUEST_FINE_LOCATION

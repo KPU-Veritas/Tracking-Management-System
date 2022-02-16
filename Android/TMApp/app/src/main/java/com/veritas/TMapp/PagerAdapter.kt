@@ -3,7 +3,7 @@ package com.veritas.TMapp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-
+// 뷰페이저의 페이지뷰를 생성하기 위해 사용되는 어댑터 클래스
 class PagerAdapter(manager: FragmentManager): FragmentPagerAdapter(manager)
 {
     private val fragmentList = ArrayList<Fragment>()
