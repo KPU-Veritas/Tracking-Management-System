@@ -16,7 +16,7 @@ import com.veritas.TMapp.database.AppDatabase
 import com.veritas.TMapp.database.DBController
 import com.veritas.TMapp.databinding.ActivityMainBinding
 import com.veritas.TMapp.fragment.MainFragment
-import com.veritas.TMapp.fragment.MovementFragment
+import com.veritas.TMapp.fragment.ContactInfoFragment
 import com.veritas.TMapp.fragment.OptionFragment
 import com.veritas.TMapp.server.ResponseSigninModel
 
@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity() {
         // 뷰페이저의 페이지뷰를 생성하기 위해 사용되는 어댑터 클래스
         val adapter = PagerAdapter(supportFragmentManager)
         adapter.addFragment(MainFragment(beaconScannerApplication,beaconManager, db!!, dbController!!), "메인")
-        adapter.addFragment(MovementFragment(), "동선 확인")
+        adapter.addFragment(ContactInfoFragment(), "접촉 정보")
         adapter.addFragment(OptionFragment(), "환경 설정")
         binding.afterLoginViewpager.adapter = adapter
         binding.afterLoginTablayout.setupWithViewPager(binding.afterLoginViewpager)
@@ -177,7 +177,6 @@ class MainActivity : AppCompatActivity() {
     }
     companion object {
         val TAG = "MainActivity"
-        val PERMISSION_REQUEST_COARSE_LOCATION = 1
         val PERMISSION_REQUEST_BACKGROUND_LOCATION = 0
         val PERMISSION_REQUEST_FINE_LOCATION = 1
     }
