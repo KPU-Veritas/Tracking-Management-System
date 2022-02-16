@@ -7,13 +7,20 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.lifecycle.Observer
 import com.veritas.TMapp.MainActivity
+import com.veritas.TMapp.database.AppDatabase
+import com.veritas.TMapp.database.DBController
 import org.altbeacon.beacon.*
 
 class BeaconScannerApplication: Application() {
     lateinit var region: Region
+    var db: AppDatabase?= null
+    private var dbController: DBController? = null
 
     override fun onCreate() {
         super.onCreate()
+
+        db = AppDatabase.getInstance(this)
+        dbController = DBController()
 
         val beaconManager = BeaconManager.getInstanceForApplication(this)
         beaconManager.beaconParsers.clear()
@@ -67,6 +74,9 @@ class BeaconScannerApplication: Application() {
     private val centralRangingObserver = Observer<Collection<Beacon>> { beacons ->
         Log.d(TAG, "Ranged: ${beacons.count()} beacons")
         for (beacon: Beacon in beacons) {
+            if (beacon.distance <=3.0){
+                dbController?.recordTime(db!!, beacon.id1.toString())
+            }
             Log.d(TAG, "$beacon about ${beacon.distance} meters away")
         }
     }

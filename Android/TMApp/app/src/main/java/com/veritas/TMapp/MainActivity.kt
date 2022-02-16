@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity() {
         regionViewModel.rangedBeacons.observe(this, rangingObserver)
         val beaconManager = BeaconManager.getInstanceForApplication(this)
         val adapter = PagerAdapter(supportFragmentManager)
-        adapter.addFragment(MainFragment(beaconScannerApplication,beaconManager), "메인")
+        adapter.addFragment(MainFragment(beaconScannerApplication,beaconManager, db!!, dbController!!), "메인")
         adapter.addFragment(MovementFragment(), "동선 확인")
         adapter.addFragment(OptionFragment(), "환경 설정")
         binding.afterLoginViewpager.adapter = adapter
@@ -107,41 +107,6 @@ class MainActivity : AppCompatActivity() {
                     .sortedBy { it.distance }
                     .map { "${it.id1}\nid2: ${it.id2} id3: ${it.id3}  rssi: ${it.rssi}\nest. distance: ${it.distance} m" }.toTypedArray())*/
         }
-    }
-
-    fun rangingButtonTapped() {
-        val beaconManager = BeaconManager.getInstanceForApplication(this)
-        if (beaconManager.rangedRegions.isEmpty()) {
-            beaconManager.startRangingBeacons(beaconScannerApplication.region)
-            //binding.rangingButton.text = "Stop Ranging"
-            //binding.beaconCount.text = "Ranging enabled -- awaiting first callback"
-        }
-        else {
-            beaconManager.stopRangingBeacons(beaconScannerApplication.region)
-            //binding.rangingButton.text = "Start Ranging"
-            //binding.beaconCount.text = "Ranging disabled -- no beacons detected"
-            //binding.beaconList.adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, arrayOf("--"))
-        }
-    }
-
-    fun monitoringButtonTapped() {
-        val dialogTitle:String
-        val dialogMessage:String
-        val beaconManager = BeaconManager.getInstanceForApplication(this)
-        if (beaconManager.monitoredRegions.isEmpty()) {
-            beaconManager.startMonitoring(beaconScannerApplication.region)
-            dialogTitle = "Beacon monitoring started."
-            dialogMessage = "You will see a dialog if a beacon is detected, and another if beacons then stop being detected."
-            //binding.monitoringButton.text = "Stop Monitoring"
-
-        }
-        else {
-            beaconManager.stopMonitoring(beaconScannerApplication.region)
-            dialogTitle = "Beacon monitoring stopped."
-            dialogMessage = "You will no longer see dialogs when becaons start/stop being detected."
-            //binding.monitoringButton.text = "Start Monitoring"
-        }
-        showDialogs(dialogTitle,dialogMessage,null)
     }
 
     override fun onRequestPermissionsResult(

@@ -21,7 +21,7 @@ abstract class AppDatabase : RoomDatabase() {
                     AppDatabase::class.java,
                     "database-contacts"
                 )
-                    .allowMainThreadQueries()
+                    .fallbackToDestructiveMigration()
                     .build()
             }
             return instance
