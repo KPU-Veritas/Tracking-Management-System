@@ -27,17 +27,17 @@ class DBController {
             val currentTime = timeFormat.format(date)
 
             try {
-                var contact = db.contactsDao().getContactByUUID(contact_target_uuid)
+                var contact = db.contactsDao().getContactByUUID(formatingUUID(contact_target_uuid))
 
                 if(contact == null){
                     contact = Contacts(formatingUUID(contact_target_uuid), processedUuid, currentDate, currentTime, null)
                     db.contactsDao().insertAll(contact)
-                    Log.d(TAG, "$contact_target_uuid 처음 접촉 시간 등록")
+                    Log.d(TAG, "$contact 처음 접촉 시간 등록")
                 }
                 else{
                     contact.lastTime = currentTime
                     db.contactsDao().update(contact)
-                    Log.d(TAG, "$contact_target_uuid 마지막 접촉 시간 업데이트")
+                    Log.d(TAG, "$contact 마지막 접촉 시간 업데이트")
                 }
             }catch (e:SQLiteConstraintException){
                 Log.d("SQLiteConstraintException", e.message.toString())
@@ -67,6 +67,7 @@ class DBController {
                         }
                     })
                 }
+                Thread.sleep(1000)
                 db.contactsDao().deleteAll()
             }catch (e:SQLiteConstraintException){
                 Log.d("SQLiteConstraintException", e.message.toString())

@@ -1,7 +1,7 @@
 package com.veritas.TMapp.server
 
 object ServerSetting {
-    const val ipv4 = "192.168.1.69"
+    const val ipv4 = "192.168.43.30"
     const val portNumber = "8080"
     lateinit var processedUuid : String
     lateinit var token: String

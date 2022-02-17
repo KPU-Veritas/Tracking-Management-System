@@ -14,7 +14,7 @@ import retrofit2.http.Headers
 import retrofit2.http.POST
 
 interface ContactAPIS {
-    @POST("/contact/")  // 접촉정보 전송
+    @POST("/contact/recordcontact/")  // 접촉정보 전송
     @Headers("accept: application/json", "content-type: application/json")
     fun postContact(
         @Body jsonParams: Contacts

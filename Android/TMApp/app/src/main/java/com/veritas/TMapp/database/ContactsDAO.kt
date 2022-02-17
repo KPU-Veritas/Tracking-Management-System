@@ -8,7 +8,7 @@ interface ContactsDAO {
     @Query("SELECT * FROM TB_CONTACTS")
     fun getAll() : List<Contacts>
 
-    @Query("SELECT * FROM TB_CONTACTS WHERE UUID = :uuid")
+    @Query("SELECT * FROM TB_CONTACTS WHERE contactTargetUuid = :uuid")
     fun getContactByUUID(uuid: String): Contacts
 
     @Update
