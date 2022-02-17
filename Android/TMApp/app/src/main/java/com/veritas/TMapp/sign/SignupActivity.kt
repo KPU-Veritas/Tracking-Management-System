@@ -7,8 +7,8 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AlertDialog
 import com.veritas.TMapp.databinding.ActivitySignupBinding
-import com.veritas.TMapp.server.SignAPIS
 import com.veritas.TMapp.server.ResponseSignupModel
+import com.veritas.TMapp.server.ServerSetting.signApi
 import com.veritas.TMapp.server.SignupModel
 import retrofit2.Call
 import retrofit2.Callback
@@ -18,7 +18,6 @@ class SignupActivity : AppCompatActivity() {
     private var signupBinding: ActivitySignupBinding? = null
     private val binding get() = signupBinding!!
     var user: ResponseSignupModel? = null
-    private var api = SignAPIS.create()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,7 +48,7 @@ class SignupActivity : AppCompatActivity() {
 
             val data = SignupModel(username,email,password,phoneNumber, simpleAddress, detailAddress)
 
-            api.requestSignup(data).enqueue(object: Callback<ResponseSignupModel>{
+            signApi.requestSignup(data).enqueue(object: Callback<ResponseSignupModel>{
                 override fun onResponse(
                     call: Call<ResponseSignupModel>,
                     response: Response<ResponseSignupModel>

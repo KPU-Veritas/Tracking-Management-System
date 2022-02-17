@@ -20,7 +20,7 @@ class BeaconSensorManager {
     var isThread = false
 
     fun init(uuid:String, context: Context){
-        Log.d("INIT", "UUID: $uuid")
+        Log.d("$TAG:INIT", "UUID: $uuid")
         beacon = Beacon.Builder()
             .setId1(uuid)
             .setId2("1")
@@ -78,7 +78,7 @@ class BeaconSensorManager {
 
 
     companion object{
-        const val TAG = "BeaconScanner"
+        const val TAG = "BeaconSensor"
     }
 
 }

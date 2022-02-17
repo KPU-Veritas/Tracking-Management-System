@@ -3,10 +3,9 @@ package com.veritas.TMapp.database
 import android.annotation.SuppressLint
 import android.database.sqlite.SQLiteConstraintException
 import android.util.Log
-import com.veritas.TMapp.server.ContactAPIS
 import com.veritas.TMapp.server.Contacts
+import com.veritas.TMapp.server.ServerSetting.contactAPIS
 import com.veritas.TMapp.server.ServerSetting.processedUuid
-import okhttp3.internal.format
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -50,17 +49,16 @@ class DBController {
 
     fun sendAllContacts(db: AppDatabase){
         val runnable = Runnable {
-            val contactAPIS = ContactAPIS.create()
             try{
                 val savedContacts = db.contactsDao().getAll()
                 for(contact in savedContacts){
                     contactAPIS.postContact(contact).enqueue(object: Callback<String>{
                         override fun onResponse(call: Call<String>, response: Response<String>) {
                             if(response.code() == 200){
-                                Log.d(TAG, "${contact.contact_target_uuid} 전송 성공")
+                                Log.d(TAG, "${contact.contactTargetUuid} 전송 성공")
                             }
                             else{
-                                Log.d(TAG, "${contact.contact_target_uuid} 전송 실패")
+                                Log.d(TAG, "${contact.contactTargetUuid} 전송 실패")
                             }
                         }
 

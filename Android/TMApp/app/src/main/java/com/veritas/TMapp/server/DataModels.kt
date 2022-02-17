@@ -34,7 +34,7 @@ data class ResponseSignupModel(
 @Entity(tableName = "tb_contacts")
 data class Contacts(
     @PrimaryKey
-    var contact_target_uuid: String,
+    var contactTargetUuid: String,
     var uuid:String,
     var date: String,
     var firstTime: String,
