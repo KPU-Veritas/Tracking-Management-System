@@ -64,5 +64,5 @@ public class ContactService {
         return repository.findByUuid(uuid);
     }
     public List<ContactEntity> contactList() { return repository.findAll(); }
-    public List<ContactEntity> searchList(String uuid) { return repository.findSearchList(uuid);}
+    public List<ContactEntity> searchList(String uuid, String date) { return repository.findSearchList(uuid, date);}
 }

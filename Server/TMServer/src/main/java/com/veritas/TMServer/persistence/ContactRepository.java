@@ -13,6 +13,6 @@ import java.util.List;
 public interface ContactRepository extends JpaRepository<ContactEntity, String> {
     List<ContactEntity> findByUuid(String uuid);
 
-    @Query(value = "SELECT * FROM CONTACT WHERE UUID = :uuid", nativeQuery = true)
-    List<ContactEntity> findSearchList(@Param("uuid") String uuid);
+    @Query(value = "SELECT * FROM CONTACT WHERE UUID = :uuid AND DATE = :date", nativeQuery = true)
+    List<ContactEntity> findSearchList(@Param("uuid") String uuid, @Param("date") String date);
 }

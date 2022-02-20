@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./App.css";
 import {
   Paper,
@@ -17,8 +17,9 @@ import UserList from "./UserList";
 import Greeting from "./Greeting";
 import ContactList from "./ContactList";
 import InfectedList from "./InfectedList";
-import { SystemSecurityUpdate } from "@mui/icons-material";
-
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import moment from 'moment';
 
 class App extends React.Component {
   constructor(props) {
@@ -29,13 +30,14 @@ class App extends React.Component {
       infectedList: [],
       page: 1,
       notice : 0,
-      search : null
+      search : null,
+      searchDate : new Date(),
     };
   }
 
   componentDidMount() {
     this.updateCount = this.updateCount.bind(this);
-    /* setInterval(this.updateCount, 1000); */
+    setInterval(this.updateCount, 1000);
   }
 
   updateCount() {
@@ -76,15 +78,18 @@ class App extends React.Component {
   searchUser = (e) => {
     if (e.key === "Enter") {
       call("/system/searchuser", "POST", this.state.search ).then((response) =>
-      this.setState({ userList: response.data})
+      this.setState({ userList: response.data, search : null})
       );
     }
   }
 
   searchContact = (e) => {
     if (e.key === "Enter") {
-      call("/system/searchcontact", "POST", this.state.search ).then((response) =>
-      this.setState({ contactList: response.data})
+      var moment = require('moment');
+      const date = moment(this.state.searchDate).format('YYYY-MM-DD');
+      const data = date + this.state.search;
+      call("/system/searchcontact", "POST", { date : date, uuid : this.state.search } ).then((response) =>
+      this.setState({ contactList: response.data, search : null, searchData : new Date()})
       );
     }
   }
@@ -117,7 +122,6 @@ class App extends React.Component {
   };
   
   render() {
-
 
     var greeting = 
       <Paper style={{ margin: 16 }}>
@@ -167,6 +171,13 @@ class App extends React.Component {
             onChange={this.editEventHandler}
             onKeyPress={this.searchContact}
           />
+        <DatePicker
+        selected={this.state.searchDate}
+        onChange={(date) =>
+          this.setState({
+            searchDate: date,
+          })
+        } />
       </Paper>
     );
 
