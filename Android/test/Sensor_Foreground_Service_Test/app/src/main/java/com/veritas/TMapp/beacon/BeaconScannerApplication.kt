@@ -49,8 +49,7 @@ class BeaconScannerApplication: Application() {
         scrOnReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context, intent: Intent) {
                 Log.d(TAG, "SCREEN ON")
-                Toast.makeText(applicationContext,"화면 ON",Toast.LENGTH_SHORT).show()
-            }
+                Toast.makeText(applicationContext,"화면 ON",Toast.LENGTH_SHORT).show() }
         }
         scrOnFilter = IntentFilter(Intent.ACTION_SCREEN_ON)
         scrOffReceiver = object : BroadcastReceiver() {

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.veritas.TMapp">
+
+    <!-- 인터넷 접속 권한 -->
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- 포그라운드 서비스 권한 -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" /> <!-- 백그라운드에서의 위치정보 수집 권한 -->
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" /> <!-- GPS와 네트워크를 이용한 위치 권한 -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- 이전 장치에 대한 레거시 Bluetooth 사용 권한을 요청합니다. -->
+    <uses-permission
+        android:name="android.permission.BLUETOOTH"
+        android:maxSdkVersion="30" />
+    <uses-permission
+        android:name="android.permission.BLUETOOTH_ADMIN"
+        android:maxSdkVersion="30" />
+    <!--
+ Needed only if your app looks for Bluetooth devices.
+         You must add an attribute to this permission, or declare the
+         ACCESS_FINE_LOCATION permission, depending on the results when you
+         check location usage in your app.
+    -->
+    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" /> <!-- Bluetooth 장치에서 장치를 검색할 수 있도록 설정하는 경우에만 필요합니다. -->
+    <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" /> <!-- 앱이 이미 페어링된 Bluetooth 장치와 통신하는 경우에만 필요합니다. -->
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+
+    <application
+        android:name=".beacon.BeaconScannerApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.TMApp"
+        android:usesCleartextTraffic="true">
+        <service
+            android:name=".Foreground"
+            android:enabled="true"
+            android:exported="true"></service>
+
+        <activity
+            android:name=".sign.FindAddressActivity"
+            android:exported="false" />
+        <activity
+            android:name=".sign.SignupActivity"
+            android:exported="false" />
+        <activity
+            android:name=".sign.SigninActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:exported="false"></activity>
+        <activity
+            android:name=".SendInfectionInfoActivity"
+            android:exported="false"></activity>
+    </application>
+
+</manifest>
