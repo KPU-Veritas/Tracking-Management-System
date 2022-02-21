@@ -40,5 +40,7 @@ public class WebService {
     }
 
     public long countManager() { return webRepository.count(); }
+    public int getLevel() {return webRepository.getLevel(); }
+    public void setLevel(int warningLevel) {webRepository.setLevel(warningLevel);}
 
 }

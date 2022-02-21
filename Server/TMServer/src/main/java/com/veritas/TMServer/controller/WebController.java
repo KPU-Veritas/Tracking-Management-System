@@ -141,6 +141,22 @@ public class WebController {
 
     }
 
+    @PostMapping("/setlevel")
+    public ResponseEntity<?> setLevel(@RequestBody WebDTO webDTO) {
+
+        try {
+            int warningLevel = webDTO.getWarningLevel();
+            log.info(String.valueOf(warningLevel));
+            if( warningLevel != 0 ) webService.setLevel(warningLevel);
+
+            return ResponseEntity.ok().body(0);
+        }  catch (Exception e) {
+            String error = e.getMessage();
+            ResponseDTO<WebDTO> response = ResponseDTO.<WebDTO>builder().error(error).build();
+            return ResponseEntity.badRequest().body(response);
+        }
+    }
+
     @GetMapping("/userlist")
     public ResponseEntity<?> userList(){
 
@@ -204,6 +220,15 @@ public class WebController {
             return ResponseEntity.badRequest().body(response);
         }
 
+    }
+
+    @GetMapping("/getlevel")
+    public int getLevel() {
+        try {
+            return webService.getLevel();
+        } catch(Exception e) {
+            return -1;
+        }
     }
 
     @PutMapping("/check")

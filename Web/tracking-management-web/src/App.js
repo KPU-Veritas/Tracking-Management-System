@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, Component } from "react";
 import "./App.css";
 import {
   Paper,
@@ -12,6 +12,7 @@ import {
 } from "@material-ui/core";
 import Badge from '@mui/material/Badge';
 import MailIcon from '@mui/icons-material/Mail';
+import { FcSettings } from 'react-icons/fc';
 import { call, signout, } from "./service/ApiService"; // signout 추가
 import UserList from "./UserList";
 import Greeting from "./Greeting";
@@ -20,6 +21,7 @@ import InfectedList from "./InfectedList";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from 'moment';
+import Managerment from './Management';
 
 class App extends React.Component {
   constructor(props) {
@@ -121,6 +123,12 @@ class App extends React.Component {
       page: 4,
     });
   };
+
+  management = () => {
+    this.setState({
+      page: 5,
+    });
+  };
   
   render() {
 
@@ -207,6 +215,12 @@ class App extends React.Component {
       </Paper>
     );
 
+    var management = (
+      <Paper style={{ margin: 16}}>
+        <Managerment></Managerment>
+      </Paper>
+    );
+
     var navigationBar = (
       <AppBar position="static">
         <Toolbar>
@@ -228,6 +242,10 @@ class App extends React.Component {
               <Badge badgeContent={this.state.notice} color="primary">
                 <MailIcon color="action" />
               </Badge>
+              </Button>
+              <Button onClick={this.management}>
+              <FcSettings>
+              </FcSettings>
               </Button>
             </Grid>
           </Grid>
@@ -274,6 +292,17 @@ class App extends React.Component {
         </Container>
       </div>
     );
+
+    var managementPage = (
+      <div>
+        <h1>관리창</h1>
+        {navigationBar}
+        <Container maxwitdth="md">
+          <div className="Management">{management}</div>
+        </Container>
+      </div>
+    );
+
     
     var content;
 
@@ -282,6 +311,7 @@ class App extends React.Component {
       case 2: content = userListPage; break;
       case 3: content = contactListPage; break;
       case 4: content = infectedListPage; break;
+      case 5: content = managementPage; break;
     }
 
     
