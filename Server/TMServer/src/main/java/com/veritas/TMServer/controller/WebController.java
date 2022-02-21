@@ -116,14 +116,16 @@ public class WebController {
     }
 
     @PostMapping("/searchcontact")
-    public ResponseEntity<?> searchContact(@RequestBody ContactDTO contactDTO) {
-        String uuid = contactDTO.getUuid();
-        String date = contactDTO.getDate();
+    public ResponseEntity<?> searchContact(@RequestBody SearchDTO searchDTO) {
+        String uuid = searchDTO.getUuid();
+        String date = searchDTO.getDate();
+        String date2 = searchDTO.getDate2();
         log.info(uuid);
         log.info(date);
+        log.info(date2);
 
         try {
-            List<ContactEntity> entities = contactService.searchList(uuid,date);
+            List<ContactEntity> entities = contactService.searchList(uuid,date,date2);
 
             List<ContactDTO> dtos = entities.stream().map(ContactDTO::new).collect(Collectors.toList());
 

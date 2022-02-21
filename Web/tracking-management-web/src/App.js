@@ -32,6 +32,7 @@ class App extends React.Component {
       notice : 0,
       search : null,
       searchDate : new Date(),
+      endDate : new Date()
     };
   }
 
@@ -87,9 +88,9 @@ class App extends React.Component {
     if (e.key === "Enter") {
       var moment = require('moment');
       const date = moment(this.state.searchDate).format('YYYY-MM-DD');
-      const data = date + this.state.search;
-      call("/system/searchcontact", "POST", { date : date, uuid : this.state.search } ).then((response) =>
-      this.setState({ contactList: response.data, search : null, searchData : new Date()})
+      const date2 = moment(this.state.endDate).format('YYYY-MM-DD');
+      call("/system/searchcontact", "POST", { date : date, date2 : date2, uuid : this.state.search } ).then((response) =>
+      this.setState({ contactList: response.data, search : null, searchDate : new Date(), endDate : new Date()})
       );
     }
   }
@@ -161,6 +162,25 @@ class App extends React.Component {
             />
           ))}
         </List>
+        <p>시작 날짜</p>
+        <DatePicker
+        selectRange={true}
+        selected={this.state.searchDate}
+        onChange={(date) =>
+          this.setState({
+            searchDate: date,
+          })
+        } />
+        <p>끝 날짜</p>
+        <DatePicker
+        selectRange={true}
+        selected={this.state.endDate}
+        onChange={(date) =>
+          this.setState({
+            endDate: date,
+          })
+        } />
+        <p>uuid 입력 : </p>
         <InputBase
             inputProps={{
               "aria-label": "naked",
@@ -171,13 +191,6 @@ class App extends React.Component {
             onChange={this.editEventHandler}
             onKeyPress={this.searchContact}
           />
-        <DatePicker
-        selected={this.state.searchDate}
-        onChange={(date) =>
-          this.setState({
-            searchDate: date,
-          })
-        } />
       </Paper>
     );
 
