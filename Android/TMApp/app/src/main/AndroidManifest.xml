@@ -23,7 +23,8 @@
     <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
     <!-- 앱이 이미 페어링된 Bluetooth 장치와 통신하는 경우에만 필요합니다. -->
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
-
+    <!-- 네트워크가 연결 되었는지 확인 할 수 있도록 함 -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:name=".beacon.BeaconScannerApplication"
@@ -57,6 +58,18 @@
             android:name=".SendInfectionInfoActivity"
             android:exported="false">
         </activity>
+        <service
+            android:name=".MyFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+
+        <service android:name=".MyFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

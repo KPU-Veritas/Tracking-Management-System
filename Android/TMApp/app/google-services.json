@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "277642882710",
+    "project_id": "tracking-management-syst-7c07e",
+    "storage_bucket": "tracking-management-syst-7c07e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:277642882710:android:0f83df0ae1582c2d2e1cb7",
+        "android_client_info": {
+          "package_name": "com.veritas.TMapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "277642882710-508ieup4551tv7kko8qotn5spp0pin91.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.veritas.TMapp",
+            "certificate_hash": "44b545f5764a8dce109caf182c9e14b10b08e405"
+          }
+        },
+        {
+          "client_id": "277642882710-n4o69o4tknrhhvgue5br949mudas0tpn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAMVaD4RZ5ii8R-NZUoM7nBD51dPcDunhw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "277642882710-n4o69o4tknrhhvgue5br949mudas0tpn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
