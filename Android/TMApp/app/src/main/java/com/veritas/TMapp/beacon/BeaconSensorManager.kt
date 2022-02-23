@@ -52,7 +52,7 @@ class BeaconSensorManager {
         }
     }
 
-    fun scannerChange(flag:Boolean){
+    fun sensorControl(flag:Boolean){
         if (flag){
             isThread = true
             thread = object : Thread() {
@@ -68,11 +68,11 @@ class BeaconSensorManager {
                 }
             }
             (thread as Thread).start()
-            Log.d(TAG, "Beacon Scanner Started")
+            Log.d(TAG, "Beacon Sensor Started")
         }else{
             beaconTransmitter?.stopAdvertising()
             isThread = false
-            Log.d(TAG, "Beacon Scanner Stoped")
+            Log.d(TAG, "Beacon Sensor Stopped")
         }
     }
 

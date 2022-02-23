@@ -33,14 +33,14 @@ class MainFragment(
 
         binding.btnStart.setOnClickListener {
             if (flag) {
-                beaconSensorManager.scannerChange(true)
+                beaconSensorManager.sensorControl(true)
                 beaconManager.startMonitoring(beaconScannerApplication.region)
                 beaconManager.startRangingBeacons(beaconScannerApplication.region)
                 binding.tvThread.text = "비콘 활성화 상태"
                 flag = false
             }
             else{
-                beaconSensorManager.scannerChange(false)
+                beaconSensorManager.sensorControl(false)
                 beaconManager.stopMonitoring(beaconScannerApplication.region)
                 beaconManager.stopRangingBeacons(beaconScannerApplication.region)
                 binding.tvThread.text = "비콘 중지 상태"
