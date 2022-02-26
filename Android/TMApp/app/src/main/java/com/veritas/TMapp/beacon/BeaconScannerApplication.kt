@@ -10,20 +10,12 @@ import com.veritas.TMapp.MainActivity
 import com.veritas.TMapp.database.AppDatabase
 import com.veritas.TMapp.database.DBController
 import org.altbeacon.beacon.*
-import android.content.IntentFilter
-
-import android.content.BroadcastReceiver
-import android.widget.Toast
-
 
 class BeaconScannerApplication: Application() {
     lateinit var region: Region
     var db: AppDatabase?= null
     private var dbController: DBController? = null
-    private var scrOnReceiver: BroadcastReceiver? = null
-    private var scrOffReceiver: BroadcastReceiver? = null
-    private var scrOnFilter: IntentFilter? = null
-    private var scrOffFilter: IntentFilter? = null
+
     override fun onCreate() {
         super.onCreate()
 
@@ -46,28 +38,6 @@ class BeaconScannerApplication: Application() {
         val regionViewModel = BeaconManager.getInstanceForApplication(this).getRegionViewModel(region)
         regionViewModel.regionState.observeForever( centralMonitoringObserver)
         regionViewModel.rangedBeacons.observeForever( centralRangingObserver)
-        scrOnReceiver = object : BroadcastReceiver() {
-            override fun onReceive(context: Context, intent: Intent) {
-                Log.d(TAG, "SCREEN ON")
-                Toast.makeText(applicationContext,"화면 ON",Toast.LENGTH_SHORT).show()
-            }
-        }
-        scrOnFilter = IntentFilter(Intent.ACTION_SCREEN_ON)
-        scrOffReceiver = object : BroadcastReceiver() {
-            override fun onReceive(context: Context, intent: Intent) {
-                Log.d(TAG, "SCREEN OFF")
-                Toast.makeText(applicationContext,"화면 OFF",Toast.LENGTH_SHORT).show()
-            }
-        }
-
-        scrOffFilter = IntentFilter(Intent.ACTION_SCREEN_OFF)
-        registerReceiver(scrOnReceiver, scrOnFilter);
-        registerReceiver(scrOffReceiver, scrOffFilter);
-    }
-    override fun onTerminate() {
-        super.onTerminate()
-        unregisterReceiver(scrOnReceiver)
-        unregisterReceiver(scrOffReceiver)
     }
     // 포그라운드 서비스 환경설정
     private fun setupForegroundService() {

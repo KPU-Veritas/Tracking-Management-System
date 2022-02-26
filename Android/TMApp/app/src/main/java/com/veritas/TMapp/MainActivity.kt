@@ -48,6 +48,7 @@ class MainActivity : AppCompatActivity() {
         regionViewModel.regionState.observe(this, monitoringObserver)
         // observer will be called each time a new list of beacons is ranged (typically ~1 second in the foreground)
         regionViewModel.rangedBeacons.observe(this, rangingObserver)
+
         val beaconManager = BeaconManager.getInstanceForApplication(this)
         // 뷰페이저의 페이지뷰를 생성하기 위해 사용되는 어댑터 클래스
         val adapter = PagerAdapter(supportFragmentManager)
