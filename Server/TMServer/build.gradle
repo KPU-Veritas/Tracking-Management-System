@@ -30,6 +30,7 @@ dependencies {
 	compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.20'
 	implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation group: 'com.google.firebase', name: 'firebase-admin', version: '6.5.0'
 }
 
 test {
