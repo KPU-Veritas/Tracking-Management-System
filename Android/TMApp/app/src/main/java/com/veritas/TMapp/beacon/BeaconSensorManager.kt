@@ -25,7 +25,7 @@ class BeaconSensorManager {
             .setId1(uuid)
             .setId2("1")
             .setId3("2")
-            .setManufacturer(0x0118)
+            .setManufacturer(76)
             .setTxPower(-59)
             .setDataFields(listOf(0L))
             .build()
@@ -34,6 +34,10 @@ class BeaconSensorManager {
             "m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24,d:25-25"
         )
         beaconTransmitter = BeaconTransmitter(context, beaconParser)
+        //beaconTransmitter!!.advertiseTxPowerLevel = 3
+        //beaconTransmitter!!.advertiseMode = 2
+        //Log.d(TAG, "onStartFailure: ${beaconTransmitter!!.advertiseTxPowerLevel}")
+        //Log.d(TAG, "onStartFailure: ${beaconTransmitter!!.advertiseMode}")
 
         handler = object : Handler(Looper.getMainLooper()) {
             override fun handleMessage(msg: Message) {
