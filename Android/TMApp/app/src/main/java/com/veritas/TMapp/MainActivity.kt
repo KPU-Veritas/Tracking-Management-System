@@ -116,8 +116,15 @@ class MainActivity : AppCompatActivity() {
             permissionRationale ="This app needs fine location permission and nearby devices permission to detect beacons.  Please grant this now."
         }
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.R) {
-            // Uncomment line below if targeting SDK 31
-            permissions = arrayOf( Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.BLUETOOTH_SCAN, Manifest.permission.BLUETOOTH_ADVERTISE, Manifest.permission.BLUETOOTH_CONNECT)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                // Uncomment line below if targeting SDK 31
+                permissions = arrayOf(
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.BLUETOOTH_SCAN,
+                    Manifest.permission.BLUETOOTH_ADVERTISE,
+                    Manifest.permission.BLUETOOTH_CONNECT
+                )
+            }
             permissionRationale ="This app needs both fine location permission and nearby devices permission to detect beacons.  Please grant both now."
         }
         var allGranted = true
