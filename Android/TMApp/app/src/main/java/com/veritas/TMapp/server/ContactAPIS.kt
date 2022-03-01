@@ -2,8 +2,7 @@ package com.veritas.TMapp.server
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.veritas.TMapp.server.ServerSetting.ipv4
-import com.veritas.TMapp.server.ServerSetting.portNumber
+import com.veritas.TMapp.server.ServerSetting.BASE_URL
 import com.veritas.TMapp.server.ServerSetting.token
 import okhttp3.OkHttpClient
 import retrofit2.Call
@@ -21,8 +20,6 @@ interface ContactAPIS {
     ): Call<String>
 
     companion object{
-        private const val BASE_URL = "http://$ipv4:$portNumber"
-
         fun create(): ContactAPIS{
             val gson: Gson = GsonBuilder().setLenient().create()
 

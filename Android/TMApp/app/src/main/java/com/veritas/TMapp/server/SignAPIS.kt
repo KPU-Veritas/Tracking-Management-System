@@ -2,8 +2,7 @@ package com.veritas.TMapp.server
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.veritas.TMapp.server.ServerSetting.ipv4
-import com.veritas.TMapp.server.ServerSetting.portNumber
+import com.veritas.TMapp.server.ServerSetting.BASE_URL
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -26,8 +25,6 @@ interface SignAPIS {
 
 
     companion object{
-        private const val BASE_URL = "http://$ipv4:$portNumber"
-
         fun create(): SignAPIS{
             val gson: Gson = GsonBuilder().setLenient().create()
 
