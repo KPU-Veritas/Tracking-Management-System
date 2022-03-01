@@ -8,6 +8,8 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.messaging.FirebaseMessaging
 import org.altbeacon.beacon.Beacon
 import org.altbeacon.beacon.BeaconManager
 import org.altbeacon.beacon.MonitorNotifier
@@ -42,6 +44,19 @@ class MainActivity : AppCompatActivity() {
         dbController = DBController()
         beaconScannerApplication = application as BeaconScannerApplication
 
+        // fcm 토큰 값 받아오기 나중에 서버로 전송하는 방식으로 교체할 예정
+        try{
+            FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+                if(!task.isSuccessful){
+                    Log.w("FCM", "Fetching FCM registration token failed", task.exception)
+                    return@OnCompleteListener
+                }
+                val tokenFCM = task.result
+                Log.d("IDService", "FCM token : $tokenFCM")
+            })
+        }catch (e:NullPointerException ) {
+            e.printStackTrace()
+        }
         // Set up a Live Data observer for beacon data
         val regionViewModel = BeaconManager.getInstanceForApplication(this).getRegionViewModel(beaconScannerApplication.region)
         // observer will be called each time the monitored regionState changes (inside vs. outside region)
