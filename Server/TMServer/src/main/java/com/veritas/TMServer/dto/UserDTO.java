@@ -19,6 +19,7 @@ public class UserDTO {
     private String phoneNumber;
     private String simpleAddress;
     private String detailAddress;
+    private float risk;
 
     public UserDTO(final UserEntity entity) {
         this.uuid = entity.getUuid();
@@ -26,6 +27,7 @@ public class UserDTO {
         this.email = entity.getEmail();
         this.phoneNumber = entity.getPhoneNumber();
         this.detailAddress = entity.getDetailAddress();
+        this.risk = entity.getRisk();
     }
 
     public static UserEntity userEntity(final UserDTO dto) {
@@ -35,6 +37,7 @@ public class UserDTO {
                 .email(dto.getEmail())
                 .phoneNumber(dto.getPhoneNumber())
                 .detailAddress(dto.getDetailAddress())
+                .risk(dto.getRisk())
                 .build();
     }
 }

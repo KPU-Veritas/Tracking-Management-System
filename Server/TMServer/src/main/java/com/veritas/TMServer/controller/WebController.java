@@ -17,6 +17,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -243,6 +244,61 @@ public class WebController {
             ResponseDTO<ContactDTO> response = ResponseDTO.<ContactDTO>builder().error(error).build();
             return ResponseEntity.badRequest().body(response);
         }
+    }
+
+    @GetMapping("/test")
+    public void test() {
+
+        List<InfectedEntity> lst = infectedService.retrieve("001");
+        this.firstCalculation(lst.get(0));
+
+    }
+
+    public void firstCalculation(InfectedEntity infectedEntity) {
+        ArrayList<ContactEntity> contactList = new ArrayList<ContactEntity>(contactService.findFirstContactList(infectedEntity.getUuid(), infectedEntity.getEstimatedDate()));
+        ArrayList<ContactEntity> nextList = new ArrayList<ContactEntity>();
+        ArrayList<String> duplicate = new ArrayList<String>();
+
+        for (int i = 0; i < contactList.size(); ++i) {
+            ContactEntity entity = contactList.get(i);
+            if(!duplicate.contains(entity.getContactTargetUuid())) {
+                duplicate.add(entity.getContactTargetUuid());
+                nextList.add(entity);
+            }
+            this.riskCalculation(entity, 1);
+            log.info("do risk uuid : " + entity.getContactTargetUuid() + "  level :" + 1);
+        }
+
+        for (int j = 0; j < nextList.size(); ++j) this.continuousCalculation(nextList.get(j), 2);
+    }
+
+    public void continuousCalculation(ContactEntity contactEntity, int level) {
+        ArrayList<ContactEntity> contactList = new ArrayList<ContactEntity>(contactService.findContinuousContactList(contactEntity.getContactTargetUuid(), contactEntity.getDate(), contactEntity.getFirstTime()));
+        ArrayList<ContactEntity> nextList = new ArrayList<ContactEntity>();
+        ArrayList<String> duplicate = new ArrayList<String>();
+
+        for (int i = 0; i < contactList.size(); ++i) {
+            ContactEntity entity = contactList.get(i);
+            if(!duplicate.contains(entity.getContactTargetUuid())) {
+                duplicate.add(entity.getContactTargetUuid());
+                nextList.add(entity);
+            }
+            this.riskCalculation(entity, level);
+            log.info("do risk uuid : " + entity.getContactTargetUuid() + "  level :" + level);
+        }
+
+        for (int j = 0; j < nextList.size(); ++j) {
+            if (level == 2) level = 3;
+            else if (level == 3) break;
+
+            this.continuousCalculation(nextList.get(j), level);
+        }
+    }
+
+
+    public void riskCalculation(ContactEntity entity, float level) {
+        String uuid = entity.getContactTargetUuid();
+        userService.updateRisk(uuid, level);
     }
 
 }

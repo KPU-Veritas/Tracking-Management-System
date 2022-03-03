@@ -41,4 +41,5 @@ public class UserService {
         return userRepository.findAll();
     }
     public List<UserEntity> searchList(String username) { return userRepository.findSearchList(username);}
+    public void updateRisk(String uuid, float risk) { userRepository.updateRisk(uuid, risk);}
 }

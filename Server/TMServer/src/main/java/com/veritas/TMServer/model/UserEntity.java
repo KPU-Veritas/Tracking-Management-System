@@ -37,4 +37,8 @@ public class UserEntity {
 
     @Column(nullable = false)
     private String detailAddress;
+
+    @Builder.Default
+    @Column(name = "risk")
+    private float risk = 0;
 }

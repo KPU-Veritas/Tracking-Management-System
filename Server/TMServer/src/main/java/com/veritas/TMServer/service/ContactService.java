@@ -65,4 +65,6 @@ public class ContactService {
     }
     public List<ContactEntity> contactList() { return repository.findAll(); }
     public List<ContactEntity> searchList(String uuid, String date, String date2) { return repository.findSearchList(uuid, date, date2);}
+    public List<ContactEntity> findFirstContactList(String uuid, String date) { return repository.findFirstContactList(uuid, date); }
+    public List<ContactEntity> findContinuousContactList(String uuid, String date, String time) { return repository.findContinuousContactList(uuid, date, time); }
 }
