@@ -265,17 +265,19 @@ public class WebController {
                 duplicate.add(entity.getContactTargetUuid());
                 nextList.add(entity);
             }
-            this.riskCalculation(entity, 1);
-            log.info("do risk uuid : " + entity.getContactTargetUuid() + "  level :" + 1);
+            this.riskCalculation(entity, 1, 100);
+            log.info("do risk uuid : " + entity.getContactTargetUuid() + "  contactDegree :" + 1);
         }
 
         for (int j = 0; j < nextList.size(); ++j) this.continuousCalculation(nextList.get(j), 2);
     }
 
-    public void continuousCalculation(ContactEntity contactEntity, int level) {
+    public void continuousCalculation(ContactEntity contactEntity, int contactDegree) {
         ArrayList<ContactEntity> contactList = new ArrayList<ContactEntity>(contactService.findContinuousContactList(contactEntity.getContactTargetUuid(), contactEntity.getDate(), contactEntity.getFirstTime()));
         ArrayList<ContactEntity> nextList = new ArrayList<ContactEntity>();
         ArrayList<String> duplicate = new ArrayList<String>();
+
+        float superRisk = userService.findRiskByUuid(contactEntity.getContactTargetUuid());
 
         for (int i = 0; i < contactList.size(); ++i) {
             ContactEntity entity = contactList.get(i);
@@ -283,22 +285,31 @@ public class WebController {
                 duplicate.add(entity.getContactTargetUuid());
                 nextList.add(entity);
             }
-            this.riskCalculation(entity, level);
-            log.info("do risk uuid : " + entity.getContactTargetUuid() + "  level :" + level);
+            this.riskCalculation(entity, contactDegree, superRisk);
+            log.info("do risk uuid : " + entity.getContactTargetUuid() + "  contactDegree :" + contactDegree);
         }
 
         for (int j = 0; j < nextList.size(); ++j) {
-            if (level == 2) level = 3;
-            else if (level == 3) break;
+            if (contactDegree == 2) contactDegree = 3;
+            else if (contactDegree == 3) break;
 
-            this.continuousCalculation(nextList.get(j), level);
+            this.continuousCalculation(nextList.get(j), contactDegree);
         }
     }
 
 
-    public void riskCalculation(ContactEntity entity, float level) {
+    public void riskCalculation(ContactEntity entity, int thisContactDegree, float superRisk) {
         String uuid = entity.getContactTargetUuid();
-        userService.updateRisk(uuid, level);
+        int contactDegree  = userService.findByUuid(uuid).getContactDegree();
+        float risk = userService.findRiskByUuid(uuid);
+        float calculatedRisk = superRisk * 1/2;
+
+        if(contactDegree == 0 ||  contactDegree > thisContactDegree) {
+            userService.updateContactDegree(uuid, thisContactDegree);
+        }
+
+        if(risk < calculatedRisk) userService.updateRisk(uuid, calculatedRisk);
+
     }
 
 }

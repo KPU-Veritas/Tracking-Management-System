@@ -41,4 +41,8 @@ public class UserEntity {
     @Builder.Default
     @Column(name = "risk")
     private float risk = 0;
+
+    @Builder.Default
+    @Column(name = "contactDegree")
+    private int contactDegree = 0;
 }

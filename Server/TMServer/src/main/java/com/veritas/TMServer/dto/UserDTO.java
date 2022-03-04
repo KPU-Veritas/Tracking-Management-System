@@ -20,6 +20,7 @@ public class UserDTO {
     private String simpleAddress;
     private String detailAddress;
     private float risk;
+    private int contactDegree;
 
     public UserDTO(final UserEntity entity) {
         this.uuid = entity.getUuid();
@@ -28,6 +29,7 @@ public class UserDTO {
         this.phoneNumber = entity.getPhoneNumber();
         this.detailAddress = entity.getDetailAddress();
         this.risk = entity.getRisk();
+        this.contactDegree = entity.getContactDegree();
     }
 
     public static UserEntity userEntity(final UserDTO dto) {
@@ -38,6 +40,7 @@ public class UserDTO {
                 .phoneNumber(dto.getPhoneNumber())
                 .detailAddress(dto.getDetailAddress())
                 .risk(dto.getRisk())
+                .contactDegree(dto.getContactDegree())
                 .build();
     }
 }

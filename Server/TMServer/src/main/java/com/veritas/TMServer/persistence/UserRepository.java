@@ -14,14 +14,23 @@ import java.util.List;
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, String> {
     UserEntity findByEmail(String email);
+    UserEntity findByUuid(String uuid);
     Boolean existsByEmail(String email);
     UserEntity findByEmailAndPassword(String email, String password);
 
     @Query(value = "SELECT * FROM USER_ENTITY WHERE USERNAME = :username", nativeQuery = true)
     List<UserEntity> findSearchList(@Param("username") String username);
 
+    @Query(value = "SELECT RISK FROM USER_ENTITY WHERE UUID = :uuid", nativeQuery = true)
+    float findRiskByUuid(@Param("uuid") String uuid);
+
     @Transactional
     @Modifying
     @Query(value = "UPDATE USER_ENTITY SET RISK = :risk WHERE UUID = :uuid", nativeQuery = true)
     int updateRisk(@Param("uuid") String uuid, @Param("risk") float risk);
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE USER_ENTITY SET CONTACT_DEGREE = :contactdegree WHERE UUID = :uuid", nativeQuery = true)
+    int updateContactDegree(@Param("uuid") String uuid, @Param("contactdegree") int contactDegree);
 }
