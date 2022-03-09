@@ -40,7 +40,9 @@ public class UserService {
     public UserEntity findByUuid(String uuid) { return userRepository.findByUuid(uuid); }
     public List<UserEntity> userList() { return userRepository.findAll(); }
     public List<UserEntity> searchList(String username) { return userRepository.findSearchList(username); }
+    public void updateFcmToken(String uuid, String fcmToken){ userRepository.updateFcmToken(uuid, fcmToken); }
     public void updateRisk(String uuid, float risk) { userRepository.updateRisk(uuid, risk); }
     public void updateContactDegree(String uuid, int contactDegree) { userRepository.updateContactDegree(uuid, contactDegree); }
     public float findRiskByUuid(String uuid) { return userRepository.findRiskByUuid(uuid); }
+    public List<String> findFcmTokenList() { return userRepository.findFcmTokenList(); }
 }

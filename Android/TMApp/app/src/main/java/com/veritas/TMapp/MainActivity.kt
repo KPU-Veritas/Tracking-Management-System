@@ -20,7 +20,15 @@ import com.veritas.TMapp.databinding.ActivityMainBinding
 import com.veritas.TMapp.fragment.MainFragment
 import com.veritas.TMapp.fragment.ContactInfoFragment
 import com.veritas.TMapp.fragment.OptionFragment
+import com.veritas.TMapp.server.FcmToken
+import com.veritas.TMapp.server.ResponseMsg
 import com.veritas.TMapp.server.ResponseSigninModel
+import com.veritas.TMapp.server.ServerSetting.fcmToken
+import com.veritas.TMapp.server.ServerSetting.processedUuid
+import com.veritas.TMapp.server.ServerSetting.signApi
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
     // 전역 변수로 바인딩 객체 선언
@@ -44,19 +52,8 @@ class MainActivity : AppCompatActivity() {
         dbController = DBController()
         beaconScannerApplication = application as BeaconScannerApplication
 
-        // fcm 토큰 값 받아오기 나중에 서버로 전송하는 방식으로 교체할 예정
-        try{
-            FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
-                if(!task.isSuccessful){
-                    Log.w("FCM", "Fetching FCM registration token failed", task.exception)
-                    return@OnCompleteListener
-                }
-                val tokenFCM = task.result
-                Log.d("IDService", "FCM token : $tokenFCM")
-            })
-        }catch (e:NullPointerException ) {
-            e.printStackTrace()
-        }
+        saveFcmToken()
+
         // Set up a Live Data observer for beacon data
         val regionViewModel = BeaconManager.getInstanceForApplication(this).getRegionViewModel(beaconScannerApplication.region)
         // observer will be called each time the monitored regionState changes (inside vs. outside region)
@@ -198,6 +195,39 @@ class MainActivity : AppCompatActivity() {
         builder.setOnDismissListener{dismissListener}
         builder.show()
     }
+
+    private fun saveFcmToken(){
+        // fcm 토큰 값 받아오기 나중에 서버로 전송하는 방식으로 교체할 예정
+        try{
+            FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+                if(!task.isSuccessful){
+                    Log.w("FCM", "Fetching FCM registration token failed", task.exception)
+                    return@OnCompleteListener
+                }
+                fcmToken = task.result.toString()
+                val data = FcmToken(processedUuid, fcmToken)
+                val dialog = androidx.appcompat.app.AlertDialog.Builder(this@MainActivity)
+
+                signApi.addFcmToken(data).enqueue(object : Callback<ResponseMsg>{
+                    override fun onResponse(call: Call<ResponseMsg>, response: Response<ResponseMsg>) {
+                        if(response.code()==200){
+                            Log.d("FCMTOKEN", response.body()!!.data.toString())
+                        }
+                    }
+
+                    override fun onFailure(call: Call<ResponseMsg>, t: Throwable) {
+                        Log.e("FCMTOKEN", t.message.toString())
+                        dialog.setTitle("에러")
+                        dialog.setMessage("호출실패했습니다.")
+                        dialog.show()
+                    }
+                })
+            })
+        }catch (e:NullPointerException ) {
+            e.printStackTrace()
+        }
+    }
+
     companion object {
         val TAG = "MainActivity"
         val PERMISSION_REQUEST_BACKGROUND_LOCATION = 0

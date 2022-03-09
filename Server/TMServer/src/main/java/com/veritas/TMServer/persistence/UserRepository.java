@@ -24,6 +24,16 @@ public interface UserRepository extends JpaRepository<UserEntity, String> {
     @Query(value = "SELECT RISK FROM USER_ENTITY WHERE UUID = :uuid", nativeQuery = true)
     float findRiskByUuid(@Param("uuid") String uuid);
 
+    // 임시 모든 FCM 토큰 리스트 받아오기
+    @Query(value = "SELECT FCM_TOKEN FROM USER_ENTITY", nativeQuery = true)
+    List<String> findFcmTokenList();
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE USER_ENTITY SET FCM_TOKEN = :fcmToken WHERE UUID = :uuid", nativeQuery = true)
+    int updateFcmToken(@Param("uuid") String uuid, @Param("fcmToken") String fcmToken);
+
+
     @Transactional
     @Modifying
     @Query(value = "UPDATE USER_ENTITY SET RISK = :risk WHERE UUID = :uuid", nativeQuery = true)

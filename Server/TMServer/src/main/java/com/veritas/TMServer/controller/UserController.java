@@ -1,17 +1,20 @@
 package com.veritas.TMServer.controller;
 
+import com.veritas.TMServer.dto.InfectedDTO;
 import com.veritas.TMServer.dto.ResponseDTO;
 import com.veritas.TMServer.dto.UserDTO;
 import com.veritas.TMServer.model.UserEntity;
 import com.veritas.TMServer.security.TokenProvider;
 import com.veritas.TMServer.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -73,8 +76,14 @@ public class UserController {
                     .build();
             return ResponseEntity.badRequest().body(responseDTO);
         }
+    }
 
-
+    @PutMapping("/addFcmToken")
+    public ResponseEntity<?> addFcmToekn(@RequestBody UserDTO userDTO){
+        userService.updateFcmToken(userDTO.getUuid(), userDTO.getFcmToken());
+        String msg = "fcmToken saved";
+        ResponseDTO<String> response = ResponseDTO.<String>builder().data(Collections.singletonList(msg)).build();
+        return ResponseEntity.ok().body(response);
     }
 
 

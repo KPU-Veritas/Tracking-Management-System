@@ -2,6 +2,7 @@ package com.veritas.TMServer.controller;
 
 import com.veritas.TMServer.service.AndroidPushNotificationService;
 import com.veritas.TMServer.service.AndroidPushPeriodicNotifications;
+import com.veritas.TMServer.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +24,12 @@ public class NotificationController {
     @Autowired
     AndroidPushNotificationService androidPushNotificationsService;
 
+    @Autowired
+    UserService userService;
+
     @GetMapping(value = "/send")
     public @ResponseBody ResponseEntity<String> send() throws JSONException, InterruptedException{
-        String notifications = AndroidPushPeriodicNotifications.PeriodicNotificationJson();
+        String notifications = AndroidPushPeriodicNotifications.PeriodicNotificationJson(userService.findFcmTokenList());
 
         HttpEntity<String> request = new HttpEntity<>(notifications);
 

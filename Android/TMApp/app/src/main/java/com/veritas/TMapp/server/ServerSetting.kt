@@ -1,10 +1,12 @@
 package com.veritas.TMapp.server
 
 object ServerSetting {
-    const val BASE_URL = "http://PROD-TMS-BACKEND.ap-northeast-2.elasticbeanstalk.com"
+    //const val BASE_URL = "http://PROD-TMS-BACKEND.ap-northeast-2.elasticbeanstalk.com"
+    const val BASE_URL = "http://211.252.12.158:8080"
     lateinit var processedUuid : String
     lateinit var token: String
     lateinit var username: String
+    lateinit var fcmToken: String
     lateinit var contactAPIS:ContactAPIS
     val signApi = SignAPIS.create()
 

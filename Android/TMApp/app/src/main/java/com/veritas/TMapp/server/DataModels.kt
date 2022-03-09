@@ -11,12 +11,11 @@ data class SigninModel(     // 로그인 시 정보를 보낼 때 사용
     val password: String? = null
 )
 
-@Parcelize
 data class ResponseSigninModel(   // 로그인 요청 후 응답을 받을 때 사용
     val token: String? = null,
     val uuid: String? = null,
     val username: String? = null
-): Parcelable
+)
 
 data class SignupModel( // 회원가입 시 정보를 보낼 때 사용
     val username: String? = null,
@@ -29,6 +28,16 @@ data class SignupModel( // 회원가입 시 정보를 보낼 때 사용
 
 data class ResponseSignupModel(
     val email: String?
+)
+
+data class FcmToken(
+    val uuid: String? = null,
+    val fcmToken: String? = null
+)
+
+data class ResponseMsg(
+    val error: String? = null,
+    val data: List<Any>? = null
 )
 
 @Entity(tableName = "tb_contacts")

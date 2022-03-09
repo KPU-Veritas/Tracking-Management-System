@@ -19,6 +19,7 @@ public class UserDTO {
     private String phoneNumber;
     private String simpleAddress;
     private String detailAddress;
+    private String fcmToken;
     private float risk;
     private int contactDegree;
 
@@ -28,6 +29,7 @@ public class UserDTO {
         this.email = entity.getEmail();
         this.phoneNumber = entity.getPhoneNumber();
         this.detailAddress = entity.getDetailAddress();
+        this.fcmToken = entity.getFcmToken();
         this.risk = entity.getRisk();
         this.contactDegree = entity.getContactDegree();
     }
@@ -39,6 +41,7 @@ public class UserDTO {
                 .email(dto.getEmail())
                 .phoneNumber(dto.getPhoneNumber())
                 .detailAddress(dto.getDetailAddress())
+                .fcmToken(dto.getFcmToken())
                 .risk(dto.getRisk())
                 .contactDegree(dto.getContactDegree())
                 .build();

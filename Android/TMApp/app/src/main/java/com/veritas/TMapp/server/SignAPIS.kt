@@ -9,6 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
 import retrofit2.http.Headers
 import retrofit2.http.POST
+import retrofit2.http.PUT
 
 interface SignAPIS {
     @POST("/auth/signin/")  // 로그인 요청
@@ -23,6 +24,11 @@ interface SignAPIS {
         @Body jsonParams: SignupModel
     ): Call<ResponseSignupModel>
 
+    @PUT("/auth/addFcmToken/")
+    @Headers("accept: application/json", "content-type: application/json")
+    fun addFcmToken(
+        @Body jsonParams: FcmToken
+    ): Call<ResponseMsg>
 
     companion object{
         fun create(): SignAPIS{

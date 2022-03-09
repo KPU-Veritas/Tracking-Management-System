@@ -38,6 +38,9 @@ public class UserEntity {
     @Column(nullable = false)
     private String detailAddress;
 
+    @Column(nullable = true)
+    private String fcmToken;
+
     @Builder.Default
     @Column(name = "risk")
     private float risk = 0;
