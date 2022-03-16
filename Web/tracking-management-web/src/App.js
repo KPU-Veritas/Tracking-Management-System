@@ -22,6 +22,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from 'moment';
 import Managerment from './Management';
+import DeviceManagement from './DeviceManagement';
 
 class App extends React.Component {
   constructor(props) {
@@ -40,7 +41,7 @@ class App extends React.Component {
 
   componentDidMount() {
     this.updateCount = this.updateCount.bind(this);
-    //setInterval(this.updateCount, 1000);
+    setInterval(this.updateCount, 1000);
   }
 
   updateCount() {
@@ -117,16 +118,22 @@ class App extends React.Component {
     });
   };
 
+  deviceManagement = () => {
+    this.setState({
+      page: 4,
+    })
+  }
+
   noticeList = () => {
     this.getInfectedData();
     this.setState({
-      page: 4,
+      page: 5,
     });
   };
 
   management = () => {
     this.setState({
-      page: 5,
+      page: 6,
     });
   };
   
@@ -202,6 +209,17 @@ class App extends React.Component {
       </Paper>
     );
 
+    var deviceManagement =
+      <Paper style={{ margin: 16 }}>
+        <List>
+          {this.state.infectedList.map((notice, idx) => (
+            <DeviceManagement
+              key={idx}
+            />
+          ))}
+        </List>
+      </Paper>
+
     var infectedList = this.state.infectedList.length > 0 && (
       <Paper style={{ margin: 16 }}>
         <List>
@@ -237,6 +255,9 @@ class App extends React.Component {
               </Button>
               <Button color="inherit" onClick={this.contactList}>
                 접촉목록
+              </Button>
+              <Button color="inherit" onClick={this.deviceManagement}>
+                장치관리
               </Button>
               <Button onClick={this.noticeList}>
               <Badge badgeContent={this.state.notice} color="primary">
@@ -283,6 +304,16 @@ class App extends React.Component {
       </div>
     );
 
+    var deviceManagementPage = (
+      <div>
+        <h1>장치관리</h1>
+        {navigationBar}
+        <Container maxwitdth="md">
+          <div className="DeviceManagement">{deviceManagement}</div>
+        </Container>
+      </div>
+    );
+
     var infectedListPage = (
       <div>
         <h1>확진알림</h1>
@@ -310,8 +341,9 @@ class App extends React.Component {
       case 1: content = mainPage; break;
       case 2: content = userListPage; break;
       case 3: content = contactListPage; break;
-      case 4: content = infectedListPage; break;
-      case 5: content = managementPage; break;
+      case 4: content = deviceManagementPage; break;
+      case 5: content = infectedListPage; break;
+      case 6: content = managementPage; break;
     }
 
     
