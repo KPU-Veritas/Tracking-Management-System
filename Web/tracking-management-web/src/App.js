@@ -40,7 +40,7 @@ class App extends React.Component {
 
   componentDidMount() {
     this.updateCount = this.updateCount.bind(this);
-    setInterval(this.updateCount, 1000);
+    //setInterval(this.updateCount, 1000);
   }
 
   updateCount() {
@@ -89,8 +89,8 @@ class App extends React.Component {
   searchContact = (e) => {
     if (e.key === "Enter") {
       var moment = require('moment');
-      const date = moment(this.state.searchDate).format('YYYY-MM-DD');
-      const date2 = moment(this.state.endDate).format('YYYY-MM-DD');
+      const date = moment(this.state.searchDate).format('YY-MM-DD');
+      const date2 = moment(this.state.endDate).format('YY-MM-DD');
       call("/system/searchcontact", "POST", { date : date, date2 : date2, uuid : this.state.search } ).then((response) =>
       this.setState({ contactList: response.data, search : null, searchDate : new Date(), endDate : new Date()})
       );

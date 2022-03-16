@@ -33,11 +33,12 @@ class Managerment extends React.Component {
         this.setLevel = this.setLevel.bind(this);
         return (
         <><Grid>
-                <select defaultValue='1' name='displayyn' onChange={(e) => this.onChangeHandler(e)}>
-                    <option value='1'>1차 접촉자</option>
-                    <option value='2'>2차 접촉자</option>
-                    <option value='3'>3차 접촉자</option>
-                </select><p>현재 {level}차 접촉자 까지 알림이 갑니다.</p>
+            <form>
+            <input        
+            name="password"
+            value={level}
+            onChange={this.onChangeHandler}/>
+            </form><p>현재 위험도{level}% 까지 알림이 갑니다.</p>
             </Grid>
             <Grid><Button onClick={this.setLevel}>확인</Button></Grid></>
         
