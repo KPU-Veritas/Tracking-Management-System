@@ -21,7 +21,7 @@ public interface ContactRepository extends JpaRepository<ContactEntity, String> 
     @Query(value = "SELECT * FROM CONTACT WHERE UUID = :uuid AND DATE >= :date", nativeQuery = true)
     List<ContactEntity> findFirstContactList(@Param("uuid") String uuid, @Param("date") String date);
 
-    @Query(value = "SELECT * FROM CONTACT WHERE (UUID = :uuid AND DATE = :date AND FIRST_TIME >= :time) OR UUID = :uuid AND DATE > :date", nativeQuery = true)
+    @Query(value = "SELECT * FROM CONTACT WHERE (UUID = :uuid AND DATE = :date AND LAST_TIME >= :time) OR UUID = :uuid AND DATE > :date", nativeQuery = true)
     List<ContactEntity> findContinuousContactList(@Param("uuid") String uuid, @Param("date") String date, @Param("time") String time);
 
 
