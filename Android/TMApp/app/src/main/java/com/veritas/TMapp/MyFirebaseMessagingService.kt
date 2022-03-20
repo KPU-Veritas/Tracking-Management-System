@@ -26,13 +26,11 @@ class MyFirebaseMessagingService : FirebaseMessagingService(){
             sendNotification(remoteMessage.notification?.title, remoteMessage.notification!!.body!!)
         }
     }
-
     override fun onNewToken(token: String)
     {
         Log.d(TAG, "Refreshed token : $token")
         super.onNewToken(token)
     }
-
     // 받은 알림을 기기에 표시하는 메서드
     private fun sendNotification(title: String?, body: String)
     {
@@ -64,7 +62,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService(){
                 NotificationManager.IMPORTANCE_DEFAULT)
             notificationManager.createNotificationChannel(channel)
         }
-
         notificationManager.notify(0 /* ID of notification */, notificationBuilder.build())
     }
     fun writeFile(title : String, content : String){
@@ -72,17 +69,13 @@ class MyFirebaseMessagingService : FirebaseMessagingService(){
         var myDir = File("$dirPath")//생성할 디렉토리의 경로를 설정한다.
         myDir.mkdir()
         var cal = Calendar.getInstance()
-        var cYear = cal.get(Calendar.YEAR)
-        var cMonth = cal.get(Calendar.MONTH)
-        var cDay = cal.get(Calendar.DAY_OF_MONTH)
-        var year = Integer.toString(cYear)
-        var month = Integer.toString(cMonth)
-        var day = Integer.toString(cDay)
+        var year = Integer.toString(cal.get(Calendar.YEAR))
+        var month = Integer.toString(cal.get(Calendar.MONTH))
+        var day = Integer.toString(cal.get(Calendar.DAY_OF_MONTH))
         val file = File("$dirPath/$year.$month.$day $title.txt")
         val fos = FileOutputStream(file)
         var str = content
         fos.write(str.toByteArray())
         fos.close()
     }
-
 }
