@@ -11,6 +11,9 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import java.io.File
+import java.io.FileOutputStream
+import java.util.*
 
 class MyFirebaseMessagingService : FirebaseMessagingService(){
     private val TAG: String = this.javaClass.simpleName
@@ -42,6 +45,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService(){
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         if (title != null) {
             Log.d("Message", title)
+            writeFile(title, body)
         }
         Log.d("Content", body)
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
@@ -62,6 +66,23 @@ class MyFirebaseMessagingService : FirebaseMessagingService(){
         }
 
         notificationManager.notify(0 /* ID of notification */, notificationBuilder.build())
+    }
+    fun writeFile(title : String, content : String){
+        var dirPath = "${filesDir.absolutePath}/FCM"
+        var myDir = File("$dirPath")//생성할 디렉토리의 경로를 설정한다.
+        myDir.mkdir()
+        var cal = Calendar.getInstance()
+        var cYear = cal.get(Calendar.YEAR)
+        var cMonth = cal.get(Calendar.MONTH)
+        var cDay = cal.get(Calendar.DAY_OF_MONTH)
+        var year = Integer.toString(cYear)
+        var month = Integer.toString(cMonth)
+        var day = Integer.toString(cDay)
+        val file = File("$dirPath/$year.$month.$day $title.txt")
+        val fos = FileOutputStream(file)
+        var str = content
+        fos.write(str.toByteArray())
+        fos.close()
     }
 
 }
