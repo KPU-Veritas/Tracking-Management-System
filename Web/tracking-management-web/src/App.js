@@ -13,7 +13,8 @@ import {
 import Badge from '@mui/material/Badge';
 import MailIcon from '@mui/icons-material/Mail';
 import { FcSettings } from 'react-icons/fc';
-import { call, signout, } from "./service/ApiService"; // signout 추가
+import { call, signout, } from "./service/ApiService";
+import { Link } from 'react-router-dom';
 import UserList from "./UserList";
 import Greeting from "./Greeting";
 import ContactList from "./ContactList";
@@ -31,6 +32,7 @@ class App extends React.Component {
       userList: [],
       contactList: [],
       infectedList: [],
+      deviceList: [],
       page: 1,
       notice : 0,
       search : null,
@@ -41,7 +43,7 @@ class App extends React.Component {
 
   componentDidMount() {
     this.updateCount = this.updateCount.bind(this);
-    setInterval(this.updateCount, 1000);
+    //setInterval(this.updateCount, 1000);
   }
 
   updateCount() {
@@ -77,6 +79,12 @@ class App extends React.Component {
     call("/system/noticelist", "GET", null).then((response) =>
       this.setState({ infectedList: response.data})
    );
+  }
+
+  getDeviceData() {
+    call("/system/devicelist", "GET", null).then((response) =>
+      this.setState({ deviceList: response.data})
+    );
   }
 
   searchUser = (e) => {
@@ -119,6 +127,7 @@ class App extends React.Component {
   };
 
   deviceManagement = () => {
+    this.getDeviceData();
     this.setState({
       page: 4,
     })
@@ -212,12 +221,18 @@ class App extends React.Component {
     var deviceManagement =
       <Paper style={{ margin: 16 }}>
         <List>
-          {this.state.infectedList.map((notice, idx) => (
+          {this.state.deviceList.map((device, idx) => (
             <DeviceManagement
+              device={device}
               key={idx}
             />
           ))}
         </List>
+        <Grid>
+          <Link to="./adddevice">
+            <Button>장치추가</Button>
+          </Link>
+          </Grid>
       </Paper>
 
     var infectedList = this.state.infectedList.length > 0 && (

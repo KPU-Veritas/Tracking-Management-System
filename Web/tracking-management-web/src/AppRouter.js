@@ -3,10 +3,11 @@ import "./index.css";
 import App from "./App";
 import UserList from "./UserList";
 import Login from "./Login";
-import SignUp from "./SignUp"
+import SignUp from "./SignUp";
 import { BrowserRouter as Router, Switch, Route} from "react-router-dom";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
+import AddDevice from "./AddDevice";
 
 
 class AppRouter extends React.Component {
@@ -21,6 +22,9 @@ class AppRouter extends React.Component {
               </Route>
               <Route path="/signup">
                 <SignUp />
+              </Route>
+              <Route path="/adddevice">
+                <AddDevice />
               </Route>
               <Route path="/">
                 <App />

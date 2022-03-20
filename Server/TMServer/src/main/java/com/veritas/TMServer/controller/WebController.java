@@ -1,15 +1,9 @@
 package com.veritas.TMServer.controller;
 
 import com.veritas.TMServer.dto.*;
-import com.veritas.TMServer.model.ContactEntity;
-import com.veritas.TMServer.model.InfectedEntity;
-import com.veritas.TMServer.model.UserEntity;
-import com.veritas.TMServer.model.WebEntity;
+import com.veritas.TMServer.model.*;
 import com.veritas.TMServer.security.TokenProvider;
-import com.veritas.TMServer.service.ContactService;
-import com.veritas.TMServer.service.InfectedService;
-import com.veritas.TMServer.service.UserService;
-import com.veritas.TMServer.service.WebService;
+import com.veritas.TMServer.service.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -38,7 +32,11 @@ public class WebController {
     private InfectedService infectedService;
 
     @Autowired
+    private DeviceService deviceService;
+
+    @Autowired
     private TokenProvider tokenProvider;
+
 
     private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
@@ -95,6 +93,36 @@ public class WebController {
             return ResponseEntity.badRequest().body(responseDTO);
         }
     }
+
+    @PostMapping("/adddevice")
+    public ResponseEntity<?> addDevice(@RequestBody DeviceDTO deviceDTO) {
+        try {
+            DeviceEntity device = DeviceEntity.builder()
+                    .place(deviceDTO.getPlace())
+                    .build();
+
+            DeviceEntity registeredDevice = deviceService.create(device);
+            DeviceDTO response = DeviceDTO.builder()
+                    .id(registeredDevice.getId())
+                    .place(registeredDevice.getPlace())
+                    .build();
+
+            return ResponseEntity.ok().body(response);
+        }  catch (Exception e) {
+            String error = e.getMessage();
+            ResponseDTO<DeviceDTO> response = ResponseDTO.<DeviceDTO>builder().error(error).build();
+
+            return ResponseEntity.badRequest().body(response);
+        }
+    }
+
+    @PostMapping("/deletedevice")
+    public void deleteDevice(@RequestBody DeviceDTO deviceDTO) {
+        String id = deviceDTO.getId();
+        log.info(id);
+        deviceService.delete(id);
+    }
+
 
     @PostMapping("/searchuser")
     public ResponseEntity<?> searchUser(@RequestBody String name) {
@@ -222,6 +250,27 @@ public class WebController {
         }
 
     }
+
+    @GetMapping("/devicelist")
+    public ResponseEntity<?> deviceList() {
+        try {
+            List<DeviceEntity> entities = deviceService.deviceList();
+
+            List<DeviceDTO> dtos = entities.stream().map(DeviceDTO::new).collect(Collectors.toList());
+
+            ResponseDTO<DeviceDTO> response = ResponseDTO.<DeviceDTO>builder().data(dtos).build();
+
+            if (response != null) return ResponseEntity.ok().body(response);
+            else return ResponseEntity.badRequest().body(response);
+        }  catch (Exception e) {
+            String error = e.getMessage();
+            ResponseDTO<ContactDTO> response = ResponseDTO.<ContactDTO>builder().error(error).build();
+            return ResponseEntity.badRequest().body(response);
+        }
+
+    }
+
+
 
     @GetMapping("/getlevel")
     public int getLevel() {
