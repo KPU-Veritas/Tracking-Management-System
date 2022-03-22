@@ -13,6 +13,9 @@ import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import java.io.File
 import java.io.FileOutputStream
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 class MyFirebaseMessagingService : FirebaseMessagingService(){
@@ -68,11 +71,10 @@ class MyFirebaseMessagingService : FirebaseMessagingService(){
         var dirPath = "${filesDir.absolutePath}/FCM"
         var myDir = File("$dirPath")//생성할 디렉토리의 경로를 설정한다.
         myDir.mkdir()
-        var cal = Calendar.getInstance()
-        var year = Integer.toString(cal.get(Calendar.YEAR))
-        var month = Integer.toString(cal.get(Calendar.MONTH))
-        var day = Integer.toString(cal.get(Calendar.DAY_OF_MONTH))
-        val file = File("$dirPath/$year.$month.$day $title.txt")
+        val current = LocalDateTime.now()
+        val formatter = DateTimeFormatter.ofPattern("yyyy년 M월 d일 a H시 m분", Locale.KOREA)
+        val formatted = current.format(formatter)
+        val file = File("$dirPath/$formatted $title.txt")
         val fos = FileOutputStream(file)
         var str = content
         fos.write(str.toByteArray())
