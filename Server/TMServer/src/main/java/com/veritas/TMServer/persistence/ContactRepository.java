@@ -15,13 +15,13 @@ import java.util.List;
 public interface ContactRepository extends JpaRepository<ContactEntity, String> {
     List<ContactEntity> findByUuid(String uuid);
 
-    @Query(value = "SELECT * FROM CONTACT WHERE UUID = :uuid AND DATE BETWEEN :date AND :date2", nativeQuery = true)
+    @Query(value = "SELECT * FROM CONTACT WHERE UUID = :uuid AND DATE BETWEEN :date AND :date2 ORDER BY DATE ASC, FIRST_TIME ASC", nativeQuery = true)
     List<ContactEntity> findSearchList(@Param("uuid") String uuid, @Param("date") String date, @Param("date2") String date2);
 
-    @Query(value = "SELECT * FROM CONTACT WHERE UUID = :uuid AND DATE >= :date", nativeQuery = true)
+    @Query(value = "SELECT * FROM CONTACT WHERE UUID = :uuid AND DATE >= :date ORDER BY DATE ASC, FIRST_TIME ASC", nativeQuery = true)
     List<ContactEntity> findFirstContactList(@Param("uuid") String uuid, @Param("date") String date);
 
-    @Query(value = "SELECT * FROM CONTACT WHERE (UUID = :uuid AND DATE = :date AND LAST_TIME >= :time) OR UUID = :uuid AND DATE > :date", nativeQuery = true)
+    @Query(value = "SELECT * FROM CONTACT WHERE (UUID = :uuid AND DATE = :date AND LAST_TIME >= :time) OR UUID = :uuid AND DATE > :date ORDER BY DATE ASC, FIRST_TIME ASC", nativeQuery = true)
     List<ContactEntity> findContinuousContactList(@Param("uuid") String uuid, @Param("date") String date, @Param("time") String time);
 
 
