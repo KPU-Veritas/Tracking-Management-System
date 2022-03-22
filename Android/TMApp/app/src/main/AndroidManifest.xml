@@ -57,6 +57,10 @@
             android:name=".SendInfectionInfoActivity"
             android:exported="false">
         </activity>
+        <activity
+            android:name=".CheckFCMActivity"
+            android:exported="false">
+        </activity>
         <service
             android:name=".MyFirebaseMessagingService">
             <intent-filter>

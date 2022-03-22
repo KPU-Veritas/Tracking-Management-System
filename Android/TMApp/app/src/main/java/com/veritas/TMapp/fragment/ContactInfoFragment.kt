@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.veritas.TMapp.databinding.FragmentContactInfoBinding
 import android.content.Intent
+import com.veritas.TMapp.CheckFCMActivity
 import com.veritas.TMapp.SendInfectionInfoActivity
 
 
@@ -20,6 +21,10 @@ class ContactInfoFragment : Fragment()
         val binding = FragmentContactInfoBinding.inflate(inflater, container, false)
         binding.btnConfirm.setOnClickListener {
             val intent = Intent(activity, SendInfectionInfoActivity::class.java)
+            startActivity(intent)
+        }
+        binding.btnNotification.setOnClickListener {
+            val intent = Intent(activity, CheckFCMActivity::class.java)
             startActivity(intent)
         }
         return binding.root
