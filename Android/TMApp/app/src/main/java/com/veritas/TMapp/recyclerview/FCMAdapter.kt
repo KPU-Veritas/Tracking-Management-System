@@ -1,6 +1,7 @@
 package com.veritas.TMapp.recyclerview
 
 import android.app.AlertDialog
+import android.content.DialogInterface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,6 +28,7 @@ class FCMAdapter(val fcmList : ArrayList<FCMs>) : RecyclerView.Adapter<FCMAdapte
                 var dlg = AlertDialog.Builder(parent.context)
                 dlg.setTitle("${fcm.title}")
                 dlg.setMessage("$content")
+                dlg.setPositiveButton("닫기") { dialogInterface: DialogInterface, i: Int -> }
                 dlg.show()
             }
         }
