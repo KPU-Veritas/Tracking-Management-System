@@ -16,6 +16,7 @@ public class ContactDTO {
     private String date;
     private String firstTime;
     private String lastTime;
+    private int contactTime;
     private boolean checked;
 
     public ContactDTO(final ContactEntity entity) {
@@ -25,6 +26,7 @@ public class ContactDTO {
         this.date = entity.getDate();
         this.firstTime = entity.getFirstTime();
         this.lastTime = entity.getLastTime();
+        this.contactTime = entity.getContactTime();
         this.checked = isChecked();
     }
     public static ContactEntity contactEntity(final ContactDTO dto) {
@@ -34,6 +36,7 @@ public class ContactDTO {
                 .date(dto.getDate())
                 .firstTime(dto.getFirstTime())
                 .lastTime(dto.getLastTime())
+                .contactTime(dto.getContactTime())
                 .checked(dto.isChecked())
                 .build();
     }

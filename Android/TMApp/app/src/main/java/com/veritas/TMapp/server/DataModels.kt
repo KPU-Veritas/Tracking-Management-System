@@ -47,5 +47,6 @@ data class Contacts(
     var uuid:String,
     var date: String,
     var firstTime: String,
-    var lastTime: String?
+    var lastTime: String?,
+    var contactTime: Int
 )

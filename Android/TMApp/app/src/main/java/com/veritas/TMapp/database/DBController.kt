@@ -30,12 +30,16 @@ class DBController {
                 var contact = db.contactsDao().getContactByUUID(formatingUUID(contact_target_uuid))
 
                 if(contact == null){
-                    contact = Contacts(formatingUUID(contact_target_uuid), processedUuid, currentDate, currentTime, null)
+                    contact = Contacts(formatingUUID(contact_target_uuid), processedUuid, currentDate, currentTime, null, 0)
                     db.contactsDao().insertAll(contact)
                     Log.d(TAG, "$contact 처음 접촉 시간 등록")
                 }
                 else{
+                    val contactTime = getContactTime(contact.lastTime, currentTime)
                     contact.lastTime = currentTime
+                    if (contactTime < 10){
+                        contact.contactTime = contact.contactTime + contactTime
+                    }
                     db.contactsDao().update(contact)
                     Log.d(TAG, "$contact 마지막 접촉 시간 업데이트")
                 }
@@ -82,5 +86,13 @@ class DBController {
 
     private fun formatingUUID(uuid: String) : String{
         return uuid.substring(0,8) + uuid.substring(9,13) + uuid.substring(14,18) + uuid.substring(19,23) + uuid.substring(24)
+    }
+    private fun getContactTime(prevTime: String?, currentTime: String): Int{
+        if (prevTime == null){
+            return 0
+        }
+        val pt = (prevTime.substring(0,2).toInt() * 60 + prevTime.substring(3,5).toInt()) * 60 + prevTime.substring(6).toInt()
+        val ct = (currentTime.substring(0,2).toInt() * 60 + currentTime.substring(3,5).toInt()) * 60 + currentTime.substring(6).toInt()
+        return ct-pt
     }
 }

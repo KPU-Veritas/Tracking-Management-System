@@ -23,6 +23,9 @@ public class ContactEntity {
     private String date;
     private String firstTime;
     private String lastTime;
+    @Builder.Default
+    @Column(name = "contactTime")
+    private int contactTime = 0;
     @Column(columnDefinition = "boolean default false")
     private boolean checked;
 }
