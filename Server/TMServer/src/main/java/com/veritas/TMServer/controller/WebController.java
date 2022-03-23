@@ -126,10 +126,11 @@ public class WebController {
 
     @PostMapping("/searchuser")
     public ResponseEntity<?> searchUser(@RequestBody String name) {
+
         name = name.replaceAll("\"", "");
+
         try {
             List<UserEntity> entities = userService.searchList(name);
-
             List<UserDTO> dtos = entities.stream().map(UserDTO::new).collect(Collectors.toList());
 
             ResponseDTO<UserDTO> response = ResponseDTO.<UserDTO>builder().data(dtos).build();
