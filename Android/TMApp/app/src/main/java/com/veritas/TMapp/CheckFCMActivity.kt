@@ -1,6 +1,7 @@
 package com.veritas.TMapp
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -31,8 +32,7 @@ class CheckFCMActivity : AppCompatActivity() {
                     fcmList.add(FCMs(R.drawable.fcm, name))
                 }
             }
-            binding.rvFcm.layoutManager =
-                LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+            binding.rvFcm.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
             binding.rvFcm.setHasFixedSize(true)
             binding.rvFcm.adapter = FCMAdapter(fcmList)
         }catch (e : Exception){
