@@ -8,6 +8,7 @@ import androidx.appcompat.app.AlertDialog
 import com.veritas.TMapp.MainActivity
 import com.veritas.TMapp.databinding.ActivitySigninBinding
 import com.veritas.TMapp.server.ResponseSigninModel
+import com.veritas.TMapp.server.ServerSetting.processedUuid
 import com.veritas.TMapp.server.ServerSetting.setUserInfo
 import com.veritas.TMapp.server.ServerSetting.signApi
 import com.veritas.TMapp.server.SigninModel
@@ -24,6 +25,11 @@ class SigninActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         signinBinding = ActivitySigninBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        if(processedUuid != null){
+            val mainIntent = Intent(this, MainActivity::class.java)
+            startActivity(mainIntent)
+        }
 
         binding.buttonSignin.setOnClickListener {
             val email = binding.editTextEmailAddress.text.toString()

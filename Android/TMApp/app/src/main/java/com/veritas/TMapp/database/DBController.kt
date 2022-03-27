@@ -30,7 +30,7 @@ class DBController {
                 var contact = db.contactsDao().getContactByUUID(formatingUUID(contact_target_uuid))
 
                 if(contact == null){
-                    contact = Contacts(formatingUUID(contact_target_uuid), processedUuid, currentDate, currentTime, null, 0)
+                    contact = Contacts(formatingUUID(contact_target_uuid), processedUuid!!, currentDate, currentTime, null, 0)
                     db.contactsDao().insertAll(contact)
                     Log.d(TAG, "$contact 처음 접촉 시간 등록")
                 }

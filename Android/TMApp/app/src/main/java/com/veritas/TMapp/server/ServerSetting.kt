@@ -2,8 +2,8 @@ package com.veritas.TMapp.server
 
 object ServerSetting {
     //const val BASE_URL = "http://PROD-TMS-BACKEND.ap-northeast-2.elasticbeanstalk.com"
-    const val BASE_URL = "http://192.168.1.164:8080"
-    lateinit var processedUuid : String
+    const val BASE_URL = "http://211.252.12.158:8080"
+    var processedUuid : String? = null
     lateinit var token: String
     lateinit var username: String
     lateinit var fcmToken: String
