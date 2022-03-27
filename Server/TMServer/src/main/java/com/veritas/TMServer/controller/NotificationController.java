@@ -29,7 +29,8 @@ public class NotificationController {
 
     @GetMapping(value = "/send")
     public @ResponseBody ResponseEntity<String> send() throws JSONException, InterruptedException{
-        String notifications = AndroidPushPeriodicNotifications.PeriodicNotificationJson(userService.findFcmTokenList());
+        String notifications = AndroidPushPeriodicNotifications.PeriodicNotificationJson("nonono", 50);
+        //1개의 토큰과
 
         HttpEntity<String> request = new HttpEntity<>(notifications);
 

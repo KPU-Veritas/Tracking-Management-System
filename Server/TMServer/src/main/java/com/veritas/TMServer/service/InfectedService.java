@@ -49,6 +49,7 @@ public class InfectedService {
     public List<InfectedEntity> retrieve(final String uuid){
         return repository.findByUuid(uuid);
     }
+    public List<InfectedEntity> findById(final Long id){ return repository.findById(id); }
     public List<InfectedEntity> infectedList() {
         return repository.findAll();
     }

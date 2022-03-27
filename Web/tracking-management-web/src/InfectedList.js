@@ -12,10 +12,12 @@ class InfectedList extends React.Component {
     }
 
     checkboxEventHandler = (e) => {
-        this.state.user.managerCheck = !this.state.user.managerCheck;
-        const id = this.state.user.id;
-        const managerCheck = this.state.user.managerCheck;
-        call("/system/check", "PUT", { id : id, managerCheck : managerCheck } );
+        if(this.state.user.managerCheck == 0) {
+            this.state.user.managerCheck = !this.state.user.managerCheck;
+            const id = this.state.user.id;
+            const managerCheck = this.state.user.managerCheck;
+            call("/system/check", "PUT", { id : id, managerCheck : managerCheck } );
+        }
     };
 
     render() {

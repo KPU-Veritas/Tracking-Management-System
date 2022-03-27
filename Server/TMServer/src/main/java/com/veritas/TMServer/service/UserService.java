@@ -45,4 +45,5 @@ public class UserService {
     public void updateContactDegree(String uuid, int contactDegree) { userRepository.updateContactDegree(uuid, contactDegree); }
     public float findRiskByUuid(String uuid) { return userRepository.findRiskByUuid(uuid); }
     public List<String> findFcmTokenList() { return userRepository.findFcmTokenList(); }
+    public List<UserEntity> findOverRisk(float risk) { return userRepository.findOverRisk(risk); }
 }
