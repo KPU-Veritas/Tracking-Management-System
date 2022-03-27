@@ -58,6 +58,7 @@ class App extends React.Component {
   };
 
   getUserData() {
+    this.setState({ userList : 0 })
     call("/system/userlist", "GET", null).then((response) =>
     this.setState({ userList: response.data})
     );
@@ -89,6 +90,7 @@ class App extends React.Component {
 
   searchUser = (e) => {
     if (e.key === "Enter") {
+      this.setState({ userList : 0 })
       call("/system/searchuser", "POST", this.state.search ).then((response) =>
       this.setState({ userList: response.data, search : null})
       );
@@ -97,6 +99,7 @@ class App extends React.Component {
 
   searchContact = (e) => {
     if (e.key === "Enter") {
+      this.setState({ contactList : 0})
       var moment = require('moment');
       const date = moment(this.state.searchDate).format('YY-MM-DD');
       const date2 = moment(this.state.endDate).format('YY-MM-DD');
@@ -156,10 +159,10 @@ class App extends React.Component {
     var userList = this.state.userList.length > 0 && (
       <Paper style={{ margin: 16 }}>
         <List>
-          {this.state.userList.map((user) => (
+          {this.state.userList.map((user, idx) => (
             <UserList
               user={user}
-              key={user.id}
+              key={idx}
             />
           ))}
         </List>
@@ -168,7 +171,7 @@ class App extends React.Component {
               "aria-label": "naked",
             }}
             type="text"
-            value={this.state.search}
+            value={this.state.search|| ''}
             fullWidth={true}
             onChange={this.editEventHandler}
             onKeyPress={this.searchUser}
@@ -210,7 +213,7 @@ class App extends React.Component {
               "aria-label": "naked",
             }}
             type="text"
-            value={this.state.search}
+            value={this.state.search|| ''}
             fullWidth={true}
             onChange={this.editEventHandler}
             onKeyPress={this.searchContact}
