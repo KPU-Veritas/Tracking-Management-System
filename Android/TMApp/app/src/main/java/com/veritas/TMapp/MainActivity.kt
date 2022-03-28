@@ -2,7 +2,10 @@ package com.veritas.TMapp
 
 import android.Manifest
 import android.app.AlertDialog
+import android.bluetooth.BluetoothAdapter
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.location.LocationManager
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -35,11 +38,11 @@ class MainActivity : AppCompatActivity() {
     private var mBinding: ActivityMainBinding? = null
     //매번 null 체크를 할 필요 없이 편의성을 위해 바인딩 변수 재선언
     private val binding get() = mBinding!!
-
     private lateinit var beaconScannerApplication: BeaconScannerApplication
     var db: AppDatabase?= null
     private var dbController: DBController? = null
     var user: ResponseSigninModel? = null
+    private var bluetoothAdapter : BluetoothAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,20 +50,26 @@ class MainActivity : AppCompatActivity() {
         mBinding = ActivityMainBinding.inflate(layoutInflater)
         // getRoot 메서드로 레이아웃 내부의 최상위 위치 뷰의 인스턴스를 활용하여 생성된 뷰를 액티비티에 표시
         setContentView(binding.root)
-
+        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
+        if(bluetoothAdapter!=null){
+            // Device doesn't support Bluetooth
+            if(bluetoothAdapter?.isEnabled==false){
+                val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
+                startActivityForResult(enableBtIntent, 1)
+            }
+        }else{
+            Log.d("bluetoothAdapter","Device doesn't support Bluetooth")
+        }
         db = AppDatabase.getInstance(this)
         dbController = DBController()
         beaconScannerApplication = application as BeaconScannerApplication
-
         saveFcmToken()
-
         // Set up a Live Data observer for beacon data
         val regionViewModel = BeaconManager.getInstanceForApplication(this).getRegionViewModel(beaconScannerApplication.region)
         // observer will be called each time the monitored regionState changes (inside vs. outside region)
         regionViewModel.regionState.observe(this, monitoringObserver)
         // observer will be called each time a new list of beacons is ranged (typically ~1 second in the foreground)
         regionViewModel.rangedBeacons.observe(this, rangingObserver)
-
         val beaconManager = BeaconManager.getInstanceForApplication(this)
         // 뷰페이저의 페이지뷰를 생성하기 위해 사용되는 어댑터 클래스
         val adapter = PagerAdapter(supportFragmentManager)
