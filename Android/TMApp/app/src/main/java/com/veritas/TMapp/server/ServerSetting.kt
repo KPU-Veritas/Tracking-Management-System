@@ -8,6 +8,7 @@ object ServerSetting {
     lateinit var username: String
     lateinit var fcmToken: String
     lateinit var contactAPIS:ContactAPIS
+    lateinit var fcmAPIS: FCMAPIS
     val signApi = SignAPIS.create()
 
     fun setUserInfo(uuid: String, token: String, username: String){
@@ -15,6 +16,7 @@ object ServerSetting {
         this.token = token
         this.username = username
         this.contactAPIS = ContactAPIS.create()
+        this.fcmAPIS = FCMAPIS.create()
     }
 
     fun formatUUIDForBeacon(uuid: String) : String{
