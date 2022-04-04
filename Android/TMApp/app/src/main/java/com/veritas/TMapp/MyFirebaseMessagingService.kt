@@ -27,6 +27,10 @@ class MyFirebaseMessagingService : FirebaseMessagingService(){
         if (remoteMessage.notification != null)
         {
             sendNotification(remoteMessage.notification?.title, remoteMessage.notification!!.body!!)
+            if (remoteMessage.notification?.title != null) {
+                Log.d("Message", remoteMessage.notification?.title!! + remoteMessage.notification!!.body!!)
+                writeFile(remoteMessage.notification?.title!!, remoteMessage.notification!!.body!!)
+            }
         }
     }
     override fun onNewToken(token: String)
@@ -37,17 +41,16 @@ class MyFirebaseMessagingService : FirebaseMessagingService(){
     // 받은 알림을 기기에 표시하는 메서드
     private fun sendNotification(title: String?, body: String)
     {
-        val intent = Intent(this, MainActivity::class.java)
+        Log.d("확인", "하는중")
+
+        val intent = Intent(this, CheckFCMActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         val pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
             PendingIntent.FLAG_ONE_SHOT)
 
         val channelId = "my_channel"
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
-        if (title != null) {
-            Log.d("Message", title)
-            writeFile(title, body)
-        }
+
         Log.d("Content", body)
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
             .setContentTitle(title)
@@ -67,7 +70,8 @@ class MyFirebaseMessagingService : FirebaseMessagingService(){
         }
         notificationManager.notify(0 /* ID of notification */, notificationBuilder.build())
     }
-    fun writeFile(title : String, content : String){
+    fun writeFile(title : String, content : String) {
+        Log.d("확인", "안쪽")
         var dirPath = "${filesDir.absolutePath}/FCM"
         var myDir = File("$dirPath")//생성할 디렉토리의 경로를 설정한다.
         myDir.mkdir()

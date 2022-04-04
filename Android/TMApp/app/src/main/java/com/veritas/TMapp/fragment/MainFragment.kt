@@ -20,16 +20,17 @@ class MainFragment(
     private var db:AppDatabase,
     private var dbController: DBController) : Fragment() {
     private lateinit var beaconSensorManager: BeaconSensorManager
-    private var flag : Boolean = true
+    private var flag: Boolean = true
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View
-    {
+    ): View {
         val binding = FragmentMainBinding.inflate(inflater, container, false)
 
         beaconSensorManager = BeaconSensorManager()
-        activity?.let { beaconSensorManager.init(formatUUIDForBeacon(processedUuid), it.applicationContext) }
+        activity?.let {
+            beaconSensorManager.init(formatUUIDForBeacon(processedUuid!!), it.applicationContext)
+        }
 
         binding.btnStart.setOnClickListener {
             if (flag) {
@@ -38,8 +39,7 @@ class MainFragment(
                 beaconManager.startRangingBeacons(beaconScannerApplication.region)
                 binding.tvThread.text = "비콘 활성화 상태"
                 flag = false
-            }
-            else{
+            } else {
                 beaconSensorManager.sensorControl(false)
                 beaconManager.stopMonitoring(beaconScannerApplication.region)
                 beaconManager.stopRangingBeacons(beaconScannerApplication.region)
@@ -51,6 +51,4 @@ class MainFragment(
 
         return binding.root
     }
-
-
 }
