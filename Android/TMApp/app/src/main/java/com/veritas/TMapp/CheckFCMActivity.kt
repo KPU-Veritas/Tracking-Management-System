@@ -14,53 +14,60 @@ import com.veritas.TMapp.server.ServerSetting.fcmAPIS
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.io.File
 
 class CheckFCMActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCheckFcmBinding
-    //    var fcmInfos: List<FCMInfo>? = null
+    var fcmInfos: List<FCMInfo>? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // 자동 생성된 뷰 바인딩 클래스에서의 inflate라는 메서드를 활용하여 액티비티에서 사용할 바인딩 클래스의 인스턴스 생성
         binding = ActivityCheckFcmBinding.inflate(layoutInflater)
         // getRoot 메서드로 레이아웃 내부의 최상위 위치 뷰의 인스턴스를 활용하여 생성된 뷰를 액티비티에 표시
         setContentView(binding.root)
-//        fcmAPIS.getFcmList().enqueue(object: Callback<List<FCMInfo>> {
-//            override fun onResponse(
-//                call: Call<List<FCMInfo>>,
-//                response: Response<List<FCMInfo>>
-//            ) {
-//                if (response.code() == 200) {
-//                    fcmInfos = response.body()
-//                } else {
-//                    Log.e("FCM", "response.code(): ${response.code()}")
-//                }
-//            }
-//
-//            override fun onFailure(call: Call<List<FCMInfo>>, t: Throwable) {
-//                Log.e("FCM", t.message.toString())
-//                val dialog = AlertDialog.Builder(this@CheckFCMActivity)
-//                dialog.setTitle("에러")
-//                dialog.setMessage("호출실패했습니다.")
-//                dialog.show()
-//            }
-//        }
-        var dirPath = "${filesDir.absolutePath}/FCM"
-        var fcmFiles = File(dirPath).listFiles()
-        try {
-
-
-            var name = fcmFiles[0].name.substring(0, fcmFiles[0].name.length - 4)
-            val fcmList = arrayListOf(
-                FCMs(R.drawable.fcm, name),
-            )
-            for (i in fcmFiles.indices) {
-                name = fcmFiles[i].name.substring(0, fcmFiles[i].name.length - 4)
-                if (i != 0) {
-                    fcmList.add(FCMs(R.drawable.fcm, name))
+        fcmAPIS.getFcmList().enqueue(object: Callback<List<FCMInfo>> {
+            override fun onResponse(
+                call: Call<List<FCMInfo>>,
+                response: Response<List<FCMInfo>>
+            ) {
+                if (response.code() == 200) {
+                    fcmInfos = response.body()
+                } else {
+                    Log.e("FCM", "response.code(): ${response.code()}")
                 }
             }
-
+            override fun onFailure(call: Call<List<FCMInfo>>, t: Throwable) {
+                Log.e("FCM", t.message.toString())
+                val dialog = AlertDialog.Builder(this@CheckFCMActivity)
+                dialog.setTitle("에러")
+                dialog.setMessage("호출실패했습니다.")
+                dialog.show()
+            }
+        })
+        try {
+            var id = fcmInfos?.get(0)?.id
+            var uuid = fcmInfos?.get(0)?.uuid
+            var date = fcmInfos?.get(0)?.date
+            var time = fcmInfos?.get(0)?.time
+            var title = fcmInfos?.get(0)?.title
+            var body = fcmInfos?.get(0)?.body
+            var risk = fcmInfos?.get(0)?.risk
+            var contactDegree = fcmInfos?.get(0)?.contactDegree
+            val fcmList = arrayListOf(
+                FCMs(R.drawable.fcm, id, uuid, date, time, title, body, risk, contactDegree),
+            )
+            for (i in fcmInfos?.indices!!) {
+                var id = fcmInfos?.get(i)?.id
+                var uuid = fcmInfos?.get(i)?.uuid
+                var date = fcmInfos?.get(i)?.date
+                var time = fcmInfos?.get(i)?.time
+                var title = fcmInfos?.get(i)?.title
+                var body = fcmInfos?.get(i)?.body
+                var risk = fcmInfos?.get(i)?.risk
+                var contactDegree = fcmInfos?.get(i)?.contactDegree
+                if (i != 0) {
+                    fcmList.add(FCMs(R.drawable.fcm, id, uuid, date, time, title, body, risk, contactDegree))
+                }
+            }
             binding.rvFcm.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
             binding.rvFcm.setHasFixedSize(true)
             binding.rvFcm.adapter = FCMAdapter(fcmList)
