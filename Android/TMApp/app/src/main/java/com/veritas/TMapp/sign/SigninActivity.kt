@@ -52,7 +52,7 @@ class SigninActivity : AppCompatActivity() {
                         startActivity(intent)
                     }
                     else{
-                        Log.d("SIGNIN", "response.code(): ${response.code()}")
+                        Log.e("SIGNIN", "response.code(): ${response.code()}")
                     }
                 }
 
