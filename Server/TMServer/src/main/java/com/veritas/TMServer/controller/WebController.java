@@ -6,8 +6,6 @@ import com.veritas.TMServer.security.TokenProvider;
 import com.veritas.TMServer.service.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,8 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -37,9 +33,6 @@ public class WebController {
 
     @Autowired
     private DeviceService deviceService;
-
-    @Autowired
-    AndroidPushNotificationService androidPushNotificationsService;
 
     @Autowired
     private TokenProvider tokenProvider;
@@ -295,17 +288,6 @@ public class WebController {
             Long id = infectedDTO.getId();
             boolean managerCheck = infectedDTO.isManagerCheck();
             infectedService.updateCheck(id.toString(), managerCheck);
-
-            List<InfectedEntity> lst = infectedService.findById(id);
-            this.firstCalculation(lst.get(0));
-
-            long risk = webService.getLevel();
-            List<UserEntity> riskOverList = userService.findOverRisk(risk);
-
-            for(int i = 0; i < riskOverList.size(); i++) {
-                notificate(riskOverList.get(i).getFcmToken(), riskOverList.get(i).getRisk());
-            }
-
             return null;
         }  catch (Exception e) {
             String error = e.getMessage();
@@ -368,40 +350,15 @@ public class WebController {
 
     public void riskCalculation(ContactEntity entity, int thisContactDegree, float superRisk) {
         String uuid = entity.getContactTargetUuid();
-        long contactTime = entity.getContactTime() / 10800;
         int contactDegree  = userService.findByUuid(uuid).getContactDegree();
         float risk = userService.findRiskByUuid(uuid);
-        float halfRisk = superRisk * 1/2;
-
-        if (contactTime > 1) { contactTime = 1; }
-        float calculatedRisk = halfRisk + ((100 - halfRisk) * contactTime);
+        float calculatedRisk = superRisk * 1/2;
 
         if(contactDegree == 0 ||  contactDegree > thisContactDegree) {
             userService.updateContactDegree(uuid, thisContactDegree);
         }
 
         if(risk < calculatedRisk) userService.updateRisk(uuid, calculatedRisk);
-
-    }
-
-    public void notificate(String fcmToken, float risk) {
-
-        String notifications = AndroidPushPeriodicNotifications.PeriodicNotificationJson(fcmToken, risk);
-
-        HttpEntity<String> request = new HttpEntity<>(notifications);
-
-        CompletableFuture<String> pushNotification = androidPushNotificationsService.send(request);
-        CompletableFuture.allOf(pushNotification).join();
-
-        try{
-            String firebaseResponse = pushNotification.get();
-        }
-        catch (InterruptedException e){
-            log.debug("got interrupted!");
-        }
-        catch (ExecutionException e){
-            log.debug("execution error!");
-        }
 
     }
 

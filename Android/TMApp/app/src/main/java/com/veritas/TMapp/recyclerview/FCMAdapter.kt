@@ -7,12 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.veritas.TMapp.R
-import com.veritas.TMapp.server.FCMInfo
 import java.io.FileInputStream
-
-class FCMAdapter(val fcmList: ArrayList<FCMs>) : RecyclerView.Adapter<FCMAdapter.CustomViewHolder>() {
+import java.io.File
+class FCMAdapter(val fcmList : ArrayList<FCMs>) : RecyclerView.Adapter<FCMAdapter.CustomViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.list_fcm, parent, false)

@@ -40,17 +40,6 @@ data class ResponseMsg(
     val data: List<Any>? = null
 )
 
-data class FCMInfo(
-    val id: Long? = null,
-    val uuid: String? = null,
-    val date: String? = null,
-    val time: String? = null,
-    val title: String? = null,
-    val body: String? = null,
-    val risk: Float? = null,
-    val contactDegree: Int? = null
-)
-
 @Entity(tableName = "tb_contacts")
 data class Contacts(
     @PrimaryKey

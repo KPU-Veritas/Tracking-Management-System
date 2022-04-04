@@ -11,7 +11,6 @@ import java.util.List;
 
 public interface InfectedRepository extends JpaRepository<InfectedEntity, String> {
     List<InfectedEntity> findByUuid(String uuid);
-    List<InfectedEntity> findById(Long id);
 
     @Query(value = "SELECT COUNT(*) FROM INFECTED WHERE MANAGER_CHECK = 0", nativeQuery = true)
     long countAllManagerCheckFalse();
