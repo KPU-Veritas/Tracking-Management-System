@@ -21,7 +21,7 @@ public class ContactService {
 
         repository.save(entity);
         log.info("Entity Id : {} is saved.", entity.getId());
-        return repository.findByUuid(entity.getUuid());
+        return retrieve(entity.getUuid());
     }
 
     public List<ContactEntity> update(final ContactEntity entity){

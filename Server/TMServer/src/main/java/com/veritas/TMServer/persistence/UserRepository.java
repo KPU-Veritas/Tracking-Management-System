@@ -28,6 +28,9 @@ public interface UserRepository extends JpaRepository<UserEntity, String> {
     @Query(value = "SELECT FCM_TOKEN FROM USER_ENTITY", nativeQuery = true)
     List<String> findFcmTokenList();
 
+    @Query(value = "SELECT * FROM USER_ENTITY WHERE RISK >= :risk ORDER", nativeQuery = true)
+    List<UserEntity> findOverRisk(@Param("risk") float risk);
+
     @Transactional
     @Modifying
     @Query(value = "UPDATE USER_ENTITY SET FCM_TOKEN = :fcmToken WHERE UUID = :uuid", nativeQuery = true)
