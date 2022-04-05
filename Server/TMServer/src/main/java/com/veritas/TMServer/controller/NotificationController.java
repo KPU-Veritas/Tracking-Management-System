@@ -27,10 +27,13 @@ public class NotificationController {
     @Autowired
     UserService userService;
 
+
+    /*
     @GetMapping(value = "/send")
     public @ResponseBody ResponseEntity<String> send() throws JSONException, InterruptedException{
-        String notifications = AndroidPushPeriodicNotifications.PeriodicNotificationJson("nonono", 50);
-        //1개의 토큰과
+
+        String notifications = AndroidPushPeriodicNotifications.PeriodicNotificationJson();
+        //인자로 UserEntity가 들어가야함
 
         HttpEntity<String> request = new HttpEntity<>(notifications);
 
@@ -51,4 +54,5 @@ public class NotificationController {
 
         return new ResponseEntity<>("Push Notification ERROR!", HttpStatus.BAD_REQUEST);
     }
+    */
 }

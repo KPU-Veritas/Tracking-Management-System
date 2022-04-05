@@ -18,6 +18,10 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+
 
 @Slf4j
 @RestController
@@ -39,7 +43,10 @@ public class WebController {
     private DeviceService deviceService;
 
     @Autowired
-    AndroidPushNotificationService androidPushNotificationsService;
+    private AndroidPushNotificationService androidPushNotificationsService;
+
+    @Autowired
+    private FCMService fcmService;
 
     @Autowired
     private TokenProvider tokenProvider;
@@ -194,6 +201,14 @@ public class WebController {
         }
     }
 
+    @PostMapping("/notificateindividual")
+    public void notificateIndividual(@RequestBody UserDTO userDTO) {
+
+        UserEntity userEntity = userService.findByUuid(userDTO.getUuid());
+        notificate(userEntity, "You are in close COVID19 with a coronavirus patient.", "Your risk is" + userEntity.getRisk() + "%.");
+
+    }
+
     @GetMapping("/userlist")
     public ResponseEntity<?> userList(){
 
@@ -303,7 +318,8 @@ public class WebController {
             List<UserEntity> riskOverList = userService.findOverRisk(risk);
 
             for(int i = 0; i < riskOverList.size(); i++) {
-                notificate(riskOverList.get(i).getFcmToken(), riskOverList.get(i).getRisk());
+                notificate(riskOverList.get(i), "You are the" + riskOverList.get(i).getContactDegree() + "contact with COVID-19.",
+                        "Your risk is" + riskOverList.get(i).getRisk() + "%.");
             }
 
             return null;
@@ -312,14 +328,6 @@ public class WebController {
             ResponseDTO<ContactDTO> response = ResponseDTO.<ContactDTO>builder().error(error).build();
             return ResponseEntity.badRequest().body(response);
         }
-    }
-
-    @GetMapping("/test")
-    public void test() {
-
-        List<InfectedEntity> lst = infectedService.retrieve("001");
-        this.firstCalculation(lst.get(0));
-
     }
 
     public void firstCalculation(InfectedEntity infectedEntity) {
@@ -384,10 +392,9 @@ public class WebController {
 
     }
 
-    public void notificate(String fcmToken, float risk) {
+    public void notificate(UserEntity userEntity, String titleMessage, String bodyMessage) {
 
-        String notifications = AndroidPushPeriodicNotifications.PeriodicNotificationJson(fcmToken, risk);
-
+        String notifications = AndroidPushPeriodicNotifications.PeriodicNotificationJson(userEntity, titleMessage, bodyMessage);
         HttpEntity<String> request = new HttpEntity<>(notifications);
 
         CompletableFuture<String> pushNotification = androidPushNotificationsService.send(request);
@@ -403,6 +410,25 @@ public class WebController {
             log.debug("execution error!");
         }
 
+        LocalTime now = LocalTime.now();
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+
+        String formatedNow = now.format(formatter);
+
+        FCMEntity fcmEntity = new FCMEntity();
+
+        fcmEntity.setUuid(userEntity.getUuid());
+        fcmEntity.setDate(String.valueOf(LocalDate.now()));
+        fcmEntity.setTime(String.valueOf(now));
+        fcmEntity.setTitle(titleMessage);
+        fcmEntity.setBody(bodyMessage);
+        fcmEntity.setRisk(userEntity.getRisk());
+        fcmEntity.setContactDegree(userEntity.getContactDegree());
+        fcmService.create(fcmEntity);
+
+
     }
+
 
 }
