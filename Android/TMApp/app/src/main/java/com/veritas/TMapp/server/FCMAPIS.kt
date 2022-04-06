@@ -13,7 +13,7 @@ import retrofit2.http.Headers
 interface FCMAPIS {
     @GET("/fcm/fcmlist/")
     @Headers("accept: application/json", "content-type: application/json")
-    fun getFcmList():Call<List<FCMInfo>>
+    fun getFcmList():Call<FCMInfoList>
 
     companion object{
         fun create(): FCMAPIS{

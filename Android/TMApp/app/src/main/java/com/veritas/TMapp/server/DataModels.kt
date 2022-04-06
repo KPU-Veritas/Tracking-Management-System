@@ -3,6 +3,7 @@ package com.veritas.TMapp.server
 import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
 // POST
@@ -49,6 +50,11 @@ data class FCMInfo(
     val body: String? = null,
     val risk: Float? = null,
     val contactDegree: Int? = null
+)
+
+class FCMInfoList(
+    @SerializedName("data")
+    val fcmInfoList: List<FCMInfo>
 )
 
 @Entity(tableName = "tb_contacts")

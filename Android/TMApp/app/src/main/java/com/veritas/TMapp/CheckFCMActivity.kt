@@ -10,6 +10,7 @@ import com.veritas.TMapp.databinding.ActivityCheckFcmBinding
 import com.veritas.TMapp.recyclerview.FCMAdapter
 import com.veritas.TMapp.recyclerview.FCMs
 import com.veritas.TMapp.server.FCMInfo
+import com.veritas.TMapp.server.FCMInfoList
 import com.veritas.TMapp.server.ServerSetting.fcmAPIS
 import retrofit2.Call
 import retrofit2.Callback
@@ -24,18 +25,19 @@ class CheckFCMActivity : AppCompatActivity() {
         binding = ActivityCheckFcmBinding.inflate(layoutInflater)
         // getRoot 메서드로 레이아웃 내부의 최상위 위치 뷰의 인스턴스를 활용하여 생성된 뷰를 액티비티에 표시
         setContentView(binding.root)
-        fcmAPIS.getFcmList().enqueue(object: Callback<List<FCMInfo>> {
+        fcmAPIS.getFcmList().enqueue(object: Callback<FCMInfoList> {
             override fun onResponse(
-                call: Call<List<FCMInfo>>,
-                response: Response<List<FCMInfo>>
+                call: Call<FCMInfoList>,
+                response: Response<FCMInfoList>
             ) {
                 if (response.code() == 200) {
-                    fcmInfos = response.body()
+                    fcmInfos = response.body()?.fcmInfoList
+                    Log.d("알림전송받음", "${fcmInfos}")
                 } else {
                     Log.e("FCM", "response.code(): ${response.code()}")
                 }
             }
-            override fun onFailure(call: Call<List<FCMInfo>>, t: Throwable) {
+            override fun onFailure(call: Call<FCMInfoList>, t: Throwable) {
                 Log.e("FCM", t.message.toString())
                 val dialog = AlertDialog.Builder(this@CheckFCMActivity)
                 dialog.setTitle("에러")
@@ -55,6 +57,7 @@ class CheckFCMActivity : AppCompatActivity() {
             val fcmList = arrayListOf(
                 FCMs(R.drawable.fcm, id, uuid, date, time, title, body, risk, contactDegree),
             )
+
 /*            for (i in fcmInfos?.indices!!) {
                 var id = fcmInfos?.get(i)?.id
                 var uuid = fcmInfos?.get(i)?.uuid
