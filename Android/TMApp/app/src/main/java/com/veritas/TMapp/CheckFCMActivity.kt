@@ -32,7 +32,34 @@ class CheckFCMActivity : AppCompatActivity() {
             ) {
                 if (response.code() == 200) {
                     fcmInfos = response.body()?.fcmInfoList
-                    Log.d("알림전송받음", "${fcmInfos}")
+                    Log.d("FCM 리스트 수신", "${fcmInfos}")
+                    var id = fcmInfos?.get(0)?.id.toString()
+                    var uuid = fcmInfos?.get(0)?.uuid.toString()
+                    var date = fcmInfos?.get(0)?.date.toString()
+                    var time = fcmInfos?.get(0)?.time.toString()
+                    var title = fcmInfos?.get(0)?.title.toString()
+                    var body = fcmInfos?.get(0)?.body.toString()
+                    var risk = fcmInfos?.get(0)?.risk.toString()
+                    var contactDegree = fcmInfos?.get(0)?.contactDegree.toString()
+                    val fcmList = arrayListOf(
+                        FCMs(R.drawable.fcm, id, uuid, date, time, title, body, risk, contactDegree),
+                    )
+                    for (i in fcmInfos?.indices!!) {
+                        var id = fcmInfos?.get(i)?.id.toString()
+                        var uuid = fcmInfos?.get(i)?.uuid.toString()
+                        var date = fcmInfos?.get(i)?.date.toString()
+                        var time = fcmInfos?.get(i)?.time.toString()
+                        var title = fcmInfos?.get(i)?.title.toString()
+                        var body = fcmInfos?.get(i)?.body.toString()
+                        var risk = fcmInfos?.get(i)?.risk.toString()
+                        var contactDegree = fcmInfos?.get(i)?.contactDegree.toString()
+                        if (i != 0) {
+                            fcmList.add(FCMs(R.drawable.fcm, id, uuid, date, time, title, body, risk, contactDegree))
+                        }
+                    }
+                    binding.rvFcm.layoutManager = LinearLayoutManager(parent, LinearLayoutManager.VERTICAL, false)
+                    binding.rvFcm.setHasFixedSize(true)
+                    binding.rvFcm.adapter = FCMAdapter(fcmList)
                 } else {
                     Log.e("FCM", "response.code(): ${response.code()}")
                 }
@@ -45,37 +72,5 @@ class CheckFCMActivity : AppCompatActivity() {
                 dialog.show()
             }
         })
-        //try {
-            var id = fcmInfos?.get(0)?.id
-            var uuid = fcmInfos?.get(0)?.uuid
-            var date = fcmInfos?.get(0)?.date
-            var time = fcmInfos?.get(0)?.time
-            var title = fcmInfos?.get(0)?.title
-            var body = fcmInfos?.get(0)?.body
-            var risk = fcmInfos?.get(0)?.risk
-            var contactDegree = fcmInfos?.get(0)?.contactDegree
-            val fcmList = arrayListOf(
-                FCMs(R.drawable.fcm, id, uuid, date, time, title, body, risk, contactDegree),
-            )
-
-/*            for (i in fcmInfos?.indices!!) {
-                var id = fcmInfos?.get(i)?.id
-                var uuid = fcmInfos?.get(i)?.uuid
-                var date = fcmInfos?.get(i)?.date
-                var time = fcmInfos?.get(i)?.time
-                var title = fcmInfos?.get(i)?.title
-                var body = fcmInfos?.get(i)?.body
-                var risk = fcmInfos?.get(i)?.risk
-                var contactDegree = fcmInfos?.get(i)?.contactDegree
-                if (i != 0) {
-                    fcmList.add(FCMs(R.drawable.fcm, id, uuid, date, time, title, body, risk, contactDegree))
-                }
-            }*/
-            binding.rvFcm.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-            binding.rvFcm.setHasFixedSize(true)
-            binding.rvFcm.adapter = FCMAdapter(fcmList)
-        //}catch (e : Exception){
-        //    Toast.makeText(this,"수신한 알림이 없습니다.",Toast.LENGTH_SHORT).show()
-        //}
     }
 }

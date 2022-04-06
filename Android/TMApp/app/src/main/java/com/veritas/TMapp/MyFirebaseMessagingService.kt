@@ -29,7 +29,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService(){
             sendNotification(remoteMessage.notification?.title, remoteMessage.notification!!.body!!)
             if (remoteMessage.notification?.title != null) {
                 Log.d("Message", remoteMessage.notification?.title!! + remoteMessage.notification!!.body!!)
-                writeFile(remoteMessage.notification?.title!!, remoteMessage.notification!!.body!!)
             }
         }
     }
@@ -69,19 +68,5 @@ class MyFirebaseMessagingService : FirebaseMessagingService(){
             notificationManager.createNotificationChannel(channel)
         }
         notificationManager.notify(0 /* ID of notification */, notificationBuilder.build())
-    }
-    fun writeFile(title : String, content : String) {
-        Log.d("확인", "안쪽")
-        var dirPath = "${filesDir.absolutePath}/FCM"
-        var myDir = File("$dirPath")//생성할 디렉토리의 경로를 설정한다.
-        myDir.mkdir()
-        val current = LocalDateTime.now()
-        val formatter = DateTimeFormatter.ofPattern("yyyy년 M월 d일 a H시 m분", Locale.KOREA)
-        val formatted = current.format(formatter)
-        val file = File("$dirPath/$formatted $title.txt")
-        val fos = FileOutputStream(file)
-        var str = content
-        fos.write(str.toByteArray())
-        fos.close()
     }
 }
