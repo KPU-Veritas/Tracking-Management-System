@@ -43,7 +43,7 @@ class CheckFCMActivity : AppCompatActivity() {
                 dialog.show()
             }
         })
-        try {
+        //try {
             var id = fcmInfos?.get(0)?.id
             var uuid = fcmInfos?.get(0)?.uuid
             var date = fcmInfos?.get(0)?.date
@@ -55,7 +55,7 @@ class CheckFCMActivity : AppCompatActivity() {
             val fcmList = arrayListOf(
                 FCMs(R.drawable.fcm, id, uuid, date, time, title, body, risk, contactDegree),
             )
-            for (i in fcmInfos?.indices!!) {
+/*            for (i in fcmInfos?.indices!!) {
                 var id = fcmInfos?.get(i)?.id
                 var uuid = fcmInfos?.get(i)?.uuid
                 var date = fcmInfos?.get(i)?.date
@@ -67,12 +67,12 @@ class CheckFCMActivity : AppCompatActivity() {
                 if (i != 0) {
                     fcmList.add(FCMs(R.drawable.fcm, id, uuid, date, time, title, body, risk, contactDegree))
                 }
-            }
+            }*/
             binding.rvFcm.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
             binding.rvFcm.setHasFixedSize(true)
             binding.rvFcm.adapter = FCMAdapter(fcmList)
-        }catch (e : Exception){
-            Toast.makeText(this,"수신한 알림이 없습니다.",Toast.LENGTH_SHORT).show()
-        }
+        //}catch (e : Exception){
+        //    Toast.makeText(this,"수신한 알림이 없습니다.",Toast.LENGTH_SHORT).show()
+        //}
     }
 }
