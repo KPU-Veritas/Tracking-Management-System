@@ -3,7 +3,7 @@ import {
     Button,
     Container,
   } from "@material-ui/core";
-  import { call, } from "./service/ApiService";
+import { call, } from "./service/ApiService";
 
 class DeviceManagement extends React.Component {
     constructor(props) {
@@ -21,10 +21,27 @@ class DeviceManagement extends React.Component {
     render() {
         const device = this.state.device;
         return (
-            <Container>
-                <ul>아이디 : {device.id}, 장소 : {device.place} {<Button onClick={this.deleteDevice}>삭제</Button>}</ul>
-            </Container>
+                <Container>
+                    <table id="list">
+                        <thead>
+                            <tr>
+                                <th>아이디</th>
+                                <th>장소</th>
+                                <th></th>  
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{device.id}</td>
+                                <td>{device.place}</td>
+                                <td>{<Button onClick={this.deleteDevice}>삭제</Button>}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                        
+                        <br></br>
             
+                </Container>
         );
     }
 }

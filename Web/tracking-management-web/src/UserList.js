@@ -20,37 +20,30 @@ class UserList extends React.Component {
     render() {
         const user = this.state.user;
         return (
-            <Container>
-            <table id="list">
+        <Container>
+        <table id="list">
             <thead>
                 <tr>
                     <th>이름</th>
                     <th>E-Mail</th>
                     <th>전화번호</th>
                     <th>주소</th>
-                    <th>알림</th>
+                    <th></th>    
                 </tr>
             </thead>
             <tbody>
-                <th>{user.username}</th>
-                <th>{user.email}</th>
-                <th>{user.phoneNumber}</th>
-                <th>{user.detailAddress}</th>
-                <th>{<Button onClick={this.pushNotification}>알림</Button>}</th>
+                <tr>
+                    <td>{user.username}</td>
+                    <td>{user.email}</td>
+                    <td>{user.phoneNumber}</td>
+                    <td>{user.detailAddress}</td>
+                    <td>{<Button onClick={this.pushNotification}>알림</Button>}</td>
+                </tr>
             </tbody>
         </table>
             
             <br></br>
-            
-            <select name="search_data">
-                <option value="" selected="selected">선택</option>
-                <option name="name" value="이름">이름</option>
-                <option name="email" value="회사원">E-Mail</option>
-                <option name="pnumber" value="전화번호">전화번호</option>
-                <option name="address" value="주소">주소</option>
-            </select>
 
-            <input type="text"></input><button name="search">검색</button> 
             </Container>
             
         );

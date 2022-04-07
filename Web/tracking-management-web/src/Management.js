@@ -8,7 +8,7 @@ import { call } from "./service/ApiService";
 class Managerment extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { warningLevel : null};
+        this.state = { warningLevel : 0};
     }
 
     componentDidMount() {
@@ -26,6 +26,7 @@ class Managerment extends React.Component {
         call("/system/setlevel", "POST", {id : null,  warningLevel : this.state.warningLevel} ).then((response) =>
         this.setState()
         );
+        alert("자동 알림을 전송할 위험도를 설정했습니다.");
     }
 
     render() {

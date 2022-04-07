@@ -37,12 +37,14 @@ class App extends React.Component {
       notice : 0,
       search : null,
       searchDate : new Date(),
-      endDate : new Date()
+      endDate : new Date(),
     };
+    this.searchUser = this.searchUser.bind(this);
+    this.searchContact = this.searchContact.bind(this);
+    this.updateCount = this.updateCount.bind(this);
   }
 
   componentDidMount() {
-    this.updateCount = this.updateCount.bind(this);
     //setInterval(this.updateCount, 1000);
   }
 
@@ -88,25 +90,33 @@ class App extends React.Component {
     );
   }
 
-  searchUser = (e) => {
+  searchUserKeyboard = (e) => {
     if (e.key === "Enter") {
+      this.searchUser();
+    }
+  }
+
+  searchUser() {
       this.setState({ userList : 0 })
       call("/system/searchuser", "POST", this.state.search ).then((response) =>
       this.setState({ userList: response.data, search : null})
       );
+  }
+
+  searchContactKeyboard = (e) => {
+    if (e.key === "Enter") {
+      this.searchContact();
     }
   }
 
-  searchContact = (e) => {
-    if (e.key === "Enter") {
-      this.setState({ contactList : 0})
-      var moment = require('moment');
-      const date = moment(this.state.searchDate).format('YY-MM-DD');
-      const date2 = moment(this.state.endDate).format('YY-MM-DD');
-      call("/system/searchcontact", "POST", { date : date, date2 : date2, uuid : this.state.search } ).then((response) =>
-      this.setState({ contactList: response.data, search : null, searchDate : new Date(), endDate : new Date()})
-      );
-    }
+  searchContact() {
+    this.setState({ contactList : 0})
+    var moment = require('moment');
+    const date = moment(this.state.searchDate).format('YY-MM-DD');
+    const date2 = moment(this.state.endDate).format('YY-MM-DD');
+    call("/system/searchcontact", "POST", { date : date, date2 : date2, uuid : this.state.search } ).then((response) =>
+    this.setState({ contactList: response.data, search : null, searchDate : new Date(), endDate : new Date()})
+    );
   }
 
   mainPage = () => {
@@ -166,16 +176,16 @@ class App extends React.Component {
             />
           ))}
         </List>
-        <InputBase
-            inputProps={{
+        <p>이름 입력</p>
+        <input 
+            inputprops={{
               "aria-label": "naked",
             }}
             type="text"
             value={this.state.search|| ''}
-            fullWidth={true}
+            fullwidth="true"
             onChange={this.editEventHandler}
-            onKeyPress={this.searchUser}
-          />
+            onKeyPress={this.searchUserKeyboard}></input><button name="search" onClick={this.searchUser}>검색</button> 
       </Paper>
     );
 
@@ -191,7 +201,6 @@ class App extends React.Component {
         </List>
         <p>시작 날짜</p>
         <DatePicker
-        selectRange={true}
         selected={this.state.searchDate}
         onChange={(date) =>
           this.setState({
@@ -200,24 +209,22 @@ class App extends React.Component {
         } />
         <p>끝 날짜</p>
         <DatePicker
-        selectRange={true}
         selected={this.state.endDate}
         onChange={(date) =>
           this.setState({
             endDate: date,
           })
         } />
-        <p>uuid 입력 : </p>
-        <InputBase
-            inputProps={{
+        <p>uuid 입력</p>
+        <input 
+            inputprops={{
               "aria-label": "naked",
             }}
             type="text"
             value={this.state.search|| ''}
-            fullWidth={true}
+            fullwidth="true"
             onChange={this.editEventHandler}
-            onKeyPress={this.searchContact}
-          />
+            onKeyPress={this.searchContactKeyboard}></input><button name="search" onClick={this.searchContact}>검색</button> 
       </Paper>
     );
 
