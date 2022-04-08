@@ -11,6 +11,7 @@ import retrofit2.http.Headers
 import retrofit2.http.POST
 import retrofit2.http.PUT
 
+// 사용자 요청을 관리하는 REST API
 interface SignAPIS {
     @POST("/auth/signin/")  // 로그인 요청
     @Headers("accept: application/json", "content-type: application/json")
@@ -24,7 +25,7 @@ interface SignAPIS {
         @Body jsonParams: SignupModel
     ): Call<ResponseSignupModel>
 
-    @PUT("/auth/addFcmToken/")
+    @PUT("/auth/addFcmToken/")  // FCM Token 갱신 시 요청
     @Headers("accept: application/json", "content-type: application/json")
     fun addFcmToken(
         @Body jsonParams: FcmToken

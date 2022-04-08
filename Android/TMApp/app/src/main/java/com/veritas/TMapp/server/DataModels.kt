@@ -6,19 +6,18 @@ import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
-// POST
-data class SigninModel(     // 로그인 시 정보를 보낼 때 사용
+data class SigninModel(     // 로그인 시 body 정보 클래스
     val email: String? = null,
     val password: String? = null
 )
 
-data class ResponseSigninModel(   // 로그인 요청 후 응답을 받을 때 사용
+data class ResponseSigninModel(   // 로그인 시 응답 클래스
     val token: String? = null,
     val uuid: String? = null,
     val username: String? = null
 )
 
-data class SignupModel( // 회원가입 시 정보를 보낼 때 사용
+data class SignupModel( // 회원가입 시 body 정보 클래스
     val username: String? = null,
     val email: String? = null,
     val password: String? = null,
@@ -27,21 +26,21 @@ data class SignupModel( // 회원가입 시 정보를 보낼 때 사용
     val detailAddress: String? = null
 )
 
-data class ResponseSignupModel(
+data class ResponseSignupModel( // 회원가입 시 응답 클래스
     val email: String?
 )
 
-data class FcmToken(
+data class FcmToken(    // FCM 토큰 값을 갱신 시 body 정보 클래스
     val uuid: String? = null,
     val fcmToken: String? = null
 )
 
-data class ResponseMsg(
+data class ResponseMsg( // 응답 메시지 클래스
     val error: String? = null,
     val data: List<Any>? = null
 )
 
-data class FCMInfo(
+data class FCMInfo( // FCM 알림 수신 시 body 정보 클래스
     val id: Long? = null,
     val uuid: String? = null,
     val date: String? = null,
@@ -57,7 +56,7 @@ class FCMInfoList(
     val fcmInfoList: List<FCMInfo>
 )
 
-@Entity(tableName = "tb_contacts")
+@Entity(tableName = "tb_contacts")  // 접촉 기록을 저장하는 테이블, RoomDB 사용
 data class Contacts(
     @PrimaryKey
     var contactTargetUuid: String,
