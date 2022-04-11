@@ -28,7 +28,7 @@ public interface UserRepository extends JpaRepository<UserEntity, String> {
     @Query(value = "SELECT FCM_TOKEN FROM USER_ENTITY", nativeQuery = true)
     List<String> findFcmTokenList();
 
-    @Query(value = "SELECT * FROM USER_ENTITY WHERE RISK >= :risk ORDER", nativeQuery = true)
+    @Query(value = "SELECT * FROM USER_ENTITY WHERE RISK >= :risk", nativeQuery = true)
     List<UserEntity> findOverRisk(@Param("risk") float risk);
 
 
@@ -47,4 +47,16 @@ public interface UserRepository extends JpaRepository<UserEntity, String> {
     @Modifying
     @Query(value = "UPDATE USER_ENTITY SET CONTACT_DEGREE = :contactdegree WHERE UUID = :uuid", nativeQuery = true)
     int updateContactDegree(@Param("uuid") String uuid, @Param("contactdegree") int contactDegree);
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE USER_ENTITY SET CONTACT_DEGREE = 0 WHERE CONTACT_DEGREE > 0", nativeQuery = true)
+    int resetContactDegree();
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE USER_ENTITY SET RISK = 0 WHERE RISK > 0", nativeQuery = true)
+    int resetRisk();
+
+
 }

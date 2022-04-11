@@ -45,7 +45,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    //setInterval(this.updateCount, 1000);
+    //setInterval(this.updateCount, 10000);
   }
 
   updateCount() {
@@ -201,6 +201,7 @@ class App extends React.Component {
         </List>
         <p>시작 날짜</p>
         <DatePicker
+        variant="outlined"
         selected={this.state.searchDate}
         onChange={(date) =>
           this.setState({
@@ -209,6 +210,7 @@ class App extends React.Component {
         } />
         <p>끝 날짜</p>
         <DatePicker
+        variant="outlined"
         selected={this.state.endDate}
         onChange={(date) =>
           this.setState({
@@ -242,7 +244,7 @@ class App extends React.Component {
           <Link to="./adddevice">
             <Button>장치추가</Button>
           </Link>
-          </Grid>
+        </Grid>
       </Paper>
 
     var infectedList = this.state.infectedList.length > 0 && (

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -140,7 +141,7 @@ public class WebController {
 
     @PostMapping("/searchuser")
     public ResponseEntity<?> searchUser(@RequestBody String name) {
-
+        log.info(name);
         name = name.replaceAll("\"", "");
 
         try {
@@ -197,6 +198,35 @@ public class WebController {
         }  catch (Exception e) {
             String error = e.getMessage();
             ResponseDTO<WebDTO> response = ResponseDTO.<WebDTO>builder().error(error).build();
+            return ResponseEntity.badRequest().body(response);
+        }
+    }
+
+    @PostMapping("/addinfected")
+    public ResponseEntity<?> createInfected(@RequestBody InfectedDTO dto){
+        try{
+            log.info(String.valueOf(dto));
+            InfectedEntity entity = InfectedDTO.infectedEntity(dto);
+            entity.setId(null);
+            entity.setManagerCheck(true);
+            List<InfectedEntity> entities = infectedService.create(entity);
+            List<InfectedDTO> dtos = entities.stream().map(InfectedDTO::new).collect(Collectors.toList());
+            ResponseDTO<InfectedDTO> response = ResponseDTO.<InfectedDTO>builder().data(dtos).build();
+
+            firstCalculation(entities.get(0));
+
+            long risk = webService.getLevel();
+            List<UserEntity> riskOverList = userService.findOverRisk(risk);
+
+            for(int i = 0; i < riskOverList.size(); i++) {
+                notificate(riskOverList.get(i), "You are the" + riskOverList.get(i).getContactDegree() + "contact with COVID-19.",
+                        "Your risk is" + riskOverList.get(i).getRisk() + "%.");
+            }
+
+            return ResponseEntity.ok(response);
+        }catch (Exception e){
+            String error = e.getMessage();
+            ResponseDTO<InfectedDTO> response = ResponseDTO.<InfectedDTO>builder().error(error).build();
             return ResponseEntity.badRequest().body(response);
         }
     }
@@ -334,15 +364,16 @@ public class WebController {
         ArrayList<ContactEntity> contactList = new ArrayList<ContactEntity>(contactService.findFirstContactList(infectedEntity.getUuid(), infectedEntity.getEstimatedDate()));
         ArrayList<ContactEntity> nextList = new ArrayList<ContactEntity>();
         ArrayList<String> duplicate = new ArrayList<String>();
+        userService.reset();
 
         for (int i = 0; i < contactList.size(); ++i) {
             ContactEntity entity = contactList.get(i);
-            if(!duplicate.contains(entity.getContactTargetUuid())) {
+            if (!duplicate.contains(entity.getContactTargetUuid())) {
                 duplicate.add(entity.getContactTargetUuid());
                 nextList.add(entity);
             }
             this.riskCalculation(entity, 1, 100);
-            log.info("do risk uuid : " + entity.getContactTargetUuid() + "  contactDegree :" + 1);
+
         }
 
         for (int j = 0; j < nextList.size(); ++j) this.continuousCalculation(nextList.get(j), 2);
@@ -362,7 +393,6 @@ public class WebController {
                 nextList.add(entity);
             }
             this.riskCalculation(entity, contactDegree, superRisk);
-            log.info("do risk uuid : " + entity.getContactTargetUuid() + "  contactDegree :" + contactDegree);
         }
 
         for (int j = 0; j < nextList.size(); ++j) {
@@ -376,13 +406,13 @@ public class WebController {
 
     public void riskCalculation(ContactEntity entity, int thisContactDegree, float superRisk) {
         String uuid = entity.getContactTargetUuid();
-        long contactTime = entity.getContactTime() / 10800;
+        float contactTime = (float)entity.getContactTime() / 10800;
         int contactDegree  = userService.findByUuid(uuid).getContactDegree();
         float risk = userService.findRiskByUuid(uuid);
         float halfRisk = superRisk * 1/2;
 
         if (contactTime > 1) { contactTime = 1; }
-        float calculatedRisk = halfRisk + ((100 - halfRisk) * contactTime);
+        float calculatedRisk = halfRisk + (halfRisk * contactTime);
 
         if(contactDegree == 0 ||  contactDegree > thisContactDegree) {
             userService.updateContactDegree(uuid, thisContactDegree);

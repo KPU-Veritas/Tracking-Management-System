@@ -8,6 +8,7 @@ import { BrowserRouter as Router, Switch, Route} from "react-router-dom";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 import AddDevice from "./AddDevice";
+import AddInfected from "./AddInfected";
 
 
 class AppRouter extends React.Component {
@@ -25,6 +26,9 @@ class AppRouter extends React.Component {
               </Route>
               <Route path="/adddevice">
                 <AddDevice />
+              </Route>
+              <Route path="/addinfected/:uuid">
+                <AddInfected />
               </Route>
               <Route path="/">
                 <App />

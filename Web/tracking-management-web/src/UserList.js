@@ -4,6 +4,8 @@ import {
     Container,
   } from "@material-ui/core";
 import { call, } from "./service/ApiService";
+import { Link } from 'react-router-dom';
+
 
 class UserList extends React.Component {
     constructor(props) {
@@ -19,25 +21,33 @@ class UserList extends React.Component {
 
     render() {
         const user = this.state.user;
+        const link = './addinfected/' + user.uuid;
         return (
         <Container>
         <table id="list">
             <thead>
                 <tr>
+                    <th>UUID</th>
                     <th>이름</th>
                     <th>E-Mail</th>
                     <th>전화번호</th>
                     <th>주소</th>
+                    <th></th>
                     <th></th>    
                 </tr>
             </thead>
             <tbody>
                 <tr>
+                    <td>{user.uuid}</td>
                     <td>{user.username}</td>
                     <td>{user.email}</td>
                     <td>{user.phoneNumber}</td>
                     <td>{user.detailAddress}</td>
-                    <td>{<Button onClick={this.pushNotification}>알림</Button>}</td>
+                    <td>{<Button onClick={this.pushNotification}>경고전송</Button>}</td>
+                    <>
+                    <td>{<Link to={link}>
+                    <Button>확진</Button></Link>}</td>
+                    </>
                 </tr>
             </tbody>
         </table>
