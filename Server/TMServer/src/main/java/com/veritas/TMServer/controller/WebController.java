@@ -1,5 +1,6 @@
 package com.veritas.TMServer.controller;
 
+import com.google.protobuf.StringValue;
 import com.veritas.TMServer.dto.*;
 import com.veritas.TMServer.model.*;
 import com.veritas.TMServer.security.TokenProvider;
@@ -323,8 +324,6 @@ public class WebController {
 
     }
 
-
-
     @GetMapping("/getlevel")
     public int getLevel() {
         try {
@@ -407,20 +406,23 @@ public class WebController {
     public void riskCalculation(ContactEntity entity, int thisContactDegree, float superRisk) {
         String uuid = entity.getContactTargetUuid();
         float contactTime = (float)entity.getContactTime() / 10800;
-        int contactDegree  = userService.findByUuid(uuid).getContactDegree();
+        int contactDegree  = userService.findContactDegreeByUuid(uuid);
         float risk = userService.findRiskByUuid(uuid);
         float halfRisk = superRisk * 1/2;
+        log.info("####every"+String.valueOf(contactDegree));
 
         if (contactTime > 1) { contactTime = 1; }
         float calculatedRisk = halfRisk + (halfRisk * contactTime);
 
         if(contactDegree == 0 ||  contactDegree > thisContactDegree) {
+            log.info("####uuid : gogo" + uuid + "  cd : "+String.valueOf(contactDegree) + "  tcd : "+String.valueOf(thisContactDegree));
             userService.updateContactDegree(uuid, thisContactDegree);
         }
 
         if(risk < calculatedRisk) userService.updateRisk(uuid, calculatedRisk);
 
     }
+
 
     public void notificate(UserEntity userEntity, String titleMessage, String bodyMessage) {
 
