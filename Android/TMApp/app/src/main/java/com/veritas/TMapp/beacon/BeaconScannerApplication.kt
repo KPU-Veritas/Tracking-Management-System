@@ -78,7 +78,7 @@ class BeaconScannerApplication: Application() {
             Log.d(TAG, "$beacon about ${beacon.distance} meters away")
         }
     }
-
+    // 비콘 기능 포그라운드 구현 함수
     private fun sendNotification() {
         val builder = NotificationCompat.Builder(this, "beacon-ref-notification-id")
             .setContentTitle("Beacon Reference Application")// 알림 제목

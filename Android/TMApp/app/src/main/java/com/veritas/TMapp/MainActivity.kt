@@ -5,7 +5,6 @@ import android.app.AlertDialog
 import android.bluetooth.BluetoothAdapter
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.location.LocationManager
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -23,6 +22,7 @@ import com.veritas.TMapp.databinding.ActivityMainBinding
 import com.veritas.TMapp.fragment.MainFragment
 import com.veritas.TMapp.fragment.ContactInfoFragment
 import com.veritas.TMapp.fragment.OptionFragment
+import com.veritas.TMapp.fragment.PagerAdapter
 import com.veritas.TMapp.server.FcmToken
 import com.veritas.TMapp.server.ResponseMsg
 import com.veritas.TMapp.server.ResponseSigninModel
@@ -41,7 +41,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var beaconScannerApplication: BeaconScannerApplication
     var db: AppDatabase?= null
     private var dbController: DBController? = null
-    var user: ResponseSigninModel? = null
     private var bluetoothAdapter : BluetoothAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -91,18 +90,19 @@ class MainActivity : AppCompatActivity() {
         checkPermissions()
     }
     // 비콘을 모니터링하고 모니터링 결과를 로그로 출력
+    // 비콘 감지 다이얼로그 주석 처리
     private val monitoringObserver = Observer<Int> { state ->
-        var dialogTitle = "Beacons detected"
-        var dialogMessage = "didEnterRegionEvent has fired"
+        //var dialogTitle = "Beacons detected"
+        //var dialogMessage = "didEnterRegionEvent has fired"
         var stateString = "inside"
-        if (state == MonitorNotifier.OUTSIDE) {
+        /*if (state == MonitorNotifier.OUTSIDE) {
             dialogTitle = "No beacons detected"
             dialogMessage = "didExitRegionEvent has fired"
             stateString = "outside"
-        }
+        }*/
         Log.d(TAG, "monitoring state changed to : $stateString")
 
-        showDialogs(dialogTitle,dialogMessage,null)
+        //showDialogs(dialogTitle,dialogMessage,null)
     }
 
     private val rangingObserver = Observer<Collection<Beacon>> { beacons ->
@@ -131,10 +131,10 @@ class MainActivity : AppCompatActivity() {
     private fun checkPermissions() {
         // basepermissions are for M and higher
         var permissions = arrayOf( Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_BACKGROUND_LOCATION)
-        var permissionRationale ="This app needs both fine location permission and background location permission to detect beacons in the background.  Please grant both now."
+        //var permissionRationale ="This app needs both fine location permission and background location permission to detect beacons in the background.  Please grant both now."
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
             permissions = arrayOf( Manifest.permission.ACCESS_FINE_LOCATION)
-            permissionRationale ="This app needs fine location permission and nearby devices permission to detect beacons.  Please grant this now."
+            //permissionRationale ="This app needs fine location permission and nearby devices permission to detect beacons.  Please grant this now."
         }
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.R) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
@@ -146,7 +146,7 @@ class MainActivity : AppCompatActivity() {
                     Manifest.permission.BLUETOOTH_CONNECT
                 )
             }
-            permissionRationale ="This app needs both fine location permission and nearby devices permission to detect beacons.  Please grant both now."
+            //permissionRationale ="This app needs both fine location permission and nearby devices permission to detect beacons.  Please grant both now."
         }
         var allGranted = true
         for (permission in permissions) {
@@ -154,22 +154,26 @@ class MainActivity : AppCompatActivity() {
         }
         if (!allGranted) {
             if (!shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
-                showDialogs(
+                /*showDialogs(
                     "This app needs permissions to detect beacons",
                     permissionRationale,
                     requestPermissions(
                         permissions,
                         PERMISSION_REQUEST_FINE_LOCATION
                     )
+                )*/
+                requestPermissions(
+                    permissions,
+                    PERMISSION_REQUEST_FINE_LOCATION
                 )
             }
-            else {
+            /*else {
                 showDialogs(
                     "Functionality limited",
                     "Since location and device permissions have not been granted, this app will not be able to discover beacons.  Please go to Settings -> Applications -> Permissions and grant location and device discovery permissions to this app.",
                     null
                 )
-            }
+            }*/
         }
         else {
             if (Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
@@ -177,25 +181,30 @@ class MainActivity : AppCompatActivity() {
                     != PackageManager.PERMISSION_GRANTED
                 ) {
                     if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_BACKGROUND_LOCATION)) {
-                        showDialogs(
+                        /*showDialogs(
                             "This app needs background location access",
                             "Please grant location access so this app can detect beacons in the background.",
                             requestPermissions(
                                 arrayOf(Manifest.permission.ACCESS_BACKGROUND_LOCATION),
                                 PERMISSION_REQUEST_BACKGROUND_LOCATION
                             )
+                        )*/
+                        requestPermissions(
+                            arrayOf(Manifest.permission.ACCESS_BACKGROUND_LOCATION),
+                            PERMISSION_REQUEST_BACKGROUND_LOCATION
                         )
-                    } else {
+                    } /*else {
                         showDialogs(
                             "Functionality limited",
                             "Since background location access has not been granted, this app will not be able to discover beacons in the background.  Please go to Settings -> Applications -> Permissions and grant background location access to this app.",
                             null
                         )
-                    }
+                    }*/
                 }
             }
         }
     }
+    /* 다이얼로그 출력 함수 주석 처리
     private fun showDialogs(title:String, msg:String, dismissListener: Unit?){
         val builder = AlertDialog.Builder(this)
         builder.setTitle(title)
@@ -203,7 +212,7 @@ class MainActivity : AppCompatActivity() {
         builder.setPositiveButton(android.R.string.ok, null)
         builder.setOnDismissListener{dismissListener}
         builder.show()
-    }
+    }*/
 
     private fun saveFcmToken(){
         // fcm 토큰 값 받아오기 나중에 서버로 전송하는 방식으로 교체할 예정

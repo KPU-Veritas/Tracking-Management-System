@@ -31,7 +31,7 @@ class MainFragment(
         activity?.let {
             beaconSensorManager.init(formatUUIDForBeacon(processedUuid!!), it.applicationContext)
         }
-
+        // 비콘 센서 제어
         binding.btnStart.setOnClickListener {
             if (flag) {
                 beaconSensorManager.sensorControl(true)
@@ -48,7 +48,6 @@ class MainFragment(
                 dbController.sendAllContacts(db)
             }
         }
-
         return binding.root
     }
 }

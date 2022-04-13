@@ -1,4 +1,4 @@
-package com.veritas.TMapp
+package com.veritas.TMapp.fragment
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager

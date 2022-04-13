@@ -1,4 +1,4 @@
-package com.veritas.TMapp
+package com.veritas.TMapp.fcm
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -11,16 +11,12 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import java.io.File
-import java.io.FileOutputStream
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-import java.util.*
+import com.veritas.TMapp.CheckFCMActivity
+import com.veritas.TMapp.R
 
 class MyFirebaseMessagingService : FirebaseMessagingService(){
     private val TAG: String = this.javaClass.simpleName
-
+    // FCM 메시지 수신 함수
     override fun onMessageReceived(remoteMessage: RemoteMessage)
     {
         super.onMessageReceived(remoteMessage)
