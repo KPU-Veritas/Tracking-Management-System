@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Repository
-public interface ContactRepository extends JpaRepository<ContactEntity, String> {
+public interface ContactRepository extends JpaRepository<ContactEntity, String> {   // 접촉 기록 Table 사용 Query 문
     List<ContactEntity> findByUuid(String uuid);
 
     @Query(value = "SELECT * FROM CONTACT WHERE UUID = :uuid AND DATE BETWEEN :date AND :date2 ORDER BY DATE ASC, FIRST_TIME ASC", nativeQuery = true)

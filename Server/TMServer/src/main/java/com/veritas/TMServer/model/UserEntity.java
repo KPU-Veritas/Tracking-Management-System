@@ -14,7 +14,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = "email")})
-public class UserEntity {
+public class UserEntity {   // 사용자 entity
     @Id
     @GeneratedValue(generator="system-uuid")
     @GenericGenerator(name="system-uuid", strategy = "uuid")

@@ -14,7 +14,7 @@ import javax.persistence.*;
 @Data
 @Entity
 @Table(name = "Infected")
-public class InfectedEntity {
+public class InfectedEntity {   // 감염 정보 entity
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;

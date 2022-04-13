@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Data
 @Entity
 @Table(name = "FCMTable")
-public class FCMEntity {
+public class FCMEntity {    // FCM 알림 기록 entity
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;

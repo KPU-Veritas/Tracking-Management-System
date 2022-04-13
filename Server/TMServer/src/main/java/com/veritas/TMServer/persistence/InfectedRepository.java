@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-public interface InfectedRepository extends JpaRepository<InfectedEntity, String> {
+public interface InfectedRepository extends JpaRepository<InfectedEntity, String> {     // 감염 정보 Table 사용 Query 문
     List<InfectedEntity> findByUuid(String uuid);
     List<InfectedEntity> findById(Long id);
 

@@ -20,10 +20,11 @@ import java.io.IOException;
 
 @Slf4j
 @Component
-public class JwtAuthenticationFilter extends OncePerRequestFilter {
+public class JwtAuthenticationFilter extends OncePerRequestFilter { // JWT 인증 방식 필터
     @Autowired
     private TokenProvider tokenProvider;
 
+    //REST 요청이 오면 필터를 거쳐 사용자를 인증한다.
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {

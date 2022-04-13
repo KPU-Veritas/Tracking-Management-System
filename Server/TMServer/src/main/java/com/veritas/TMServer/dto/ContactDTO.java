@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class ContactDTO {
+public class ContactDTO {   // 접촉 기록 DTO
     private Long id;
     private String uuid;
     private String contactTargetUuid;

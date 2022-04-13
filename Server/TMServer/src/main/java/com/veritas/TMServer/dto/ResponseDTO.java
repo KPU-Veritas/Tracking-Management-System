@@ -11,7 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class ResponseDTO<T> {
+public class ResponseDTO<T> {   // REST API 응답 시 사용하는 DTO
     private String error;
     private List<T> data;
 }

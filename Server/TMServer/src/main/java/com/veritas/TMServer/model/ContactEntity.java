@@ -14,7 +14,7 @@ import javax.persistence.*;
 @Data
 @Entity
 @Table(name = "Contact")
-public class ContactEntity {
+public class ContactEntity {    // 접촉 정보 Entity
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;

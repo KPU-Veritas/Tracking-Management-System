@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDTO {
+public class UserDTO {  // 사용자 DTO
     private String token;
     private String uuid;
     private String username;

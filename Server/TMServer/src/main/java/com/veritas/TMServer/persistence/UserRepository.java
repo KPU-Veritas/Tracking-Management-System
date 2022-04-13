@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Repository
-public interface UserRepository extends JpaRepository<UserEntity, String> {
+public interface UserRepository extends JpaRepository<UserEntity, String> { // 사용자 정보 Table 사용 Query 문
     UserEntity findByEmail(String email);
     UserEntity findByUuid(String uuid);
     Boolean existsByEmail(String email);

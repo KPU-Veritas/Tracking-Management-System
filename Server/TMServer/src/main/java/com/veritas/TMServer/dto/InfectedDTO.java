@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class InfectedDTO {
+public class InfectedDTO {  // 감염 정보 DTO
     private Long id;
     private String uuid;
     private String judgmentDate;

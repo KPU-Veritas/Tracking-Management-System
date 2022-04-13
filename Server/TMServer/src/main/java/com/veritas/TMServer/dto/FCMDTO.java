@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class FCMDTO {
+public class FCMDTO { // FCM 알림 기록 DTO
     private Long id;
     private String uuid;
     private String date;
