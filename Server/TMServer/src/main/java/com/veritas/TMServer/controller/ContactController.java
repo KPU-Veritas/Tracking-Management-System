@@ -14,12 +14,12 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/contact")
-public class ContactController {
+public class ContactController {    // 접촉기록 컨트롤러
     @Autowired
     private ContactService service;
 
     @PostMapping("/recordcontact")
-    public ResponseEntity<?> createContact(
+    public ResponseEntity<?> createContact( // 접촉 기록을 요청 받는 url
             @AuthenticationPrincipal String uuid,
             @RequestBody ContactDTO dto){
         try {
@@ -38,7 +38,7 @@ public class ContactController {
     }
 
     @DeleteMapping("/deletecontact")
-    public ResponseEntity<?> deleteContact(
+    public ResponseEntity<?> deleteContact( // 접촉 기록을 지우는 url
             @AuthenticationPrincipal String uuid,
             @RequestBody ContactDTO dto
     ){

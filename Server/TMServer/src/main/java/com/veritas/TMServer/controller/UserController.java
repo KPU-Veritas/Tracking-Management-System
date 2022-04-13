@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/auth")
 //@CrossOrigin(origins = "http://localhost:3000")     //CORS 규정 위반 에러 수정
-public class UserController {
+public class UserController {   // 사용자의 정보 컨트롤러
     @Autowired
     private UserService userService;
 
@@ -32,7 +32,7 @@ public class UserController {
     private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@RequestBody UserDTO userDTO){
+    public ResponseEntity<?> registerUser(@RequestBody UserDTO userDTO){    // 회원가입 할 때 사용하는 url
         try {
             // 요청을 이용해 저장할 사용자 만들기
             UserEntity user = UserEntity.builder()
@@ -59,7 +59,7 @@ public class UserController {
     }
 
     @PostMapping("/signin")
-    public ResponseEntity<?> authenticate(@RequestBody UserDTO userDTO){
+    public ResponseEntity<?> authenticate(@RequestBody UserDTO userDTO){    // 로그인 할 때 사용하는 url
         UserEntity user = userService.getByCredentials(userDTO.getEmail(), userDTO.getPassword(), passwordEncoder);
 
         if(user != null) {
@@ -79,7 +79,7 @@ public class UserController {
     }
 
     @PutMapping("/addFcmToken")
-    public ResponseEntity<?> addFcmToekn(@RequestBody UserDTO userDTO){
+    public ResponseEntity<?> addFcmToekn(@RequestBody UserDTO userDTO){ // 사용자의 fcm token 정보 갱신 요청 시 필요한 url
         userService.updateFcmToken(userDTO.getUuid(), userDTO.getFcmToken());
         String msg = "fcmToken saved";
         ResponseDTO<String> response = ResponseDTO.<String>builder().data(Collections.singletonList(msg)).build();

@@ -11,7 +11,7 @@ import org.springframework.web.filter.CorsFilter;
 
 @EnableWebSecurity
 @Slf4j
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+public class WebSecurityConfig extends WebSecurityConfigurerAdapter {   // 보안을 위해 JWT를 이용해 사용자 인증 방식을 설정한다.
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
 

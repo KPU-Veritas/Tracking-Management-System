@@ -14,11 +14,11 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/infected")
-public class InfectedController {
+public class InfectedController {   // 감염 정보 컨트롤러
     @Autowired
     private InfectedService service;
     @PostMapping("/addinfected")
-    public ResponseEntity<?> createInfected(
+    public ResponseEntity<?> createInfected(    // 감염 정보를 등록할 때 사용하는 url
             @AuthenticationPrincipal String uuid,
             @RequestBody InfectedDTO dto){
         try{
@@ -37,7 +37,7 @@ public class InfectedController {
     }
 
     @DeleteMapping("/deleteinfected")
-    public ResponseEntity<?> deleteInfected(
+    public ResponseEntity<?> deleteInfected(    // 감염 정보를 지울 때 사용하는 url
             @AuthenticationPrincipal String uuid,
             @RequestBody InfectedDTO dto
     ){

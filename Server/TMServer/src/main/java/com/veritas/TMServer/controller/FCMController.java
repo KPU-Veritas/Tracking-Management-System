@@ -14,12 +14,12 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/fcm")
-public class FCMController {
+public class FCMController {    // fcm 알림 기록 컨트롤러
     @Autowired
     private FCMService service;
 
     @GetMapping("/fcmlist")
-    public ResponseEntity<?> fcmList(@AuthenticationPrincipal String uuid){
+    public ResponseEntity<?> fcmList(@AuthenticationPrincipal String uuid){ // 사용자가 받은 알림 목록을 요청 할때 사용하는 url
         List<FCMEntity> entities = service.retrieve(uuid);
         List<FCMDTO> dtos = entities.stream().map(FCMDTO::new).collect(Collectors.toList());
         ResponseDTO<FCMDTO> response = ResponseDTO.<FCMDTO>builder().data(dtos).build();
@@ -30,7 +30,7 @@ public class FCMController {
     @PostMapping("/saveFCM")
     public ResponseEntity<?> createFCM(
             @AuthenticationPrincipal String uuid,
-            @RequestBody FCMDTO dto){
+            @RequestBody FCMDTO dto){   // 웹에서 사용자에게 전송한 알림을 기록하는 url
         try{
             FCMEntity entity = FCMDTO.fcmEntity(dto);
             entity.setId(null);
@@ -47,7 +47,7 @@ public class FCMController {
     }
 
     @DeleteMapping("/deleteFCM")
-    public ResponseEntity<?> deleteFCM(
+    public ResponseEntity<?> deleteFCM( // 사용자가 받은 알림을 지우는 url
             @AuthenticationPrincipal String uuid,
             @RequestBody FCMDTO dto) {
         try {
