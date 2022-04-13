@@ -1,5 +1,6 @@
 package com.veritas.TMapp.sign
 
+import android.app.Activity
 import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -14,7 +15,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class SignupActivity : AppCompatActivity() {
+class SignupActivity : AppCompatActivity() {    // 회원가입 Activity
     private var signupBinding: ActivitySignupBinding? = null
     private val binding get() = signupBinding!!
     var user: ResponseSignupModel? = null
@@ -24,11 +25,11 @@ class SignupActivity : AppCompatActivity() {
         signupBinding = ActivitySignupBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.buttonSearchAddress.setOnClickListener {
+        binding.buttonSearchAddress.setOnClickListener {    // 주소 찾기 버튼 클릭 시
             val intent = Intent(this@SignupActivity, FindAddressActivity::class.java)
             startActivityForResult(intent, SEARCH_ADDRESS_ACTIVITY)
         }
-        binding.buttonSignup.setOnClickListener {
+        binding.buttonSignup.setOnClickListener {   // 회원가입 버튼 클릭 시
             val dialog = AlertDialog.Builder(this@SignupActivity)
             val password = binding.editTextPassword.text.toString()
             val checkPW = binding.editTextCheckPassword.text.toString()
@@ -48,7 +49,7 @@ class SignupActivity : AppCompatActivity() {
 
             val data = SignupModel(username,email,password,phoneNumber, simpleAddress, detailAddress)
 
-            signApi.requestSignup(data).enqueue(object: Callback<ResponseSignupModel>{
+            signApi.requestSignup(data).enqueue(object: Callback<ResponseSignupModel>{  // 서버에 회원 정보 등록 요청
                 override fun onResponse(
                     call: Call<ResponseSignupModel>,
                     response: Response<ResponseSignupModel>
@@ -79,18 +80,19 @@ class SignupActivity : AppCompatActivity() {
             })
         }
 
-        binding.buttonCancel.setOnClickListener {
+        binding.buttonCancel.setOnClickListener {   // 회원가입 취소 시
             finish()
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {   // FindAddressActivity에서 주소 선택시 address 데이터 반환
         super.onActivityResult(requestCode, resultCode, data)
         when(requestCode){
-            SEARCH_ADDRESS_ACTIVITY -> if (resultCode == RESULT_OK){
-                val data = intent.extras?.getString("data")
+            SEARCH_ADDRESS_ACTIVITY -> if (resultCode == Activity.RESULT_OK){
+                val address = data!!.getStringExtra("address")
+                Log.d("주소 데이터", address.toString())
                 if(data!=null)
-                    binding.textViewSimpleAddress.text = data
+                    binding.textViewSimpleAddress.text = address
             }
         }
     }
