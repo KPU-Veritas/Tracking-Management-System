@@ -28,7 +28,7 @@ import java.time.format.DateTimeFormatter;
 @Slf4j
 @RestController
 @RequestMapping("/system")
-public class WebController {
+public class WebController {        //웹 전반적인 요청을 처리하는 컨트롤러
     @Autowired
     private UserService userService;
 
@@ -57,7 +57,7 @@ public class WebController {
     private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@RequestBody WebDTO webDTO){
+    public ResponseEntity<?> registerUser(@RequestBody WebDTO webDTO){      //회원가입
         try {
             if(webService.countManager() == 0) {
                 // 요청을 이용해 저장할 사용자 만들기
@@ -91,7 +91,7 @@ public class WebController {
     }
 
     @PostMapping("/signin")
-    public ResponseEntity<?> authenticate(@RequestBody WebDTO webDTO) {
+    public ResponseEntity<?> authenticate(@RequestBody WebDTO webDTO) {     //로그인
         WebEntity web = webService.getByCredentials(webDTO.getEmail(), webDTO.getPassword(), passwordEncoder);
 
         if (web != null) {
@@ -111,7 +111,7 @@ public class WebController {
     }
 
     @PostMapping("/adddevice")
-    public ResponseEntity<?> addDevice(@RequestBody DeviceDTO deviceDTO) {
+    public ResponseEntity<?> addDevice(@RequestBody DeviceDTO deviceDTO) {      //장치추가
         try {
             DeviceEntity device = DeviceEntity.builder()
                     .place(deviceDTO.getPlace())
@@ -133,15 +133,14 @@ public class WebController {
     }
 
     @PostMapping("/deletedevice")
-    public void deleteDevice(@RequestBody DeviceDTO deviceDTO) {
+    public void deleteDevice(@RequestBody DeviceDTO deviceDTO) {        //장치삭제
         String id = deviceDTO.getId();
-        log.info(id);
         deviceService.delete(id);
     }
 
 
     @PostMapping("/searchuser")
-    public ResponseEntity<?> searchUser(@RequestBody String name) {
+    public ResponseEntity<?> searchUser(@RequestBody String name) {     //이름으로 사용자검색
         log.info(name);
         name = name.replaceAll("\"", "");
 
@@ -162,13 +161,10 @@ public class WebController {
     }
 
     @PostMapping("/searchcontact")
-    public ResponseEntity<?> searchContact(@RequestBody SearchDTO searchDTO) {
+    public ResponseEntity<?> searchContact(@RequestBody SearchDTO searchDTO) {      //날짜로 접촉기록 검색
         String uuid = searchDTO.getUuid();
         String date = searchDTO.getDate();
         String date2 = searchDTO.getDate2();
-        log.info(uuid);
-        log.info(date);
-        log.info(date2);
 
         try {
             List<ContactEntity> entities = contactService.searchList(uuid,date,date2);
@@ -188,11 +184,10 @@ public class WebController {
     }
 
     @PostMapping("/setlevel")
-    public ResponseEntity<?> setLevel(@RequestBody WebDTO webDTO) {
+    public ResponseEntity<?> setLevel(@RequestBody WebDTO webDTO) {     //자동알림을 보낼 위험도 설정
 
         try {
             int warningLevel = webDTO.getWarningLevel();
-            log.info(String.valueOf(warningLevel));
             if( warningLevel != 0 ) webService.setLevel(warningLevel);
 
             return ResponseEntity.ok().body(0);
@@ -204,7 +199,7 @@ public class WebController {
     }
 
     @PostMapping("/addinfected")
-    public ResponseEntity<?> createInfected(@RequestBody InfectedDTO dto){
+    public ResponseEntity<?> createInfected(@RequestBody InfectedDTO dto){      //확진자 추가
         try{
             log.info(String.valueOf(dto));
             InfectedEntity entity = InfectedDTO.infectedEntity(dto);
@@ -214,7 +209,7 @@ public class WebController {
             List<InfectedDTO> dtos = entities.stream().map(InfectedDTO::new).collect(Collectors.toList());
             ResponseDTO<InfectedDTO> response = ResponseDTO.<InfectedDTO>builder().data(dtos).build();
 
-            firstCalculation(entities.get(0));
+            firstCalculation(entities.get(0));      //확진자에 대한 접촉 연산
 
             long risk = webService.getLevel();
             List<UserEntity> riskOverList = userService.findOverRisk(risk);
@@ -222,7 +217,7 @@ public class WebController {
             for(int i = 0; i < riskOverList.size(); i++) {
                 notificate(riskOverList.get(i), "You are the" + riskOverList.get(i).getContactDegree() + "contact with COVID-19.",
                         "Your risk is" + riskOverList.get(i).getRisk() + "%.");
-            }
+            }       //설정된 위험도를 초과한 접촉자들에게 알림을 보냄
 
             return ResponseEntity.ok(response);
         }catch (Exception e){
@@ -233,7 +228,7 @@ public class WebController {
     }
 
     @PostMapping("/notificateindividual")
-    public void notificateIndividual(@RequestBody UserDTO userDTO) {
+    public void notificateIndividual(@RequestBody UserDTO userDTO) {        //개인 알림 송신
 
         UserEntity userEntity = userService.findByUuid(userDTO.getUuid());
         notificate(userEntity, "You are in close COVID19 with a coronavirus patient.", "Your risk is" + userEntity.getRisk() + "%.");
@@ -241,7 +236,7 @@ public class WebController {
     }
 
     @GetMapping("/userlist")
-    public ResponseEntity<?> userList(){
+    public ResponseEntity<?> userList(){        //회원목록
 
         try {
             List<UserEntity> entities = userService.userList();
@@ -260,7 +255,7 @@ public class WebController {
     }
 
     @GetMapping("/contactlist")
-    public ResponseEntity<?> contactList() {
+    public ResponseEntity<?> contactList() {        //접촉목록
         try {
             List<ContactEntity> entities = contactService.contactList();
 
@@ -278,7 +273,7 @@ public class WebController {
     }
 
     @GetMapping("/notice")
-    public long count() {
+    public long count() {       //관리자가 확인하지 않은 확진자의 수
         try {
             return infectedService.managerNotice();
         } catch(Exception e) {
@@ -287,7 +282,7 @@ public class WebController {
     }
 
     @GetMapping("/noticelist")
-    public ResponseEntity<?> noticeList() {
+    public ResponseEntity<?> noticeList() {     //확진자목록
         try {
             List<InfectedEntity> entities = infectedService.infectedList();
 
@@ -306,7 +301,7 @@ public class WebController {
     }
 
     @GetMapping("/devicelist")
-    public ResponseEntity<?> deviceList() {
+    public ResponseEntity<?> deviceList() {     //장치목록
         try {
             List<DeviceEntity> entities = deviceService.deviceList();
 
@@ -325,7 +320,7 @@ public class WebController {
     }
 
     @GetMapping("/getlevel")
-    public int getLevel() {
+    public int getLevel() {     //현재 설정된 위험도
         try {
             return webService.getLevel();
         } catch(Exception e) {
@@ -334,14 +329,14 @@ public class WebController {
     }
 
     @PutMapping("/check")
-    public ResponseEntity<?> check(@RequestBody InfectedDTO infectedDTO) {
+    public ResponseEntity<?> check(@RequestBody InfectedDTO infectedDTO) {      //신규 확진자에 대한 확인과 연산
         try {
             Long id = infectedDTO.getId();
             boolean managerCheck = infectedDTO.isManagerCheck();
             infectedService.updateCheck(id.toString(), managerCheck);
 
             List<InfectedEntity> lst = infectedService.findById(id);
-            this.firstCalculation(lst.get(0));
+            firstCalculation(lst.get(0));       //확진자에 대한 접촉 연산
 
             long risk = webService.getLevel();
             List<UserEntity> riskOverList = userService.findOverRisk(risk);
@@ -349,7 +344,7 @@ public class WebController {
             for(int i = 0; i < riskOverList.size(); i++) {
                 notificate(riskOverList.get(i), "You are the" + riskOverList.get(i).getContactDegree() + "contact with COVID-19.",
                         "Your risk is" + riskOverList.get(i).getRisk() + "%.");
-            }
+            }       //설정된 위험도를 초과한 접촉자들에게 알림을 보냄
 
             return null;
         }  catch (Exception e) {
@@ -359,42 +354,42 @@ public class WebController {
         }
     }
 
-    public void firstCalculation(InfectedEntity infectedEntity) {
+    public void firstCalculation(InfectedEntity infectedEntity) {       //1차 접촉자 판별 함수
         ArrayList<ContactEntity> contactList = new ArrayList<ContactEntity>(contactService.findFirstContactList(infectedEntity.getUuid(), infectedEntity.getEstimatedDate()));
         ArrayList<ContactEntity> nextList = new ArrayList<ContactEntity>();
         ArrayList<String> duplicate = new ArrayList<String>();
-        userService.reset();
+        userService.reset();        //모든 사용자의 위험도를 0으로 되돌려 이전 연산으로 기록된 위험도를 초기화
 
-        for (int i = 0; i < contactList.size(); ++i) {
+        for (int i = 0; i < contactList.size(); ++i) {      //1차 접촉기록의 수만큼 반복연산
             ContactEntity entity = contactList.get(i);
             if (!duplicate.contains(entity.getContactTargetUuid())) {
                 duplicate.add(entity.getContactTargetUuid());
-                nextList.add(entity);
+                nextList.add(entity);       //서로다른 접촉이나 중복된 uuid일 경우 최초 접촉기록만을 nextList에 저장
             }
-            this.riskCalculation(entity, 1, 100);
+            this.riskCalculation(entity, 1, 100);       //해당 접촉기록에 대한 위험도 연산
 
         }
 
-        for (int j = 0; j < nextList.size(); ++j) this.continuousCalculation(nextList.get(j), 2);
+        for (int j = 0; j < nextList.size(); ++j) this.continuousCalculation(nextList.get(j), 2);       //nextList에 담긴 접촉 기록으로부터 2차 접촉 연산 수행
     }
 
-    public void continuousCalculation(ContactEntity contactEntity, int contactDegree) {
+    public void continuousCalculation(ContactEntity contactEntity, int contactDegree) {     //n차 접촉 연산 함수
         ArrayList<ContactEntity> contactList = new ArrayList<ContactEntity>(contactService.findContinuousContactList(contactEntity.getContactTargetUuid(), contactEntity.getDate(), contactEntity.getFirstTime()));
         ArrayList<ContactEntity> nextList = new ArrayList<ContactEntity>();
         ArrayList<String> duplicate = new ArrayList<String>();
 
         float superRisk = userService.findRiskByUuid(contactEntity.getContactTargetUuid());
 
-        for (int i = 0; i < contactList.size(); ++i) {
+        for (int i = 0; i < contactList.size(); ++i) {      //n차 접촉기록의 수만큼 반복연산
             ContactEntity entity = contactList.get(i);
             if(!duplicate.contains(entity.getContactTargetUuid())) {
                 duplicate.add(entity.getContactTargetUuid());
-                nextList.add(entity);
+                nextList.add(entity);       //서로다른 접촉이나 중복된 uuid일 경우 최초 접촉기록만을 nextList에 저장
             }
-            this.riskCalculation(entity, contactDegree, superRisk);
+            this.riskCalculation(entity, contactDegree, superRisk);         //해당 접촉기록에 대한 위험도 연산
         }
 
-        for (int j = 0; j < nextList.size(); ++j) {
+        for (int j = 0; j < nextList.size(); ++j) {     //해당 함수의 연산이 2차 접촉이라면 3차로 변경후 3차접촉 연산, 3차 접촉이라면 종료
             if (contactDegree == 2) contactDegree = 3;
             else if (contactDegree == 3) break;
 
@@ -403,19 +398,18 @@ public class WebController {
     }
 
 
-    public void riskCalculation(ContactEntity entity, int thisContactDegree, float superRisk) {
+    public void riskCalculation(ContactEntity entity, int thisContactDegree, float superRisk) {     //위험도 계산 함수
         String uuid = entity.getContactTargetUuid();
         float contactTime = (float)entity.getContactTime() / 10800;
         int contactDegree  = userService.findContactDegreeByUuid(uuid);
         float risk = userService.findRiskByUuid(uuid);
-        float halfRisk = superRisk * 1/2;
-        log.info("####every"+String.valueOf(contactDegree));
+        float halfRisk = superRisk * 1/2;       //피접촉자는 접촉자의 위험도 50%에서 시작
 
-        if (contactTime > 1) { contactTime = 1; }
-        float calculatedRisk = halfRisk + (halfRisk * contactTime);
 
-        if(contactDegree == 0 ||  contactDegree > thisContactDegree) {
-            log.info("####uuid : gogo" + uuid + "  cd : "+String.valueOf(contactDegree) + "  tcd : "+String.valueOf(thisContactDegree));
+        if (contactTime > 1) { contactTime = 1; }       //3시간 이상 접촉 시 최대치 위험도 부여
+        float calculatedRisk = halfRisk + (halfRisk * contactTime);     //피접촉자는 접촉자의 위험도로부터 최소 50% 최대 100% 까지 부여
+
+        if(contactDegree == 0 ||  contactDegree > thisContactDegree) {      //접촉차수는 모든 기록 중 가장 확진자로부터 근접한 차수로 기록
             userService.updateContactDegree(uuid, thisContactDegree);
         }
 

@@ -21,7 +21,6 @@ import java.util.stream.Collectors;
 @Slf4j
 @RestController
 @RequestMapping("/auth")
-//@CrossOrigin(origins = "http://localhost:3000")     //CORS 규정 위반 에러 수정
 public class UserController {   // 사용자의 정보 컨트롤러
     @Autowired
     private UserService userService;
