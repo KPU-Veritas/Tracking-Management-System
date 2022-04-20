@@ -26,8 +26,11 @@ data class SignupModel( // 회원가입 시 body 정보 클래스
     val detailAddress: String? = null
 )
 
-data class ResponseSignupModel( // 회원가입 시 응답 클래스
-    val email: String?
+data class PostInfectModel( // 감염 정보 전송 시 body 정보 클래스
+    val uuid: String? = null,
+    val judgmentDate: String? = null,
+    val estimatedDate: String? = null,
+    val detailSituation: String? = null
 )
 
 data class FcmToken(    // FCM 토큰 값을 갱신 시 body 정보 클래스

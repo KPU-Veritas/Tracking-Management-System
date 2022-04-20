@@ -23,7 +23,7 @@ interface SignAPIS {
     @Headers("accept: application/json", "content-type: application/json")
     fun requestSignup(
         @Body jsonParams: SignupModel
-    ): Call<ResponseSignupModel>
+    ): Call<ResponseMsg>
 
     @PUT("/auth/addFcmToken/")  // FCM Token 갱신 시 요청
     @Headers("accept: application/json", "content-type: application/json")

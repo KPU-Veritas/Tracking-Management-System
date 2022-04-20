@@ -8,7 +8,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AlertDialog
 import com.veritas.TMapp.databinding.ActivitySignupBinding
-import com.veritas.TMapp.server.ResponseSignupModel
+import com.veritas.TMapp.server.ResponseMsg
 import com.veritas.TMapp.server.ServerSetting.signApi
 import com.veritas.TMapp.server.SignupModel
 import retrofit2.Call
@@ -18,7 +18,7 @@ import retrofit2.Response
 class SignupActivity : AppCompatActivity() {    // 회원가입 Activity
     private var signupBinding: ActivitySignupBinding? = null
     private val binding get() = signupBinding!!
-    var user: ResponseSignupModel? = null
+    var responseMsg: ResponseMsg? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,16 +49,15 @@ class SignupActivity : AppCompatActivity() {    // 회원가입 Activity
 
             val data = SignupModel(username,email,password,phoneNumber, simpleAddress, detailAddress)
 
-            signApi.requestSignup(data).enqueue(object: Callback<ResponseSignupModel>{  // 서버에 회원 정보 등록 요청
+            signApi.requestSignup(data).enqueue(object: Callback<ResponseMsg>{  // 서버에 회원 정보 등록 요청
                 override fun onResponse(
-                    call: Call<ResponseSignupModel>,
-                    response: Response<ResponseSignupModel>
+                    call: Call<ResponseMsg>,
+                    response: Response<ResponseMsg>
                 ) {
-                    user = response.body()
+                    responseMsg = response.body()
 
                     if(response.code() == 200){
                         Log.d("SIGNIN", "회원가입 성공")
-                        Log.d("SIGNIN", "email : ${user?.email}")
                         dialog.setTitle("회원가입 완료")
                         dialog.setMessage("${username}님 회원가입 완료되었습니다.")
                         dialog.setPositiveButton("확인"){ _: DialogInterface, _: Int ->
@@ -71,7 +70,7 @@ class SignupActivity : AppCompatActivity() {    // 회원가입 Activity
                     }
                 }
 
-                override fun onFailure(call: Call<ResponseSignupModel>, t: Throwable) {
+                override fun onFailure(call: Call<ResponseMsg>, t: Throwable) {
                     Log.e("SIGNUP", t.message.toString())
                     dialog.setTitle("에러")
                     dialog.setMessage("호출실패했습니다.")
