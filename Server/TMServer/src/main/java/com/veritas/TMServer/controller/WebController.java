@@ -140,12 +140,12 @@ public class WebController {        //웹 전반적인 요청을 처리하는 �
 
 
     @PostMapping("/searchuser")
-    public ResponseEntity<?> searchUser(@RequestBody String name) {     //이름으로 사용자검색
-        log.info(name);
-        name = name.replaceAll("\"", "");
+    public ResponseEntity<?> searchUser(@RequestBody String search) {     //이름으로 사용자검색
+
+        search = search.replaceAll("\"", "");
 
         try {
-            List<UserEntity> entities = userService.searchList(name);
+            List<UserEntity> entities = userService.searchList(search);
             List<UserDTO> dtos = entities.stream().map(UserDTO::new).collect(Collectors.toList());
 
             ResponseDTO<UserDTO> response = ResponseDTO.<UserDTO>builder().data(dtos).build();
@@ -258,6 +258,37 @@ public class WebController {        //웹 전반적인 요청을 처리하는 �
     public ResponseEntity<?> contactList() {        //접촉목록
         try {
             List<ContactEntity> entities = contactService.contactList();
+
+            List<ContactDTO> dtos = entities.stream().map(ContactDTO::new).collect(Collectors.toList());
+
+            ResponseDTO<ContactDTO> response = ResponseDTO.<ContactDTO>builder().data(dtos).build();
+
+            if (response != null) return ResponseEntity.ok().body(response);
+            else return ResponseEntity.badRequest().body(response);
+        }  catch (Exception e) {
+            String error = e.getMessage();
+            ResponseDTO<ContactDTO> response = ResponseDTO.<ContactDTO>builder().error(error).build();
+            return ResponseEntity.badRequest().body(response);
+        }
+    }
+
+    @GetMapping("/testlist")
+    public ResponseEntity<?> testList() {        //이름으로보는 접촉 목록
+        try {
+            List<ContactEntity> entities = contactService.contactList();
+
+            String uuid;
+            String contactTargetUuid;
+            String name;
+            UserEntity userEntity;
+            for(int i = 0; i < entities.size(); i++) {
+                uuid = entities.get(i).getUuid();
+                contactTargetUuid = entities.get(i).getContactTargetUuid();
+                userEntity = userService.findByUuid(uuid);
+                entities.get(i).setUuid(userEntity.getUsername());
+                userEntity = userService.findByUuid(contactTargetUuid);
+                entities.get(i).setContactTargetUuid(userEntity.getUsername());
+            }
 
             List<ContactDTO> dtos = entities.stream().map(ContactDTO::new).collect(Collectors.toList());
 

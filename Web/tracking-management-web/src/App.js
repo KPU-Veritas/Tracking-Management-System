@@ -45,7 +45,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    //setInterval(this.updateCount, 10000);
+    setInterval(this.updateCount, 10000);
   }
 
   updateCount() {
@@ -72,6 +72,12 @@ class App extends React.Component {
     );
   }
 
+  getTestData() {
+    call("/system/testlist", "GET", null).then((response) =>
+    this.setState({ contactList: response.data})
+    );
+  }
+
   getNoticeData() {
     call("/system/noticelist", "GET", null).then((response) =>
       this.setState({ noticeList: response.data})
@@ -89,6 +95,7 @@ class App extends React.Component {
       this.setState({ deviceList: response.data})
     );
   }
+  
 
   searchUserKeyboard = (e) => {
     if (e.key === "Enter") {
@@ -133,9 +140,18 @@ class App extends React.Component {
   };
 
   contactList = () => {
+    this.setState({ contactList : 0 })
     this.getContactData();
     this.setState({
       page: 3,
+    });
+  };
+
+  testList = () => {
+    this.setState({ contactList : 0 })
+    this.getTestData();
+    this.setState({
+      page: 7,
     });
   };
 
@@ -168,15 +184,6 @@ class App extends React.Component {
 
     var userList = this.state.userList.length > 0 && (
       <Paper style={{ margin: 16 }}>
-        <List>
-          {this.state.userList.map((user, idx) => (
-            <UserList
-              user={user}
-              key={idx}
-            />
-          ))}
-        </List>
-        <p>이름 입력</p>
         <input 
             inputprops={{
               "aria-label": "naked",
@@ -186,19 +193,21 @@ class App extends React.Component {
             fullwidth="true"
             onChange={this.editEventHandler}
             onKeyPress={this.searchUserKeyboard}></input><button name="search" onClick={this.searchUser}>검색</button> 
+
+        <List>
+          {this.state.userList.map((user, idx) => (
+            <UserList
+              user={user}
+              key={idx}
+            />
+          ))}
+        </List>
+
       </Paper>
     );
 
     var contactList = this.state.contactList.length > 0 && (
       <Paper style={{ margin: 16 }}>
-        <List>
-          {this.state.contactList.map((contact) => (
-            <ContactList
-              contact={contact}
-              key={contact.id}
-            />
-          ))}
-        </List>
         <p>시작 날짜</p>
         <DatePicker
         variant="outlined"
@@ -227,6 +236,30 @@ class App extends React.Component {
             fullwidth="true"
             onChange={this.editEventHandler}
             onKeyPress={this.searchContactKeyboard}></input><button name="search" onClick={this.searchContact}>검색</button> 
+
+        <List>
+          {this.state.contactList.map((contact) => (
+            <ContactList
+              contact={contact}
+              key={contact.id}
+            />
+          ))}
+        </List>
+
+      </Paper>
+    );
+
+    var testList = this.state.contactList.length > 0 && (
+      <Paper style={{ margin: 16 }}>
+        <List>
+          {this.state.contactList.map((contact) => (
+            <ContactList
+              contact={contact}
+              key={contact.id}
+            />
+          ))}
+        </List>
+
       </Paper>
     );
 
@@ -286,6 +319,9 @@ class App extends React.Component {
               <Button color="inherit" onClick={this.deviceManagement}>
                 장치관리
               </Button>
+              <Button color="inherit" onClick={this.testList}>
+                접촉별 회원
+              </Button>
               <Button onClick={this.noticeList}>
               <Badge badgeContent={this.state.notice} color="primary">
                 <MailIcon color="action" />
@@ -331,6 +367,16 @@ class App extends React.Component {
       </div>
     );
 
+    var testListPage = (
+      <div>
+        <h1>접촉목록</h1>
+        {navigationBar}
+        <Container maxwitdth="md">
+          <div className="TestList">{testList}</div>
+        </Container>
+      </div>
+    );
+
     var deviceManagementPage = (
       <div>
         <h1>장치관리</h1>
@@ -371,6 +417,7 @@ class App extends React.Component {
       case 4: content = deviceManagementPage; break;
       case 5: content = infectedListPage; break;
       case 6: content = managementPage; break;
+      case 7: content = testListPage; break;
     }
 
     

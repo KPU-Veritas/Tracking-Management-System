@@ -27,22 +27,22 @@ class UserList extends React.Component {
         <table id="list">
             <thead>
                 <tr>
-                    <th>UUID</th>
-                    <th>이름</th>
                     <th>E-Mail</th>
+                    <th>이름</th>
                     <th>전화번호</th>
                     <th>주소</th>
+                    <th>위험도</th>
                     <th></th>
                     <th></th>    
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td>{user.uuid}</td>
-                    <td>{user.username}</td>
                     <td>{user.email}</td>
+                    <td>{user.username}</td>
                     <td>{user.phoneNumber}</td>
-                    <td>{user.detailAddress}</td>
+                    <td>{user.simpleAddress}</td>
+                    <td>{user.risk}</td>
                     <td>{<Button onClick={this.pushNotification}>경고전송</Button>}</td>
                     <>
                     <td>{<Link to={link}>

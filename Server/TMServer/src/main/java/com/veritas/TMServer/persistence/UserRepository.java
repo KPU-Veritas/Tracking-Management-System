@@ -18,8 +18,8 @@ public interface UserRepository extends JpaRepository<UserEntity, String> { // ì
     Boolean existsByEmail(String email);
     UserEntity findByEmailAndPassword(String email, String password);
 
-    @Query(value = "SELECT * FROM USER_ENTITY WHERE USERNAME = :username", nativeQuery = true)
-    List<UserEntity> findSearchList(@Param("username") String username);
+    @Query(value = "SELECT * FROM USER_ENTITY WHERE USERNAME = :search OR EMAIL = :search OR PHONE_NUMBER = :search", nativeQuery = true)
+    List<UserEntity> findSearchList(@Param("search") String search);
 
     @Query(value = "SELECT RISK FROM USER_ENTITY WHERE UUID = :uuid", nativeQuery = true)
     float findRiskByUuid(@Param("uuid") String uuid);
