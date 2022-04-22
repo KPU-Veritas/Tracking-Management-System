@@ -441,7 +441,7 @@ public class WebController {        //웹 전반적인 요청을 처리하는 �
 
 
         if (contactTime > 1) { contactTime = 1; }       //3시간 이상 접촉 시 최대치 위험도 부여
-        float calculatedRisk = halfRisk + (halfRisk * contactTime);     //피접촉자는 접촉자의 위험도로부터 최소 50% 최대 100% 까지 부여
+        float calculatedRisk = halfRisk + (halfRisk * (4/5) * contactTime);     //피접촉자는 접촉자의 위험도로부터 최소 50% 최대 100% 까지 부여
 
         if(contactDegree == 0 ||  contactDegree > thisContactDegree) {      //접촉차수는 모든 기록 중 가장 확진자로부터 근접한 차수로 기록
             userService.updateContactDegree(uuid, thisContactDegree);
