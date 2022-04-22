@@ -17,6 +17,7 @@ class InfectedList extends React.Component {
             const id = this.state.user.id;
             const managerCheck = this.state.user.managerCheck;
             call("/system/check", "PUT", { id : id, managerCheck : managerCheck } );
+            alert("확진 등록과 함께 자동 경고 알림이 전송되었습니다.");
         }
     };
 
