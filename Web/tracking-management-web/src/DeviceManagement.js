@@ -22,7 +22,7 @@ class DeviceManagement extends React.Component {
         const device = this.state.device;
         return (
                 <Container>
-                    <table id="list">
+                    <table id="list" align="center">
                         <thead>
                             <tr>
                                 <th>아이디</th>

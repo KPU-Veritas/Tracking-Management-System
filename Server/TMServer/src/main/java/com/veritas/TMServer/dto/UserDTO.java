@@ -28,6 +28,7 @@ public class UserDTO {  // 사용자 DTO
         this.username = entity.getUsername();
         this.email = entity.getEmail();
         this.phoneNumber = entity.getPhoneNumber();
+        this.simpleAddress = entity.getSimpleAddress();
         this.detailAddress = entity.getDetailAddress();
         this.fcmToken = entity.getFcmToken();
         this.risk = entity.getRisk();
@@ -40,6 +41,7 @@ public class UserDTO {  // 사용자 DTO
                 .username(dto.getUsername())
                 .email(dto.getEmail())
                 .phoneNumber(dto.getPhoneNumber())
+                .simpleAddress(dto.getSimpleAddress())
                 .detailAddress(dto.getDetailAddress())
                 .fcmToken(dto.getFcmToken())
                 .risk(dto.getRisk())

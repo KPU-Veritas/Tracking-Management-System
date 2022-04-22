@@ -1,7 +1,7 @@
 import React from "react";
 
 
-class ContactList extends React.Component {
+class TestList extends React.Component {
     constructor(props) {
         super(props);
         this.state = { contact: props.contact };
@@ -11,7 +11,7 @@ class ContactList extends React.Component {
         const contact = this.state.contact;
         return (
         <>
-            <table id="list">
+            <table id="list" align="center">
             <thead>
                 <tr>
                     <th>이용자 UUID</th>
@@ -37,4 +37,4 @@ class ContactList extends React.Component {
     }
 }
 
-export default ContactList;
+export default TestList;

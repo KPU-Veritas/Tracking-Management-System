@@ -11,7 +11,7 @@ class ContactList extends React.Component {
         const contact = this.state.contact;
         return (
         <>
-            <table id="list">
+            <table id="list" align="center">
             <thead>
                 <tr>
                     <th>이용자 UUID</th>

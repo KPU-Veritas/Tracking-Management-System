@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 
 
 @Slf4j
@@ -318,6 +319,8 @@ public class WebController {        //웹 전반적인 요청을 처리하는 �
             List<InfectedEntity> entities = infectedService.infectedList();
 
             List<InfectedDTO> dtos = entities.stream().map(InfectedDTO::new).collect(Collectors.toList());
+
+            Collections.reverse(dtos);
 
             ResponseDTO<InfectedDTO> response = ResponseDTO.<InfectedDTO>builder().data(dtos).build();
 

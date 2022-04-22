@@ -25,7 +25,7 @@ class InfectedList extends React.Component {
         return (
 
         <ListItem>
-            <table id="list">
+            <table id="list" align="center">
                 <thead>
                     <tr>
                         <th>UUID</th>
