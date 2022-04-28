@@ -63,7 +63,7 @@ class User:
         return data
 
     def __str__(self):
-        return "email:{0}\npassword:{1}\nuuid:{2}\ntoken:{3}".format(self.email, self.password, self.uuid, self.token)
+        return "username:{0}\nemail:{1}\npassword:{2}\nuuid:{3}\ntoken:{4}".format(self.username, self.email, self.password, self.uuid, self.token)
 
 
 def createUser() -> User:
@@ -142,10 +142,15 @@ def getContactData() -> (User, User, dict):
         day += str(choice(digits))
     date = '22-04-' + day
 
-    first = randrange(0, 60 * 60 * 24)
-    last = randrange(first+1, 60 * 60 * 24)
+    randomTime = 0
+    while randomTime <= 5:
+        first = randrange(0, 60 * 60 * 24)
+        last = randrange(first + 1, 60 * 60 * 24)
 
-    contactTime = randrange(1, last-first)
+        randomTime = last - first
+
+    contactTime = randrange(5, randomTime)
+
     h = first // 60 // 60
     first -= h * 60 * 60
     m = first // 60

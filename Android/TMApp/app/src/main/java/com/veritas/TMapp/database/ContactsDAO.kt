@@ -5,7 +5,7 @@ import com.veritas.TMapp.server.Contacts
 
 @Dao
 interface ContactsDAO {
-    @Query("SELECT * FROM TB_CONTACTS")
+    @Query("SELECT * FROM TB_CONTACTS WHERE contactTime > 3")
     fun getAll() : List<Contacts>
 
     @Query("SELECT * FROM TB_CONTACTS WHERE contactTargetUuid = :uuid")
