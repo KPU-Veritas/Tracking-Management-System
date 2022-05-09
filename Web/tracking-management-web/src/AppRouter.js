@@ -9,6 +9,7 @@ import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 import AddDevice from "./AddDevice";
 import AddInfected from "./AddInfected";
+import ModifyUser from "./ModifyUser";
 
 
 class AppRouter extends React.Component {
@@ -29,6 +30,9 @@ class AppRouter extends React.Component {
               </Route>
               <Route path="/addinfected/:uuid">
                 <AddInfected />
+              </Route>
+              <Route path="/modifyuser/:uuid/:email/:userName/:phoneNumber/:simpleAddress">
+                <ModifyUser />
               </Route>
               <Route path="/">
                 <App />

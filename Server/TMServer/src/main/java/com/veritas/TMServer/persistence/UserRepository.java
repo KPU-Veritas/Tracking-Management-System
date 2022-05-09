@@ -61,5 +61,30 @@ public interface UserRepository extends JpaRepository<UserEntity, String> { // ì
     @Query(value = "UPDATE USER_ENTITY SET RISK = 0 WHERE RISK > 0", nativeQuery = true)
     int resetRisk();
 
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE USER_ENTITY SET EMAIL = :value WHERE UUID = :uuid", nativeQuery = true)
+    int updateEmail(@Param("uuid") String uuid, @Param("value") String value);
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE USER_ENTITY SET USERNAME = :value WHERE UUID = :uuid", nativeQuery = true)
+    int updateUserName(@Param("uuid") String uuid, @Param("value") String value);
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE USER_ENTITY SET PASSWORD = :value WHERE UUID = :uuid", nativeQuery = true)
+    int updatePassWord(@Param("uuid") String uuid, @Param("value") String value);
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE USER_ENTITY SET PHONE_NUMBER = :value WHERE UUID = :uuid", nativeQuery = true)
+    int updatePhoneNumber(@Param("uuid") String uuid, @Param("value") String value);
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE USER_ENTITY SET SIMPLE_ADDRESS = :value WHERE UUID = :uuid", nativeQuery = true)
+    int updateSimpleAddress(@Param("uuid") String uuid, @Param("value") String value);
+
 
 }

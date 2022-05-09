@@ -22,6 +22,7 @@ class UserList extends React.Component {
     render() {
         const user = this.state.user;
         const link = './addinfected/' + user.uuid;
+        const link2 = './modifyuser/' + user.uuid + '/' + user.email + '/' + user.username + '/' + user.phoneNumber + '/' + user.simpleAddress;
         return (
         <Container>
         <table id="list" align="center">
@@ -32,6 +33,7 @@ class UserList extends React.Component {
                     <th>전화번호&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
                     <th>주소&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
                     <th>위험도&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                    <th></th>
                     <th></th>
                     <th></th>    
                 </tr>
@@ -47,6 +49,8 @@ class UserList extends React.Component {
                     <>
                     <td>{<Link to={link}>
                     <Button>확진</Button></Link>}</td>
+                    <td>{<Link to={link2}>
+                    <Button>정보수정</Button></Link>}</td>
                     </>
                 </tr>
             </tbody>

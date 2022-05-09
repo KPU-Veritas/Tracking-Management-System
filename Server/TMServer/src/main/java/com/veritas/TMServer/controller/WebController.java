@@ -1,6 +1,5 @@
 package com.veritas.TMServer.controller;
 
-import com.google.protobuf.StringValue;
 import com.veritas.TMServer.dto.*;
 import com.veritas.TMServer.model.*;
 import com.veritas.TMServer.security.TokenProvider;
@@ -8,9 +7,7 @@ import com.veritas.TMServer.service.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -391,6 +388,36 @@ public class WebController {        //웹 전반적인 요청을 처리하는 �
             String error = e.getMessage();
             ResponseDTO<ContactDTO> response = ResponseDTO.<ContactDTO>builder().error(error).build();
             return ResponseEntity.badRequest().body(response);
+        }
+    }
+
+    @PutMapping("/modifyuser")
+    public ResponseEntity<Integer> contactList(@RequestBody UserDTO userDTO) {
+        try {
+            String uuid = userDTO.getUuid();
+            log.info(String.valueOf(userDTO));
+            UserEntity userEntity = userService.findByUuid(uuid);
+            if(!userEntity.getEmail().equals(userDTO.getEmail())) {
+                userService.updateEmail(uuid, userDTO.getEmail());
+            }
+            if("".equals(userDTO.getPassword()) || userDTO.getPassword().equals(null)) {
+                userService.updatePassWord(uuid, passwordEncoder.encode(userDTO.getPassword()));
+            }
+            if(!userEntity.getUsername().equals(userDTO.getUsername())) {
+                userService.updateUserName(uuid, userDTO.getUsername());
+            }
+            if(!userEntity.getSimpleAddress().equals(userDTO.getSimpleAddress())) {
+                userService.updateSimpleAddress(uuid, userDTO.getSimpleAddress());
+            }
+            if(!userEntity.getPhoneNumber().equals(userDTO.getPhoneNumber())) {
+                userService.updatePhoneNumber(uuid, userDTO.getPhoneNumber());
+            }
+
+            return ResponseEntity.ok().body(1);
+        }  catch (Exception e) {
+            String error = e.getMessage();
+            ResponseDTO<ContactDTO> response = ResponseDTO.<ContactDTO>builder().error(error).build();
+            return ResponseEntity.badRequest().body(1);
         }
     }
 

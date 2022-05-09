@@ -49,7 +49,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    setInterval(this.updateCount, 10000);
+    //setInterval(this.updateCount, 10000);
   }
 
   updateCount() {

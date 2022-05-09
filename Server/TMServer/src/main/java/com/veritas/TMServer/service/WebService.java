@@ -5,6 +5,7 @@ import com.veritas.TMServer.model.WebEntity;
 import com.veritas.TMServer.persistence.WebRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -42,5 +43,6 @@ public class WebService {
     public long countManager() { return webRepository.count(); }
     public int getLevel() {return webRepository.getLevel(); }
     public void setLevel(int warningLevel) {webRepository.setLevel(warningLevel);}
+
 
 }

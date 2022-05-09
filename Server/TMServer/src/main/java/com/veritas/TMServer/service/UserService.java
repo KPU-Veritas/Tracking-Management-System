@@ -53,5 +53,10 @@ public class UserService {
     public List<UserEntity> findOverRisk(float risk) { return userRepository.findOverRisk(risk); }
     public void reset() { userRepository.resetRisk(); userRepository.resetContactDegree(); }
     public Long count() { return userRepository.count(); }
+    public void updateEmail(String uuid, String value) { userRepository.updateEmail(uuid, value); }
+    public void updateUserName(String uuid, String value) { userRepository.updateUserName(uuid, value); }
+    public void updateSimpleAddress(String uuid, String value) { userRepository.updateSimpleAddress(uuid, value); }
+    public void updatePhoneNumber(String uuid, String value) { userRepository.updatePhoneNumber(uuid, value); }
+    public void updatePassWord(String uuid, String value) { userRepository.updatePassWord(uuid, value); }
 
 }
