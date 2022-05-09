@@ -5,6 +5,7 @@ import com.veritas.TMServer.model.UserEntity;
 import com.veritas.TMServer.persistence.ContactRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -63,8 +64,13 @@ public class ContactService {
     public List<ContactEntity> retrieve(final String uuid){
         return repository.findByUuid(uuid);
     }
-    public List<ContactEntity> contactList() { return repository.findAll(); }
+    public List<ContactEntity> contactList(int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page,size);
+        return repository.findAll(pageRequest).getContent();
+    }
+    public List<ContactEntity> testList() { return repository.findAll(); }
     public List<ContactEntity> searchList(String uuid, String date, String date2) { return repository.findSearchList(uuid, date, date2);}
     public List<ContactEntity> findFirstContactList(String uuid, String date) { return repository.findFirstContactList(uuid, date); }
     public List<ContactEntity> findContinuousContactList(String uuid, String date, String time) { return repository.findContinuousContactList(uuid, date, time); }
+    public Long count() { return repository.count(); }
 }

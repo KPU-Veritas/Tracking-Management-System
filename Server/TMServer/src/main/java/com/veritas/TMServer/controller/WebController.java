@@ -236,11 +236,11 @@ public class WebController {        //웹 전반적인 요청을 처리하는 �
 
     }
 
-    @GetMapping("/userlist")
-    public ResponseEntity<?> userList(){        //회원목록
+    @PostMapping("/userlist")
+    public ResponseEntity<?> userList(@RequestBody int page){        //회원목록
 
         try {
-            List<UserEntity> entities = userService.userList();
+            List<UserEntity> entities = userService.userList(page-1, 10);
 
             List<UserDTO> dtos = entities.stream().map(UserDTO::new).collect(Collectors.toList());
 
@@ -255,10 +255,10 @@ public class WebController {        //웹 전반적인 요청을 처리하는 �
 
     }
 
-    @GetMapping("/contactlist")
-    public ResponseEntity<?> contactList() {        //접촉목록
+    @PostMapping("/contactlist")
+    public ResponseEntity<?> contactList(@RequestBody int page) {        //접촉목록
         try {
-            List<ContactEntity> entities = contactService.contactList();
+            List<ContactEntity> entities = contactService.contactList(page-1, 10);
 
             List<ContactDTO> dtos = entities.stream().map(ContactDTO::new).collect(Collectors.toList());
 
@@ -276,7 +276,7 @@ public class WebController {        //웹 전반적인 요청을 처리하는 �
     @GetMapping("/testlist")
     public ResponseEntity<?> testList() {        //이름으로보는 접촉 목록
         try {
-            List<ContactEntity> entities = contactService.contactList();
+            List<ContactEntity> entities = contactService.testList();
 
             String uuid;
             String contactTargetUuid;
@@ -362,24 +362,30 @@ public class WebController {        //웹 전반적인 요청을 처리하는 �
         }
     }
 
+    @GetMapping("/totaluser")
+    public int totalUser() {
+        try {
+            return Math.toIntExact(userService.count());
+        } catch(Exception e) {
+            return 0;
+        }
+    }
+
+    @GetMapping("/totalcontact")
+    public int totalContact() {
+        try {
+            return Math.toIntExact(contactService.count());
+        } catch(Exception e) {
+            return 0;
+        }
+    }
+
     @PutMapping("/check")
-    public ResponseEntity<?> check(@RequestBody InfectedDTO infectedDTO) {      //신규 확진자에 대한 확인과 연산
+    public ResponseEntity<?> check(@RequestBody InfectedDTO infectedDTO) {      //신규 확진자에 대한 확인
         try {
             Long id = infectedDTO.getId();
             boolean managerCheck = infectedDTO.isManagerCheck();
             infectedService.updateCheck(id.toString(), managerCheck);
-
-            List<InfectedEntity> lst = infectedService.findById(id);
-            firstCalculation(lst.get(0));       //확진자에 대한 접촉 연산
-
-            long risk = webService.getLevel();
-            List<UserEntity> riskOverList = userService.findOverRisk(risk);
-
-            for(int i = 0; i < riskOverList.size(); i++) {
-                notificate(riskOverList.get(i), "You are the" + riskOverList.get(i).getContactDegree() + "contact with COVID-19.",
-                        "Your risk is" + riskOverList.get(i).getRisk() + "%.");
-            }       //설정된 위험도를 초과한 접촉자들에게 알림을 보냄
-
             return null;
         }  catch (Exception e) {
             String error = e.getMessage();

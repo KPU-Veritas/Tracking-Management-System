@@ -15,6 +15,7 @@ import MailIcon from '@mui/icons-material/Mail';
 import { FcSettings } from 'react-icons/fc';
 import { call, signout, } from "./service/ApiService";
 import { Link } from 'react-router-dom';
+import Pagination from "react-js-pagination";
 import UserList from "./UserList";
 import Greeting from "./Greeting";
 import ContactList from "./ContactList";
@@ -24,6 +25,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import moment from 'moment';
 import Managerment from './Management';
 import DeviceManagement from './DeviceManagement';
+import { SecurityUpdateGood } from "@mui/icons-material";
 
 class App extends React.Component {
   constructor(props) {
@@ -34,6 +36,8 @@ class App extends React.Component {
       infectedList: [],
       deviceList: [],
       page: 1,
+      activePage: 1,
+      totalItem: 1,
       notice : 0,
       search : null,
       searchDate : new Date(),
@@ -61,13 +65,14 @@ class App extends React.Component {
 
   getUserData() {
     this.setState({ userList : 0 })
-    call("/system/userlist", "GET", null).then((response) =>
+    call("/system/userlist", "POST", this.state.activePage).then((response) =>
     this.setState({ userList: response.data})
     );
   }
 
   getContactData() {
-    call("/system/contactlist", "GET", null).then((response) =>
+    this.setState({ contactList : 0 })
+    call("/system/contactlist", "POST", this.state.activePage).then((response) =>
     this.setState({ contactList: response.data})
     );
   }
@@ -106,7 +111,7 @@ class App extends React.Component {
   searchUser() {
       this.setState({ userList : 0 })
       call("/system/searchuser", "POST", this.state.search ).then((response) =>
-      this.setState({ userList: response.data, search : null})
+      this.setState({ userList: response.data, search : null, activePage : 1, totalItem : 1})
       );
   }
 
@@ -122,8 +127,16 @@ class App extends React.Component {
     const date = moment(this.state.searchDate).format('YY-MM-DD');
     const date2 = moment(this.state.endDate).format('YY-MM-DD');
     call("/system/searchcontact", "POST", { date : date, date2 : date2, uuid : this.state.search } ).then((response) =>
-    this.setState({ contactList: response.data, search : null, searchDate : new Date(), endDate : new Date()})
+    this.setState({ contactList: response.data, search : null, searchDate : new Date(), endDate : new Date(), activePage : 1, totalItem : 1})
     );
+  }
+
+  handleUserPageChange = (nextPage) => {
+    this.setState({ activePage : nextPage }, () => {this.getUserData();})
+  }
+
+  handleContactPageChange = (nextPage) => {
+    this.setState({ activePage : nextPage }, () => {this.getContactData();})
   }
 
   mainPage = () => {
@@ -133,10 +146,14 @@ class App extends React.Component {
   };
 
   userList = () => {
-    this.getUserData();
+    call("/system/totaluser", "GET", null).then((response) =>
+    this.setState({ totalItem: response })
+    );
     this.setState({
       page: 2,
+      activePage: 1,
     });
+    this.getUserData();
   };
 
   contactList = () => {
@@ -144,7 +161,11 @@ class App extends React.Component {
     this.getContactData();
     this.setState({
       page: 3,
+      activePage: 1,
     });
+    call("/system/totalcontact", "GET", null).then((response) =>
+    this.setState({ totalItem: response})
+    );
   };
 
   testList = () => {
@@ -202,6 +223,13 @@ class App extends React.Component {
             />
           ))}
         </List>
+        <Pagination activePage={this.state.activePage}
+          itemsCountPerPage={10}
+          totalItemsCount={this.state.totalItem}
+          pageRangeDisplayed={5}
+          prevPageText={"‹"}
+          nextPageText={"›"}
+          onChange={this.handleUserPageChange.bind(this)} />
 
       </Paper>
     );
@@ -245,6 +273,14 @@ class App extends React.Component {
             />
           ))}
         </List>
+
+        <Pagination activePage={this.state.activePage}
+          itemsCountPerPage={10}
+          totalItemsCount={this.state.totalItem}
+          pageRangeDisplayed={5}
+          prevPageText={"‹"}
+          nextPageText={"›"}
+          onChange={this.handleContactPageChange.bind(this)} />
 
       </Paper>
     );

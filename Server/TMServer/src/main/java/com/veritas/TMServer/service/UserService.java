@@ -4,6 +4,7 @@ import com.veritas.TMServer.model.UserEntity;
 import com.veritas.TMServer.persistence.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -38,7 +39,10 @@ public class UserService {
     }
 
     public UserEntity findByUuid(String uuid) { return userRepository.findByUuid(uuid); }
-    public List<UserEntity> userList() { return userRepository.findAll(); }
+    public List<UserEntity> userList(int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page,size);
+        return userRepository.findAll(pageRequest).getContent();
+    }
     public List<UserEntity> searchList(String search) { return userRepository.findSearchList(search); }
     public void updateFcmToken(String uuid, String fcmToken){ userRepository.updateFcmToken(uuid, fcmToken); }
     public void updateRisk(String uuid, float risk) { userRepository.updateRisk(uuid, risk); }
@@ -48,4 +52,6 @@ public class UserService {
     public List<String> findFcmTokenList() { return userRepository.findFcmTokenList(); }
     public List<UserEntity> findOverRisk(float risk) { return userRepository.findOverRisk(risk); }
     public void reset() { userRepository.resetRisk(); userRepository.resetContactDegree(); }
+    public Long count() { return userRepository.count(); }
+
 }

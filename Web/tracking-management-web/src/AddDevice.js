@@ -60,7 +60,6 @@ class AddDevice extends React.Component {
             </Grid>
           </Grid>
         </form>
-        <p>{this.props.info}</p>
       </Container>
     );
   }
