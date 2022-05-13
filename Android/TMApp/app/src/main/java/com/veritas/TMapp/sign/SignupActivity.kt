@@ -3,9 +3,13 @@ package com.veritas.TMapp.sign
 import android.app.Activity
 import android.content.DialogInterface
 import android.content.Intent
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.veritas.TMapp.databinding.ActivitySignupBinding
 import com.veritas.TMapp.server.ResponseMsg
@@ -29,23 +33,63 @@ class SignupActivity : AppCompatActivity() {    // 회원가입 Activity
             val intent = Intent(this@SignupActivity, FindAddressActivity::class.java)
             startActivityForResult(intent, SEARCH_ADDRESS_ACTIVITY)
         }
+
+        binding.editTextPassword.addTextChangedListener(object: TextWatcher{
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun afterTextChanged(p0: Editable?) {}
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                val passwd = binding.editTextPassword.text.toString()
+                if (passwd.length < 8){
+                    binding.textViewPasswordGuide.text = "비밀번호는 최소 8자리 이상이어야 합니다."
+                    binding.textViewPasswordGuide.setTextColor(Color.RED)
+                }
+                else {
+                    binding.textViewPasswordGuide.text = "사용가능한 비밀번호 입니다."
+                    binding.textViewPasswordGuide.setTextColor(Color.BLUE)
+                }
+            }
+        })
+
+        binding.editTextCheckPassword.addTextChangedListener(object: TextWatcher{
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun afterTextChanged(p0: Editable?) {}
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                val passwd = binding.editTextPassword.text.toString()
+                val checkPasswd = binding.editTextCheckPassword.text.toString()
+                if (passwd != checkPasswd){
+                    binding.textViewCheckPasswordGuide.text = "비밀번호가 일치하지 않습니다."
+                    binding.textViewCheckPasswordGuide.setTextColor(Color.RED)
+                }
+                else {
+                    binding.textViewCheckPasswordGuide.text = "비밀번호가 일치합니다."
+                    binding.textViewCheckPasswordGuide.setTextColor(Color.BLUE)
+                }
+            }
+        })
+
+
         binding.buttonSignup.setOnClickListener {   // 회원가입 버튼 클릭 시
             val dialog = AlertDialog.Builder(this@SignupActivity)
+            val username = binding.editTextUsername.text.toString()
+            val email = binding.editTextEmail.text.toString()
             val password = binding.editTextPassword.text.toString()
             val checkPW = binding.editTextCheckPassword.text.toString()
             if(password != checkPW){
-                Log.e("SIGNUP", "비밀번호가 일치하지 않습니다.")
-                dialog.setTitle("비밀번호 오류")
-                dialog.setMessage("비밀번호가 일치하지 않습니다.")
-                dialog.setPositiveButton("확인", null)
-                dialog.show()
-
+                Toast.makeText(applicationContext, "비밀번호가 일치하지 않습니다.",Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
             }
-            val username = binding.editTextUsername.text.toString()
-            val email = binding.editTextEmail.text.toString()
             val phoneNumber = binding.editTextPhoneNumber.text.toString()
             val simpleAddress = binding.textViewSimpleAddress.text.toString()
             val detailAddress = binding.editTextDetailAddress.text.toString()
+
+            if (username == "" || email == "" || password == "" || phoneNumber == "" || simpleAddress == "" || detailAddress == ""){
+                Toast.makeText(applicationContext, "모든 정보를 입력해주세요.",Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            if (!binding.checkboxInfo.isChecked || !binding.checkboxVeritas.isChecked){
+                Toast.makeText(applicationContext, "이용약관에 동의가 필요합니다.",Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
 
             val data = SignupModel(username,email,password,phoneNumber, simpleAddress, detailAddress)
 
@@ -57,7 +101,7 @@ class SignupActivity : AppCompatActivity() {    // 회원가입 Activity
                     responseMsg = response.body()
 
                     if(response.code() == 200){
-                        Log.d("SIGNIN", "회원가입 성공")
+                        Log.d(TAG, "회원가입 성공")
                         dialog.setTitle("회원가입 완료")
                         dialog.setMessage("${username}님 회원가입 완료되었습니다.")
                         dialog.setPositiveButton("확인"){ _: DialogInterface, _: Int ->
@@ -65,16 +109,10 @@ class SignupActivity : AppCompatActivity() {    // 회원가입 Activity
                         }
                         dialog.show()
                     }
-                    else{
-                        Log.d("SIGNIN", "response.code(): ${response.code()}")
-                    }
                 }
 
                 override fun onFailure(call: Call<ResponseMsg>, t: Throwable) {
-                    Log.e("SIGNUP", t.message.toString())
-                    dialog.setTitle("에러")
-                    dialog.setMessage("호출실패했습니다.")
-                    dialog.show()
+                    Log.e(SigninActivity.TAG, "서버와의 연결에 실패: ${t.message.toString()}")
                 }
             })
         }
@@ -89,7 +127,6 @@ class SignupActivity : AppCompatActivity() {    // 회원가입 Activity
         when(requestCode){
             SEARCH_ADDRESS_ACTIVITY -> if (resultCode == Activity.RESULT_OK){
                 val address = data!!.getStringExtra("address")
-                Log.d("주소 데이터", address.toString())
                 if(data!=null)
                     binding.textViewSimpleAddress.text = address
             }
@@ -98,5 +135,6 @@ class SignupActivity : AppCompatActivity() {    // 회원가입 Activity
 
     companion object {
         private const val SEARCH_ADDRESS_ACTIVITY = 10000
+        const val TAG = "회원가입"
     }
 }

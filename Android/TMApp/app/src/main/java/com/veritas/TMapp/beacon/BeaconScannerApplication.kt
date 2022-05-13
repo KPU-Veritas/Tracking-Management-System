@@ -61,21 +61,21 @@ class BeaconScannerApplication: Application() {
 
     private val centralMonitoringObserver = Observer<Int> { state ->
         if (state == MonitorNotifier.OUTSIDE) {
-            Log.d(TAG, "outside beacon region: $region")
+            Log.d(TAG, "비콘이 범위에서 벗어났습니다: $region")
         }
         else {
-            Log.d(TAG, "inside beacon region: $region")
+            Log.d(TAG, "비콘이 범위내에 감지됬습니다.: $region")
             sendNotification()
         }
     }
 
     private val centralRangingObserver = Observer<Collection<Beacon>> { beacons ->
-        Log.d(TAG, "Ranged: ${beacons.count()} beacons")
+        Log.d(TAG, "감지된 비콘 수 : ${beacons.count()}")
         for (beacon: Beacon in beacons) {
             if (beacon.distance <=3.0){
                 dbController?.recordTime(db!!, beacon.id1.toString())
             }
-            Log.d(TAG, "$beacon about ${beacon.distance} meters away")
+            Log.d(TAG, "$beacon 기기가 대략 ${beacon.distance}m 떨어져 있습니다.")
         }
     }
     // 비콘 기능 포그라운드 구현 함수
@@ -97,7 +97,7 @@ class BeaconScannerApplication: Application() {
     }
 
     companion object {
-        const val TAG = "BeaconReference"
+        const val TAG = "비콘 스캐너"
     }
 
 }

@@ -20,7 +20,7 @@ class BeaconSensorManager {
     var isThread = false
 
     fun init(uuid:String, context: Context){
-        Log.d("$TAG:INIT", "UUID: $uuid")
+        Log.d(TAG,"비콘 센서 초기화")
         beacon = Beacon.Builder()
             .setId1(uuid)
             .setId2("1")
@@ -34,22 +34,18 @@ class BeaconSensorManager {
             "m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24,d:25-25"
         )
         beaconTransmitter = BeaconTransmitter(context, beaconParser)
-        //beaconTransmitter!!.advertiseTxPowerLevel = 3
-        //beaconTransmitter!!.advertiseMode = 2
-        //Log.d(TAG, "onStartFailure: ${beaconTransmitter!!.advertiseTxPowerLevel}")
-        //Log.d(TAG, "onStartFailure: ${beaconTransmitter!!.advertiseMode}")
 
         handler = object : Handler(Looper.getMainLooper()) {
             override fun handleMessage(msg: Message) {
                 beaconTransmitter!!.startAdvertising(beacon, object : AdvertiseCallback() {
                     override fun onStartSuccess(settingsInEffect: AdvertiseSettings) {
                         super.onStartSuccess(settingsInEffect)
-                        Log.d(TAG, "onStartSuccess: ")
+                        Log.d(TAG, "스캔 시작")
                     }
 
                     override fun onStartFailure(errorCode: Int) {
                         super.onStartFailure(errorCode)
-                        Log.d(TAG, "onStartFailure: $errorCode")
+                        Log.e(TAG, "스캔 시작 에러: $errorCode")
                     }
                 })
             }
@@ -64,25 +60,25 @@ class BeaconSensorManager {
                     if (isThread){
                         try{
                             handler?.sendEmptyMessage(0)
-                            Log.d(TAG,"Beacon 핸들러 실행")
+                            Log.d(TAG,"비콘 센서 기능 핸들러 실행")
                         }catch (e:InterruptedException){
-                            Log.e(TAG,e.printStackTrace().toString())
+                            Log.e(TAG,"비콘 센서 기능 핸들러 실행 오류: ${e.printStackTrace()}")
                         }
                     }
                 }
             }
             (thread as Thread).start()
-            Log.d(TAG, "Beacon Sensor Started")
+            Log.d(TAG, "비콘 센서 기능이 실행됬습니다.")
         }else{
             beaconTransmitter?.stopAdvertising()
             isThread = false
-            Log.d(TAG, "Beacon Sensor Stopped")
+            Log.d(TAG, "비콘 센서 기능이 중지됬습니다.")
         }
     }
 
 
     companion object{
-        const val TAG = "BeaconSensor"
+        const val TAG = "비콘 센서"
     }
 
 }

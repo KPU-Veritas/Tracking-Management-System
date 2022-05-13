@@ -6,6 +6,7 @@ import android.util.Log
 import com.veritas.TMapp.server.Contacts
 import com.veritas.TMapp.server.ServerSetting.contactAPIS
 import com.veritas.TMapp.server.ServerSetting.processedUuid
+import com.veritas.TMapp.sign.SigninActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -44,7 +45,7 @@ class DBController {
                     Log.d(TAG, "$contact 마지막 접촉 시간 업데이트")
                 }
             }catch (e:SQLiteConstraintException){
-                Log.d("SQLiteConstraintException", e.message.toString())
+                Log.e("RoomDB", "RoomDB 에러: ${e.message.toString()}")
             }
         }
         val thread = Thread(runnable)
@@ -67,21 +68,21 @@ class DBController {
                         }
 
                         override fun onFailure(call: Call<String>, t: Throwable) {
-                            Log.d("ContactPost", t.message.toString())
+                            Log.e(SigninActivity.TAG, "서버와의 연결에 실패: ${t.message.toString()}")
                         }
                     })
                 }
                 Thread.sleep(1000)
                 db.contactsDao().deleteAll()
             }catch (e:SQLiteConstraintException){
-                Log.d("SQLiteConstraintException", e.message.toString())
+                Log.e("RoomDB", "RoomDB 에러: ${e.message.toString()}")
             }
         }
         val thread = Thread(runnable)
         thread.start()
     }
     companion object{
-        const val TAG = "db_contact"
+        const val TAG = "접촉기록 기능"
     }
 
     private fun formatingUUID(uuid: String) : String{

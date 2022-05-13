@@ -12,6 +12,7 @@ import com.veritas.TMapp.recyclerview.FCMs
 import com.veritas.TMapp.server.FCMInfo
 import com.veritas.TMapp.server.FCMInfoList
 import com.veritas.TMapp.server.ServerSetting.fcmAPIS
+import com.veritas.TMapp.sign.SigninActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -33,7 +34,7 @@ class CheckFCMActivity : AppCompatActivity() {
                 if (response.code() == 200) {
                     try {
                         fcmInfos = response.body()?.fcmInfoList
-                        Log.d("FCM 리스트 수신", "${fcmInfos}")
+                        Log.d(TAG, "${fcmInfos}")
                         var id = fcmInfos?.get(0)?.id.toString()
                         var uuid = fcmInfos?.get(0)?.uuid.toString()
                         var date = fcmInfos?.get(0)?.date.toString()
@@ -65,17 +66,14 @@ class CheckFCMActivity : AppCompatActivity() {
                     }catch(e : Exception){
                         Toast.makeText(applicationContext, "알림이 없습니다.", Toast.LENGTH_SHORT).show()
                     }
-                } else {
-                    Log.e("FCM", "response.code(): ${response.code()}")
                 }
             }
             override fun onFailure(call: Call<FCMInfoList>, t: Throwable) {
-                Log.e("FCM", t.message.toString())
-                val dialog = AlertDialog.Builder(this@CheckFCMActivity)
-                dialog.setTitle("에러")
-                dialog.setMessage("호출실패했습니다.")
-                dialog.show()
+                Log.e(TAG, "서버와의 연결에 실패: ${t.message.toString()}")
             }
         })
+    }
+    companion object{
+        const val TAG = "FCM 알림"
     }
 }

@@ -9,6 +9,7 @@ import com.veritas.TMapp.server.PostInfectModel
 import com.veritas.TMapp.server.ResponseMsg
 import com.veritas.TMapp.server.ServerSetting.infectAPIS
 import com.veritas.TMapp.server.ServerSetting.processedUuid
+import com.veritas.TMapp.sign.SigninActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -37,15 +38,15 @@ class SendInfectionInfoActivity : AppCompatActivity(){
                         response: Response<ResponseMsg>
                     ) {
                         if(response.code() == 200){
-                            Log.d(DBController.TAG, "전송 성공")
+                            Log.d(TAG, "전송 성공")
                         }
                         else{
-                            Log.d(DBController.TAG, "전송 실패")
+                            Log.d(TAG, "전송 실패")
                         }
                     }
 
                     override fun onFailure(call: Call<ResponseMsg>, t: Throwable) {
-                        Log.d("InfectPost", t.message.toString())
+                        Log.e(TAG, "서버와의 연결에 실패: ${t.message.toString()}")
                     }
 
                 })
@@ -57,8 +58,8 @@ class SendInfectionInfoActivity : AppCompatActivity(){
         binding.btnCancel.setOnClickListener {
             finish()
         }
-
-
-
+    }
+    companion object{
+        const val TAG = "감염 정보"
     }
 }

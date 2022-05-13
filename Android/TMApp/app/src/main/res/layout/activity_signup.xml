@@ -10,7 +10,8 @@
         android:layout_weight="5"
         android:gravity="center"
         android:layout_marginHorizontal="20dp">
-        <TableRow>
+        <TableRow
+            android:layout_marginBottom="12dp">
             <TextView
                 android:text="이름"
                 android:layout_width="0dp"
@@ -25,7 +26,8 @@
                 android:layout_weight="5"
                 android:inputType="text"/>
         </TableRow>
-        <TableRow>
+        <TableRow
+            android:layout_marginBottom="12dp">
             <TextView
                 android:text="E-Mail"
                 android:layout_width="0dp"
@@ -57,6 +59,18 @@
         </TableRow>
         <TableRow>
             <TextView
+                android:layout_width="0dp"
+                android:layout_weight="2"/>
+            <TextView
+                android:id="@+id/textViewPasswordGuide"
+                android:text="비밀번호는 8자리 이상입니다."
+                android:layout_width="0dp"
+                android:textSize="12dp"
+                android:layout_weight="5"/>
+        </TableRow>
+
+        <TableRow>
+            <TextView
                 android:text="비밀번호 확인"
                 android:layout_width="0dp"
                 android:textSize="16dp"
@@ -72,6 +86,17 @@
         </TableRow>
         <TableRow>
             <TextView
+                android:layout_width="0dp"
+                android:layout_weight="2"/>
+            <TextView
+                android:id="@+id/textViewCheckPasswordGuide"
+                android:layout_width="0dp"
+                android:textSize="12dp"
+                android:layout_weight="5"/>
+        </TableRow>
+        <TableRow
+            android:layout_marginBottom="12dp">
+            <TextView
                 android:text="전화번호"
                 android:layout_width="0dp"
                 android:textSize="16dp"
@@ -83,7 +108,7 @@
                 android:layout_width="0dp"
                 android:textSize="16dp"
                 android:layout_weight="5"
-                android:inputType="phone"/>
+                android:inputType="phone" />
         </TableRow>
         <TableRow>
             <TextView

@@ -29,6 +29,7 @@ import com.veritas.TMapp.server.ResponseSigninModel
 import com.veritas.TMapp.server.ServerSetting.fcmToken
 import com.veritas.TMapp.server.ServerSetting.processedUuid
 import com.veritas.TMapp.server.ServerSetting.signApi
+import com.veritas.TMapp.sign.SigninActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -57,7 +58,7 @@ class MainActivity : AppCompatActivity() {
                 startActivityForResult(enableBtIntent, 1)
             }
         }else{
-            Log.d("bluetoothAdapter","Device doesn't support Bluetooth")
+            Log.d("블루투스","기기가 블루투스를 지원하지 않습니다.")
         }
         db = AppDatabase.getInstance(this)
         dbController = DBController()
@@ -94,7 +95,7 @@ class MainActivity : AppCompatActivity() {
     private val monitoringObserver = Observer<Int> { state ->
         //var dialogTitle = "Beacons detected"
         //var dialogMessage = "didEnterRegionEvent has fired"
-        var stateString = "inside"
+        val stateString = "inside"
         /*if (state == MonitorNotifier.OUTSIDE) {
             dialogTitle = "No beacons detected"
             dialogMessage = "didExitRegionEvent has fired"
@@ -106,7 +107,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private val rangingObserver = Observer<Collection<Beacon>> { beacons ->
-        Log.d(TAG, "Ranged: ${beacons.count()} beacons")
+        Log.d(TAG, "감지된 기기 수: ${beacons.count()}개")
         if (BeaconManager.getInstanceForApplication(this).rangedRegions.isNotEmpty()) {
             //binding.beaconCount.text = "Ranging enabled: ${beacons.count()} beacon(s) detected"
             /*binding.beaconList.adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1,
@@ -123,7 +124,7 @@ class MainActivity : AppCompatActivity() {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         for (i in 1 until permissions.size) {
-            Log.d(TAG, "onRequestPermissionResult for "+permissions[i]+":" +grantResults[i])
+            Log.d(TAG, "권한 요청 결과: ${permissions[i]}: ${grantResults[i]}")
         }
     }
 
@@ -219,7 +220,7 @@ class MainActivity : AppCompatActivity() {
         try{
             FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
                 if(!task.isSuccessful){
-                    Log.w("FCM", "Fetching FCM registration token failed", task.exception)
+                    Log.w("FCM 토큰", "Fetching FCM registration token failed", task.exception)
                     return@OnCompleteListener
                 }
                 fcmToken = task.result.toString()
@@ -229,15 +230,12 @@ class MainActivity : AppCompatActivity() {
                 signApi.addFcmToken(data).enqueue(object : Callback<ResponseMsg>{
                     override fun onResponse(call: Call<ResponseMsg>, response: Response<ResponseMsg>) {
                         if(response.code()==200){
-                            Log.d("FCMTOKEN", response.body()!!.data.toString())
+                            Log.d("FCM 토큰", response.body()!!.data.toString())
                         }
                     }
 
                     override fun onFailure(call: Call<ResponseMsg>, t: Throwable) {
-                        Log.e("FCMTOKEN", t.message.toString())
-                        dialog.setTitle("에러")
-                        dialog.setMessage("호출실패했습니다.")
-                        dialog.show()
+                        Log.e(TAG, "서버와의 연결에 실패: ${t.message.toString()}")
                     }
                 })
             })
@@ -247,9 +245,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     companion object {
-        val TAG = "MainActivity"
-        val PERMISSION_REQUEST_BACKGROUND_LOCATION = 0
-        val PERMISSION_REQUEST_FINE_LOCATION = 1
+        const val TAG = "MainActivity"
+        const val PERMISSION_REQUEST_BACKGROUND_LOCATION = 0
+        const val PERMISSION_REQUEST_FINE_LOCATION = 1
     }
     override fun onDestroy() {
         // onDestroy 에서 binding class 인스턴스 참조를 정리해주어야 한다.

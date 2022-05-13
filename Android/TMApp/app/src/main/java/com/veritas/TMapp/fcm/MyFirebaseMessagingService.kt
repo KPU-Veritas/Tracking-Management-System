@@ -15,7 +15,6 @@ import com.veritas.TMapp.CheckFCMActivity
 import com.veritas.TMapp.R
 
 class MyFirebaseMessagingService : FirebaseMessagingService(){
-    private val TAG: String = this.javaClass.simpleName
     // FCM 메시지 수신 함수
     override fun onMessageReceived(remoteMessage: RemoteMessage)
     {
@@ -24,20 +23,18 @@ class MyFirebaseMessagingService : FirebaseMessagingService(){
         {
             sendNotification(remoteMessage.notification?.title, remoteMessage.notification!!.body!!)
             if (remoteMessage.notification?.title != null) {
-                Log.d("Message", remoteMessage.notification?.title!! + remoteMessage.notification!!.body!!)
+                Log.d(TAG, "알림이 왔습니다.")
             }
         }
     }
     override fun onNewToken(token: String)
     {
-        Log.d(TAG, "Refreshed token : $token")
+        Log.d(TAG, "FCM 토큰 설정 : $token")
         super.onNewToken(token)
     }
     // 받은 알림을 기기에 표시하는 메서드
     private fun sendNotification(title: String?, body: String)
     {
-        Log.d("확인", "하는중")
-
         val intent = Intent(this, CheckFCMActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         val pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
@@ -46,7 +43,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService(){
         val channelId = "my_channel"
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
 
-        Log.d("Content", body)
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
             .setContentTitle(title)
             .setContentText(body)
@@ -64,5 +60,8 @@ class MyFirebaseMessagingService : FirebaseMessagingService(){
             notificationManager.createNotificationChannel(channel)
         }
         notificationManager.notify(0 /* ID of notification */, notificationBuilder.build())
+    }
+    companion object{
+        const val TAG = "FCM 알림"
     }
 }
