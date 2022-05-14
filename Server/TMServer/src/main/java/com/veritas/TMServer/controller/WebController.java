@@ -400,7 +400,7 @@ public class WebController {        //웹 전반적인 요청을 처리하는 �
             if(!userEntity.getEmail().equals(userDTO.getEmail())) {
                 userService.updateEmail(uuid, userDTO.getEmail());
             }
-            if("".equals(userDTO.getPassword()) || userDTO.getPassword().equals(null)) {
+            if(!("".equals(userDTO.getPassword()) || userDTO.getPassword().equals(null))) {
                 userService.updatePassWord(uuid, passwordEncoder.encode(userDTO.getPassword()));
             }
             if(!userEntity.getUsername().equals(userDTO.getUsername())) {
