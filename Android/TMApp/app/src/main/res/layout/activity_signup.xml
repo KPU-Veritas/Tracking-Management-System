@@ -149,16 +149,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <TableRow>
+
             <TextView
+                android:id="@+id/tvService"
                 android:text="본 서비스의 이용약관에 동의합니다."
-                android:textSize="18dp"/>
+                android:textSize="18dp" />
             <CheckBox
                 android:id="@+id/checkboxVeritas" />
         </TableRow>
         <TableRow>
+
             <TextView
+                android:id="@+id/tvPrivacy"
                 android:text="개인정보 수집 및 활용에 동의합니다."
-                android:textSize="18dp"/>
+                android:textSize="18dp" />
             <CheckBox
                 android:id="@+id/checkboxInfo"/>
         </TableRow>
