@@ -1,10 +1,8 @@
 package com.veritas.TMapp.server
 
-import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
-import kotlinx.parcelize.Parcelize
 
 data class SigninModel(     // 로그인 시 body 정보 클래스
     val email: String? = null,

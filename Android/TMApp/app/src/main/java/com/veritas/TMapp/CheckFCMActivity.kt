@@ -3,7 +3,6 @@ package com.veritas.TMapp
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.veritas.TMapp.databinding.ActivityCheckFcmBinding
@@ -12,7 +11,6 @@ import com.veritas.TMapp.recyclerview.FCMs
 import com.veritas.TMapp.server.FCMInfo
 import com.veritas.TMapp.server.FCMInfoList
 import com.veritas.TMapp.server.ServerSetting.fcmAPIS
-import com.veritas.TMapp.sign.SigninActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -20,6 +18,7 @@ import retrofit2.Response
 class CheckFCMActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCheckFcmBinding
     var fcmInfos: List<FCMInfo>? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // 자동 생성된 뷰 바인딩 클래스에서의 inflate라는 메서드를 활용하여 액티비티에서 사용할 바인딩 클래스의 인스턴스 생성
@@ -68,6 +67,7 @@ class CheckFCMActivity : AppCompatActivity() {
                     }
                 }
             }
+
             override fun onFailure(call: Call<FCMInfoList>, t: Throwable) {
                 Log.e(TAG, "서버와의 연결에 실패: ${t.message.toString()}")
             }

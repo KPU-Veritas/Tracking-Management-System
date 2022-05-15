@@ -21,12 +21,12 @@ class MainFragment(
     private var dbController: DBController) : Fragment() {
     private lateinit var beaconSensorManager: BeaconSensorManager
     private var flag: Boolean = true
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         val binding = FragmentMainBinding.inflate(inflater, container, false)
-
         beaconSensorManager = BeaconSensorManager()
         activity?.let {
             beaconSensorManager.init(formatUUIDForBeacon(processedUuid!!), it.applicationContext)

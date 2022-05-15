@@ -1,7 +1,6 @@
 package com.veritas.TMapp
 
 import android.Manifest
-import android.app.AlertDialog
 import android.bluetooth.BluetoothAdapter
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -25,11 +24,9 @@ import com.veritas.TMapp.fragment.OptionFragment
 import com.veritas.TMapp.fragment.PagerAdapter
 import com.veritas.TMapp.server.FcmToken
 import com.veritas.TMapp.server.ResponseMsg
-import com.veritas.TMapp.server.ResponseSigninModel
 import com.veritas.TMapp.server.ServerSetting.fcmToken
 import com.veritas.TMapp.server.ServerSetting.processedUuid
 import com.veritas.TMapp.server.ServerSetting.signApi
-import com.veritas.TMapp.sign.SigninActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -95,12 +92,12 @@ class MainActivity : AppCompatActivity() {
     private val monitoringObserver = Observer<Int> { state ->
         //var dialogTitle = "Beacons detected"
         //var dialogMessage = "didEnterRegionEvent has fired"
-        val stateString = "inside"
-        /*if (state == MonitorNotifier.OUTSIDE) {
-            dialogTitle = "No beacons detected"
-            dialogMessage = "didExitRegionEvent has fired"
+        var stateString = "inside"
+        if (state == MonitorNotifier.OUTSIDE) {
+            /*dialogTitle = "No beacons detected"
+            dialogMessage = "didExitRegionEvent has fired"*/
             stateString = "outside"
-        }*/
+        }
         Log.d(TAG, "monitoring state changed to : $stateString")
 
         //showDialogs(dialogTitle,dialogMessage,null)
@@ -127,7 +124,6 @@ class MainActivity : AppCompatActivity() {
             Log.d(TAG, "권한 요청 결과: ${permissions[i]}: ${grantResults[i]}")
         }
     }
-
 
     private fun checkPermissions() {
         // basepermissions are for M and higher

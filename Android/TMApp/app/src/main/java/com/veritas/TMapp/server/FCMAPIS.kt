@@ -9,7 +9,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Headers
-
 // FCM 알림 정보를 받아올 때 사용하는 REST API
 interface FCMAPIS {
     @GET("/fcm/fcmlist/")   // FCM List 수신 시  사용

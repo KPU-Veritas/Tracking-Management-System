@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import com.veritas.TMapp.MainActivity
 import com.veritas.TMapp.databinding.ActivitySigninBinding
 import com.veritas.TMapp.server.ResponseSigninModel

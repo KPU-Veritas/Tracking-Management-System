@@ -10,7 +10,6 @@ import android.content.Intent
 import com.veritas.TMapp.CheckFCMActivity
 import com.veritas.TMapp.SendInfectionInfoActivity
 
-
 class ContactInfoFragment : Fragment()
 {
     override fun onCreateView(

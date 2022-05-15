@@ -76,9 +76,7 @@ class BeaconSensorManager {
         }
     }
 
-
     companion object{
         const val TAG = "비콘 센서"
     }
-
 }

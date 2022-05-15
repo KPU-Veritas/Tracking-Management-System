@@ -3,13 +3,11 @@ package com.veritas.TMapp
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import com.veritas.TMapp.database.DBController
 import com.veritas.TMapp.databinding.ActivitySendInfectionInfoBinding
 import com.veritas.TMapp.server.PostInfectModel
 import com.veritas.TMapp.server.ResponseMsg
 import com.veritas.TMapp.server.ServerSetting.infectAPIS
 import com.veritas.TMapp.server.ServerSetting.processedUuid
-import com.veritas.TMapp.sign.SigninActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

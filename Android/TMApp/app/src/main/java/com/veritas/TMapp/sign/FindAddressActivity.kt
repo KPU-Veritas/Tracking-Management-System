@@ -39,7 +39,6 @@ class FindAddressActivity : AppCompatActivity() {   // WebView에 카카오 주�
                 browser!!.loadUrl("javascript:sample2_execDaumPostcode();")
             }
         }
-
         browser!!.loadUrl("http://www.inspond.com/daum.html")
     }
 }

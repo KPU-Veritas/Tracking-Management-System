@@ -10,7 +10,6 @@ import retrofit2.http.Body
 import retrofit2.http.Headers
 import retrofit2.http.POST
 import retrofit2.http.PUT
-
 // 사용자 요청을 관리하는 REST API
 interface SignAPIS {
     @POST("/auth/signin/")  // 로그인 요청

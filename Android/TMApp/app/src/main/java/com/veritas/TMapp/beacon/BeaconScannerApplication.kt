@@ -18,10 +18,8 @@ class BeaconScannerApplication: Application() {
 
     override fun onCreate() {
         super.onCreate()
-
         db = AppDatabase.getInstance(this)
         dbController = DBController()
-
         var beaconManager = BeaconManager.getInstanceForApplication(this)
         beaconManager.beaconParsers.clear()
         beaconManager.beaconParsers.add(
@@ -32,9 +30,7 @@ class BeaconScannerApplication: Application() {
         beaconManager.setEnableScheduledScanJobs(false)
         beaconManager.backgroundBetweenScanPeriod = 0
         beaconManager.backgroundScanPeriod = 1100
-
         region = Region("radius-uuid", null, null, null)
-
         val regionViewModel = BeaconManager.getInstanceForApplication(this).getRegionViewModel(region)
         regionViewModel.regionState.observeForever( centralMonitoringObserver)
         regionViewModel.rangedBeacons.observeForever( centralRangingObserver)

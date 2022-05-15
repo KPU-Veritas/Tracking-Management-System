@@ -9,7 +9,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.veritas.TMapp.R
-import java.io.FileInputStream
 
 class FCMAdapter(val fcmList: ArrayList<FCMs>) : RecyclerView.Adapter<FCMAdapter.CustomViewHolder>() {
 
