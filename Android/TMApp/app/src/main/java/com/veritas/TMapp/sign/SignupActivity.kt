@@ -116,7 +116,8 @@ class SignupActivity : AppCompatActivity() {    // 회원가입 Activity
             })
         }
 
-        binding.tvService.setOnClickListener{
+        binding.checkboxVeritas.setOnClickListener{
+            binding.checkboxVeritas.isChecked = binding.checkboxVeritas.isChecked != true
             val dialog = AlertDialog.Builder(this@SignupActivity)
             dialog.setTitle("TMApp 이용약관 동의")
             dialog.setMessage("제1장 총칙\n" +
@@ -126,11 +127,14 @@ class SignupActivity : AppCompatActivity() {    // 회원가입 Activity
             dialog.setPositiveButton("동의"){ _: DialogInterface, _: Int ->
                 binding.checkboxVeritas.isChecked = true
             }
-            dialog.setNegativeButton("취소") { _: DialogInterface, _: Int -> }
+            dialog.setNegativeButton("취소") { _: DialogInterface, _: Int ->
+                binding.checkboxVeritas.isChecked = false
+            }
             dialog.show()
         }
 
-        binding.tvPrivacy.setOnClickListener {
+        binding.checkboxInfo.setOnClickListener {
+            binding.checkboxInfo.isChecked = binding.checkboxInfo.isChecked != true
             val dialog = AlertDialog.Builder(this@SignupActivity)
             dialog.setTitle("개인정보 수집 및 이용 동의")
             dialog.setMessage("개인정보보호법에 따라 TMApp에 회원가입 신청하시는 분께 수집하는 개인정보의 항목, 개인정보의 수집 및 이용목적, 개인정보의 보유 및 이용기간, 동의 거부권 및 동의 거부 시 불이익에 관한 사항을 안내 드리오니 자세히 읽은 후 동의하여 주시기 바랍니다.\n" +
@@ -190,7 +194,9 @@ class SignupActivity : AppCompatActivity() {    // 회원가입 Activity
             dialog.setPositiveButton("동의"){ _: DialogInterface, _: Int ->
                 binding.checkboxInfo.isChecked = true
             }
-            dialog.setNegativeButton("취소") { _: DialogInterface, _: Int -> }
+            dialog.setNegativeButton("취소") { _: DialogInterface, _: Int ->
+                binding.checkboxInfo.isChecked = false
+            }
             dialog.show()
         }
 
