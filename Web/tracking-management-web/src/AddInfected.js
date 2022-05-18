@@ -31,7 +31,7 @@ class AddInfected extends React.Component {
     now = moment(now).format('YY-MM-DD');
     call("/system/addinfected", "POST", { uuid : uuid, judgmentDate : now, estimatedDate : estimatedDate, detailSituation : detailSituation }).then(
       (response) => {
-        window.location.href = "/";
+        window.location.href = "/main";
         alert("확진 등록과 함께 자동 경고 알림이 전송되었습니다.");
       }
     );

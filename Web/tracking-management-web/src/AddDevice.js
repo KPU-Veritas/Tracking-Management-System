@@ -21,7 +21,7 @@ class AddDevice extends React.Component {
     const place = data.get("place");
     call("/system/adddevice", "POST", { place : place }).then(
       (response) => {
-        window.location.href = "/";
+        window.location.href = "/main";
       }
     );
   }

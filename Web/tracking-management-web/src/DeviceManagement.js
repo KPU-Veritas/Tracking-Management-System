@@ -15,7 +15,7 @@ class DeviceManagement extends React.Component {
         const id = this.state.device.id;
         const place = this.state.device.place;
         call("/system/deletedevice", "POST", {id : id, place : place});
-        window.location.replace("/")
+        window.location.href = "/main";
     }
 
     render() {

@@ -31,7 +31,7 @@ class ModifyUser extends React.Component {
     console.log(data);
     call("/system/modifyuser", "PUT", { uuid : uuid, username : username, email : email, password : password,  phoneNumber : phoneNumber, simpleAddress : simpleAddress }).then(
       (response) => {
-        window.location.href = "/";
+        window.location.href = "/main";
         alert("회원정보가 수정되었습니다.");
       }
     );

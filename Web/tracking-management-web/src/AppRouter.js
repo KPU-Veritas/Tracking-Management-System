@@ -19,9 +19,6 @@ class AppRouter extends React.Component {
         <Router>
           <div>
             <Switch>
-              <Route path="/login">
-                <Login />
-              </Route>
               <Route path="/signup">
                 <SignUp />
               </Route>
@@ -34,8 +31,11 @@ class AppRouter extends React.Component {
               <Route path="/modifyuser/:uuid/:email/:userName/:phoneNumber/:simpleAddress">
                 <ModifyUser />
               </Route>
-              <Route path="/">
+              <Route path="/main">
                 <App />
+              </Route>
+              <Route path="/">
+                <Login />
               </Route>
             </Switch>
           </div>

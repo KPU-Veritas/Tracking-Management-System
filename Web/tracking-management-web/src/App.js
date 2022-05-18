@@ -49,7 +49,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    //setInterval(this.updateCount, 10000);
+    setInterval(this.updateCount, 1000);
   }
 
   updateCount() {
@@ -64,7 +64,7 @@ class App extends React.Component {
   };
 
   getUserData() {
-    this.setState({ userList : 0 })
+    this.setState({ userList : 0 });
     call("/system/userlist", "POST", this.state.activePage).then((response) =>
     this.setState({ userList: response.data})
     );
@@ -73,12 +73,6 @@ class App extends React.Component {
   getContactData() {
     this.setState({ contactList : 0 })
     call("/system/contactlist", "POST", this.state.activePage).then((response) =>
-    this.setState({ contactList: response.data})
-    );
-  }
-
-  getTestData() {
-    call("/system/testlist", "GET", null).then((response) =>
     this.setState({ contactList: response.data})
     );
   }
@@ -152,28 +146,17 @@ class App extends React.Component {
     this.setState({
       page: 2,
       activePage: 1,
-    });
-    this.getUserData();
+    }, () => {this.getUserData();})
   };
 
   contactList = () => {
-    this.setState({ contactList : 0 })
-    this.getContactData();
-    this.setState({
-      page: 3,
-      activePage: 1,
-    });
     call("/system/totalcontact", "GET", null).then((response) =>
     this.setState({ totalItem: response})
     );
-  };
-
-  testList = () => {
-    this.setState({ contactList : 0 })
-    this.getTestData();
     this.setState({
-      page: 7,
-    });
+      page: 3,
+      activePage: 1,
+    }, () => {this.getContactData();})
   };
 
   deviceManagement = () => {
@@ -285,20 +268,6 @@ class App extends React.Component {
       </Paper>
     );
 
-    var testList = this.state.contactList.length > 0 && (
-      <Paper style={{ margin: 16 }}>
-        <List>
-          {this.state.contactList.map((contact) => (
-            <ContactList
-              contact={contact}
-              key={contact.id}
-            />
-          ))}
-        </List>
-
-      </Paper>
-    );
-
     var deviceManagement =
       <Paper style={{ margin: 16 }}>
         <List>
@@ -355,8 +324,8 @@ class App extends React.Component {
               <Button color="inherit" onClick={this.deviceManagement}>
                 장치관리
               </Button>
-              <Button color="inherit" onClick={this.testList}>
-                접촉별 회원
+              <Button color="inherit" onClick={this.deviceManagement}>
+                {this.state.activePage}
               </Button>
               <Button onClick={this.noticeList}>
               <Badge badgeContent={this.state.notice} color="primary">
@@ -403,16 +372,6 @@ class App extends React.Component {
       </div>
     );
 
-    var testListPage = (
-      <div>
-        <h1>접촉목록</h1>
-        {navigationBar}
-        <Container maxwitdth="md">
-          <div className="TestList">{testList}</div>
-        </Container>
-      </div>
-    );
-
     var deviceManagementPage = (
       <div>
         <h1>장치관리</h1>
@@ -453,7 +412,6 @@ class App extends React.Component {
       case 4: content = deviceManagementPage; break;
       case 5: content = infectedListPage; break;
       case 6: content = managementPage; break;
-      case 7: content = testListPage; break;
     }
 
     
