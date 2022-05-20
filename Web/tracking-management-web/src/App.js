@@ -49,7 +49,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    setInterval(this.updateCount, 1000);
+    setInterval(this.updateCount, 2000);
   }
 
   updateCount() {
@@ -104,8 +104,19 @@ class App extends React.Component {
 
   searchUser() {
       this.setState({ userList : 0 })
-      call("/system/searchuser", "POST", this.state.search ).then((response) =>
+      call("/system/searchuser", "POST", this.state.search ).then((response) => {
+      if (response.data.length === 0) {
+        alert("검색 결과가 존재하지 않습니다.");
+        this.userList();
+      }
+      else {
       this.setState({ userList: response.data, search : null, activePage : 1, totalItem : 1})
+      }
+      }
+      ).catch((error) => {
+        alert("검색할 정보를 입력해주세요.");
+        this.userList();
+      }
       );
   }
 
@@ -120,8 +131,15 @@ class App extends React.Component {
     var moment = require('moment');
     const date = moment(this.state.searchDate).format('YY-MM-DD');
     const date2 = moment(this.state.endDate).format('YY-MM-DD');
-    call("/system/searchcontact", "POST", { date : date, date2 : date2, uuid : this.state.search } ).then((response) =>
+    call("/system/searchcontact", "POST", { date : date, date2 : date2, uuid : this.state.search } ).then((response) => {
+    if (response.data.length === 0) {
+      alert("검색 결과가 존재하지 않습니다.");
+      this.contactList();
+    }
+    else {
     this.setState({ contactList: response.data, search : null, searchDate : new Date(), endDate : new Date(), activePage : 1, totalItem : 1})
+    }
+    }
     );
   }
 
@@ -323,9 +341,6 @@ class App extends React.Component {
               </Button>
               <Button color="inherit" onClick={this.deviceManagement}>
                 장치관리
-              </Button>
-              <Button color="inherit" onClick={this.deviceManagement}>
-                {this.state.activePage}
               </Button>
               <Button onClick={this.noticeList}>
               <Badge badgeContent={this.state.notice} color="primary">

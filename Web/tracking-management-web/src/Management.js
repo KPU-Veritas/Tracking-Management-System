@@ -23,10 +23,15 @@ class Managerment extends React.Component {
     }
 
     setLevel() {
-        call("/system/setlevel", "POST", {id : null,  warningLevel : this.state.warningLevel} ).then((response) =>
-        this.setState()
-        );
-        alert("자동 알림을 전송할 위험도를 설정했습니다.");
+        if(this.state.warningLevel <= 100 && this.state.warningLevel > 0) {
+            call("/system/setlevel", "POST", {id : null,  warningLevel : this.state.warningLevel} ).then((response) =>
+            this.setState()
+            );
+            alert("자동 알림을 전송할 위험도를 설정했습니다.");
+        }
+        else {
+            alert("입력한 값이 올바르지 않습니다.");
+        }
     }
 
     render() {
@@ -39,7 +44,7 @@ class Managerment extends React.Component {
             name="password"
             value={level}
             onChange={this.onChangeHandler}/>
-            </form><p>현재 위험도{level}% 까지 알림이 갑니다.</p>
+            </form><p>현재 위험도 {level}% 까지 알림이 갑니다.</p>
             </Grid>
             <Grid><Button onClick={this.setLevel}>확인</Button></Grid></>
         

@@ -29,12 +29,17 @@ class AddInfected extends React.Component {
     const uuid = this.props.match.params.uuid;
     let now = new Date();
     now = moment(now).format('YY-MM-DD');
-    call("/system/addinfected", "POST", { uuid : uuid, judgmentDate : now, estimatedDate : estimatedDate, detailSituation : detailSituation }).then(
-      (response) => {
-        window.location.href = "/main";
-        alert("확진 등록과 함께 자동 경고 알림이 전송되었습니다.");
-      }
-    );
+    if(detailSituation === "") {
+      alert("상세 행위가 입력되지 않았습니다.");
+    }
+    else {
+      call("/system/addinfected", "POST", { uuid : uuid, judgmentDate : now, estimatedDate : estimatedDate, detailSituation : detailSituation }).then(
+        (response) => {
+          window.location.href = "/main";
+          alert("확진 등록과 함께 자동 경고 알림이 전송되었습니다.");
+        }
+      );
+    }
   }
   
 
@@ -56,6 +61,7 @@ class AddInfected extends React.Component {
                 variant="outlined"
                 required
                 fullWidth
+                nullable="false"
                 id="detailSituation"
                 label="상세 행위"
                 autoFocus
