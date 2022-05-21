@@ -58,8 +58,7 @@ class CheckFCMActivity : AppCompatActivity() {
                                 fcmList.add(FCMs(R.drawable.fcm, id, uuid, date, time, title, body, risk, contactDegree))
                             }
                         }
-                        binding.rvFcm.layoutManager =
-                            LinearLayoutManager(parent, LinearLayoutManager.VERTICAL, false)
+                        binding.rvFcm.layoutManager = LinearLayoutManager(parent, LinearLayoutManager.VERTICAL, false)
                         binding.rvFcm.setHasFixedSize(true)
                         binding.rvFcm.adapter = FCMAdapter(fcmList)
                     }catch(e : Exception){
@@ -73,6 +72,7 @@ class CheckFCMActivity : AppCompatActivity() {
             }
         })
     }
+
     companion object{
         const val TAG = "FCM 알림"
     }

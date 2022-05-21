@@ -19,7 +19,6 @@ class DBController {
     @SuppressLint("SimpleDateFormat")
     private val timeFormat = SimpleDateFormat("hh:mm:ss")
 
-
     fun recordTime(db:AppDatabase, contact_target_uuid:String){
         val runnable = Runnable{
             val now = System.currentTimeMillis()
@@ -81,13 +80,11 @@ class DBController {
         val thread = Thread(runnable)
         thread.start()
     }
-    companion object{
-        const val TAG = "접촉기록 기능"
-    }
 
     private fun formatingUUID(uuid: String) : String{
         return uuid.substring(0,8) + uuid.substring(9,13) + uuid.substring(14,18) + uuid.substring(19,23) + uuid.substring(24)
     }
+
     private fun getContactTime(prevTime: String?, currentTime: String): Int{
         if (prevTime == null){
             return 0
@@ -95,5 +92,9 @@ class DBController {
         val pt = (prevTime.substring(0,2).toInt() * 60 + prevTime.substring(3,5).toInt()) * 60 + prevTime.substring(6).toInt()
         val ct = (currentTime.substring(0,2).toInt() * 60 + currentTime.substring(3,5).toInt()) * 60 + currentTime.substring(6).toInt()
         return ct-pt
+    }
+
+    companion object{
+        const val TAG = "접촉기록 기능"
     }
 }
