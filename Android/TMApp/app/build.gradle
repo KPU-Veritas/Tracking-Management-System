@@ -56,7 +56,7 @@ dependencies {
     implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: 'latest.integration'
 
     // beacon
-    implementation group: 'org.altbeacon', name: 'android-beacon-library', version: 'latest.integration'
+    implementation 'org.altbeacon:android-beacon-library:2.19.3'
 
     // coroutines
     implementation group: 'org.jetbrains.kotlinx', name: 'kotlinx-coroutines-core', version: 'latest.integration'
