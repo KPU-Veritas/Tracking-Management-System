@@ -18,7 +18,8 @@
             android:layout_gravity="center"
             android:layout_marginTop="200dp"
             android:layout_weight="1"
-            app:srcCompat="@drawable/beacon_background" />
+            android:background="@color/white"
+            app:srcCompat="@drawable/btn_off"/>
 
         <TextView
             android:id="@+id/tvThread"
