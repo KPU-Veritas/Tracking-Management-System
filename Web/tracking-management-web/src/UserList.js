@@ -22,7 +22,7 @@ class UserList extends React.Component {
     render() {
         const user = this.state.user;
         const link = './addinfected/' + user.uuid;
-        const link2 = './modifyuser/' + user.uuid + '/' + user.email + '/' + user.username + '/' + user.phoneNumber + '/' + user.simpleAddress;
+        const link2 = './modifyuser/' + user.uuid + '/' + user.email + '/' + user.username + '/' + user.phoneNumber + '/' + user.simpleAddress + '/' + user.detailAddress;
         return (
         <Container>
         <table id="list" align="center">

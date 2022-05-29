@@ -28,7 +28,7 @@ class AppRouter extends React.Component {
               <Route path="/addinfected/:uuid">
                 <AddInfected />
               </Route>
-              <Route path="/modifyuser/:uuid/:email/:userName/:phoneNumber/:simpleAddress">
+              <Route path="/modifyuser/:uuid/:email/:userName/:phoneNumber/:simpleAddress/:detailAddress">
                 <ModifyUser />
               </Route>
               <Route path="/main">

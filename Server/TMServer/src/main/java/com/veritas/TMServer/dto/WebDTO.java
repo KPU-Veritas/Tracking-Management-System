@@ -30,7 +30,6 @@ public class WebDTO {
                 .id(dto.getId())
                 .username(dto.getUsername())
                 .email(dto.getEmail())
-                .notice(dto.getNotice())
                 .warningLevel(dto.getWarningLevel())
                 .build();
     }

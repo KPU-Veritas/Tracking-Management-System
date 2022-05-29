@@ -86,5 +86,10 @@ public interface UserRepository extends JpaRepository<UserEntity, String> { // ì
     @Query(value = "UPDATE USER_ENTITY SET SIMPLE_ADDRESS = :value WHERE UUID = :uuid", nativeQuery = true)
     int updateSimpleAddress(@Param("uuid") String uuid, @Param("value") String value);
 
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE USER_ENTITY SET DETAIL_ADDRESS = :value WHERE UUID = :uuid", nativeQuery = true)
+    int updateDetailAddress(@Param("uuid") String uuid, @Param("value") String value);
+
 
 }

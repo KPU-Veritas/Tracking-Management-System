@@ -26,10 +26,11 @@ class ModifyUser extends React.Component {
     const password = data.get("password");
     const username = data.get("username");
     const simpleAddress = data.get("simpleAddress");
+    const detailAddress = data.get("detailAddress");
     const phoneNumber = data.get("phoneNumber");
     const uuid = this.props.match.params.uuid;
     console.log(data);
-    call("/system/modifyuser", "PUT", { uuid : uuid, username : username, email : email, password : password,  phoneNumber : phoneNumber, simpleAddress : simpleAddress }).then(
+    call("/system/modifyuser", "PUT", { uuid : uuid, username : username, email : email, password : password,  phoneNumber : phoneNumber, simpleAddress : simpleAddress, detailAddress : detailAddress }).then(
       (response) => {
         window.location.href = "/main";
         alert("회원정보가 수정되었습니다.");
@@ -93,6 +94,18 @@ class ModifyUser extends React.Component {
                 id="simpleAddress"
                 label="주소"
                 defaultValue={this.props.match.params.simpleAddress}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                autoComplete="detailAddress"
+                name="detailAddress"
+                variant="outlined"
+                required
+                fullWidth
+                id="detailAddress"
+                label="상세주소"
+                defaultValue={this.props.match.params.detailAddress}
               />
             </Grid>
             <Grid item xs={12}>

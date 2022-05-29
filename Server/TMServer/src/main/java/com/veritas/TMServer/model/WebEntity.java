@@ -29,8 +29,6 @@ public class WebEntity {
     @Column(nullable = false)
     private String password;
 
-    private int notice;
-
     private int warningLevel;
 
 }

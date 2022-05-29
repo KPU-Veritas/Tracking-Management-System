@@ -63,7 +63,6 @@ public class WebController {        //웹 전반적인 요청을 처리하는 �
                         .email(webDTO.getEmail())
                         .username(webDTO.getUsername())
                         .password(passwordEncoder.encode(webDTO.getPassword()))
-                        .notice(webDTO.getNotice())
                         .warningLevel(webDTO.getWarningLevel())
                         .build();
                 // 서비스를 이용해 리포지터리에 사용자 저장
@@ -138,7 +137,7 @@ public class WebController {        //웹 전반적인 요청을 처리하는 �
 
 
     @PostMapping("/searchuser")
-    public ResponseEntity<?> searchUser(@RequestBody String search) {     //이름으로 사용자검색
+    public ResponseEntity<?> searchUser(@RequestBody String search) {     //회원 검색
 
         search = search.replaceAll("\"", "");
 
@@ -159,7 +158,7 @@ public class WebController {        //웹 전반적인 요청을 처리하는 �
     }
 
     @PostMapping("/searchcontact")
-    public ResponseEntity<?> searchContact(@RequestBody SearchDTO searchDTO) {      //날짜로 접촉기록 검색
+    public ResponseEntity<?> searchContact(@RequestBody SearchDTO searchDTO) {      //날짜와 UUID로 접촉기록 검색
         String uuid = searchDTO.getUuid();
         String date = searchDTO.getDate();
         String date2 = searchDTO.getDate2();
@@ -270,37 +269,6 @@ public class WebController {        //웹 전반적인 요청을 처리하는 �
         }
     }
 
-    @GetMapping("/testlist")
-    public ResponseEntity<?> testList() {        //이름으로보는 접촉 목록
-        try {
-            List<ContactEntity> entities = contactService.testList();
-
-            String uuid;
-            String contactTargetUuid;
-            String name;
-            UserEntity userEntity;
-            for(int i = 0; i < entities.size(); i++) {
-                uuid = entities.get(i).getUuid();
-                contactTargetUuid = entities.get(i).getContactTargetUuid();
-                userEntity = userService.findByUuid(uuid);
-                entities.get(i).setUuid(userEntity.getUsername());
-                userEntity = userService.findByUuid(contactTargetUuid);
-                entities.get(i).setContactTargetUuid(userEntity.getUsername());
-            }
-
-            List<ContactDTO> dtos = entities.stream().map(ContactDTO::new).collect(Collectors.toList());
-
-            ResponseDTO<ContactDTO> response = ResponseDTO.<ContactDTO>builder().data(dtos).build();
-
-            if (response != null) return ResponseEntity.ok().body(response);
-            else return ResponseEntity.badRequest().body(response);
-        }  catch (Exception e) {
-            String error = e.getMessage();
-            ResponseDTO<ContactDTO> response = ResponseDTO.<ContactDTO>builder().error(error).build();
-            return ResponseEntity.badRequest().body(response);
-        }
-    }
-
     @GetMapping("/notice")
     public long count() {       //관리자가 확인하지 않은 확진자의 수
         try {
@@ -351,7 +319,7 @@ public class WebController {        //웹 전반적인 요청을 처리하는 �
     }
 
     @GetMapping("/getlevel")
-    public int getLevel() {     //현재 설정된 위험도
+    public int getLevel() {     //현재 설정된 위험도를 리턴
         try {
             return webService.getLevel();
         } catch(Exception e) {
@@ -359,7 +327,7 @@ public class WebController {        //웹 전반적인 요청을 처리하는 �
         }
     }
 
-    @GetMapping("/totaluser")
+    @GetMapping("/totaluser")       //사용자가 총 몇 명인지 리턴, 페이지네이션에 사용됨
     public int totalUser() {
         try {
             return Math.toIntExact(userService.count());
@@ -368,7 +336,7 @@ public class WebController {        //웹 전반적인 요청을 처리하는 �
         }
     }
 
-    @GetMapping("/totalcontact")
+    @GetMapping("/totalcontact")        //접촉 수가 총 몇 개인지 리턴, 페이지네이션에 사용됨
     public int totalContact() {
         try {
             return Math.toIntExact(contactService.count());
@@ -391,7 +359,7 @@ public class WebController {        //웹 전반적인 요청을 처리하는 �
         }
     }
 
-    @PutMapping("/modifyuser")
+    @PutMapping("/modifyuser")      //사용자 정보 수정
     public ResponseEntity<Integer> contactList(@RequestBody UserDTO userDTO) {
         try {
             String uuid = userDTO.getUuid();
@@ -408,6 +376,9 @@ public class WebController {        //웹 전반적인 요청을 처리하는 �
             }
             if(!userEntity.getSimpleAddress().equals(userDTO.getSimpleAddress())) {
                 userService.updateSimpleAddress(uuid, userDTO.getSimpleAddress());
+            }
+            if(!userEntity.getDetailAddress().equals(userDTO.getDetailAddress())) {
+                userService.updateDetailAddress(uuid, userDTO.getDetailAddress());
             }
             if(!userEntity.getPhoneNumber().equals(userDTO.getPhoneNumber())) {
                 userService.updatePhoneNumber(uuid, userDTO.getPhoneNumber());
@@ -485,7 +456,7 @@ public class WebController {        //웹 전반적인 요청을 처리하는 �
     }
 
 
-    public void notificate(UserEntity userEntity, String titleMessage, String bodyMessage) {
+    public void notificate(UserEntity userEntity, String titleMessage, String bodyMessage) {        //FCM 알림을 전송하고, 그 내용을 DB에 저장
 
         String notifications = AndroidPushPeriodicNotifications.PeriodicNotificationJson(userEntity, titleMessage, bodyMessage);
         HttpEntity<String> request = new HttpEntity<>(notifications);

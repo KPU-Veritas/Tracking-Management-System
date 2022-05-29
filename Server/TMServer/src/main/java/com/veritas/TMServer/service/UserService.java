@@ -56,6 +56,7 @@ public class UserService {
     public void updateEmail(String uuid, String value) { userRepository.updateEmail(uuid, value); }
     public void updateUserName(String uuid, String value) { userRepository.updateUserName(uuid, value); }
     public void updateSimpleAddress(String uuid, String value) { userRepository.updateSimpleAddress(uuid, value); }
+    public void updateDetailAddress(String uuid, String value) { userRepository.updateDetailAddress(uuid, value); }
     public void updatePhoneNumber(String uuid, String value) { userRepository.updatePhoneNumber(uuid, value); }
     public void updatePassWord(String uuid, String value) { userRepository.updatePassWord(uuid, value); }
 
