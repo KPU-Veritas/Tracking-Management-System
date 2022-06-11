@@ -438,13 +438,13 @@ public class WebController {        //웹 전반적인 요청을 처리하는 �
 
     public void riskCalculation(ContactEntity entity, int thisContactDegree, float superRisk) {     //위험도 계산 함수
         String uuid = entity.getContactTargetUuid();
-        float contactTime = (float)entity.getContactTime() / 10800;
+        float contactTime = (float)entity.getContactTime() / 300;
         int contactDegree  = userService.findContactDegreeByUuid(uuid);
         float risk = userService.findRiskByUuid(uuid);
         float halfRisk = superRisk * 1/2;       //피접촉자는 접촉자의 위험도 50%에서 시작
 
 
-        if (contactTime > 1) { contactTime = 1; }       //3시간 이상 접촉 시 최대치 위험도 부여
+        if (contactTime > 1) { contactTime = 1; }       //5분 이상 접촉 시 최대치 위험도 부여
         float calculatedRisk = (halfRisk * contactTime) * 4/5 + halfRisk;     //피접촉자는 접촉자의 위험도로부터 최소 50% 최대 90% 까지 부여
 
         if(contactDegree == 0 ||  contactDegree > thisContactDegree) {      //접촉차수는 모든 기록 중 가장 확진자로부터 근접한 차수로 기록
