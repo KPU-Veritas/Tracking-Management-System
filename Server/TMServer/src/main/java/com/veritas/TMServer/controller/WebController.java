@@ -63,7 +63,7 @@ public class WebController {        //웹 전반적인 요청을 처리하는 �
                         .email(webDTO.getEmail())
                         .username(webDTO.getUsername())
                         .password(passwordEncoder.encode(webDTO.getPassword()))
-                        .warningLevel(webDTO.getWarningLevel())
+                        .warningLevel(81)
                         .build();
                 // 서비스를 이용해 리포지터리에 사용자 저장
                 WebEntity registeredWeb = webService.create(web);
@@ -71,8 +71,6 @@ public class WebController {        //웹 전반적인 요청을 처리하는 �
                         .email(registeredWeb.getEmail())
                         .id(registeredWeb.getId())
                         .username(registeredWeb.getUsername())
-                        .notice(0)
-                        .warningLevel(0)
                         .build();
                 return ResponseEntity.ok().body(responseWebDTO);
             }
