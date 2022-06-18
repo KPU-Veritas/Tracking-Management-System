@@ -10,8 +10,6 @@ public class WebMvcConfig implements WebMvcConfigurer { // MVC 패턴 적용, RE
     public void addCorsMappings(CorsRegistry registry) {
         long MAX_AGE_SECS = 3600;
 
-        String JHM_IPv4 = "http://210.99.149.198:3000";
-
         registry.addMapping("/**")
                 .allowedOrigins("http://localhost:3000", JHM_IPv4)
                 .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
