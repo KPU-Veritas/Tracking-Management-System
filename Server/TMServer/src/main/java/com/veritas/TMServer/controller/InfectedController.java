@@ -40,6 +40,9 @@ public class InfectedController {   // 감염 정보 컨트롤러
             long risk = webService.getLevel();
             List<UserEntity> riskOverList = userService.findOverRisk(risk);
 
+            UserEntity userEntity = userService.findByUuid(dto.getUuid());
+            if(riskOverList.indexOf(userEntity) >= 0) riskOverList.remove(riskOverList.indexOf(userEntity));
+
             for(int i = 0; i < riskOverList.size(); i++) {
                 controller.notificate(riskOverList.get(i), "You are the" + riskOverList.get(i).getContactDegree() + "contact with COVID-19.",
                         "Your risk is" + riskOverList.get(i).getRisk() + "%.");

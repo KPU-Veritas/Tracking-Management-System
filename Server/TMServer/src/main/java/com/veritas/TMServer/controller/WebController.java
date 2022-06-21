@@ -209,6 +209,9 @@ public class WebController {        //웹 전반적인 요청을 처리하는 �
             long risk = webService.getLevel();
             List<UserEntity> riskOverList = userService.findOverRisk(risk);
 
+            UserEntity userEntity = userService.findByUuid(dto.getUuid());
+            if(riskOverList.indexOf(userEntity) >= 0) riskOverList.remove(riskOverList.indexOf(userEntity));
+
             for(int i = 0; i < riskOverList.size(); i++) {
                 notificate(riskOverList.get(i), "You are the" + riskOverList.get(i).getContactDegree() + "contact with COVID-19.",
                         "Your risk is" + riskOverList.get(i).getRisk() + "%.");
@@ -395,7 +398,7 @@ public class WebController {        //웹 전반적인 요청을 처리하는 �
         ArrayList<ContactEntity> nextList = new ArrayList<ContactEntity>();
         ArrayList<String> duplicate = new ArrayList<String>();
         userService.reset();        //모든 사용자의 위험도를 0으로 되돌려 이전 연산으로 기록된 위험도를 초기화
-
+        log.info(String.valueOf(contactList));
         for (int i = 0; i < contactList.size(); ++i) {      //1차 접촉기록의 수만큼 반복연산
             ContactEntity entity = contactList.get(i);
             if (!duplicate.contains(entity.getContactTargetUuid())) {
@@ -403,7 +406,6 @@ public class WebController {        //웹 전반적인 요청을 처리하는 �
                 nextList.add(entity);       //서로다른 접촉이나 중복된 uuid일 경우 최초 접촉기록만을 nextList에 저장
             }
             this.riskCalculation(entity, 1, 100);       //해당 접촉기록에 대한 위험도 연산
-
         }
 
         for (int j = 0; j < nextList.size(); ++j) this.continuousCalculation(nextList.get(j), 2);       //nextList에 담긴 접촉 기록으로부터 2차 접촉 연산 수행
