@@ -16,7 +16,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="200dp"
             android:layout_weight="1"
             android:background="@color/white"
             app:srcCompat="@drawable/btn_off"/>
@@ -26,7 +25,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginBottom="200dp"
             android:layout_weight="1"
             android:text="비콘 중지 상태" />
     </LinearLayout>

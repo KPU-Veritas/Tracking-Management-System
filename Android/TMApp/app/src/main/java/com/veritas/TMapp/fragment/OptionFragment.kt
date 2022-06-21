@@ -15,7 +15,9 @@ class OptionFragment : Fragment()
     ): View
     {
         val binding = FragmentOptionBinding.inflate(inflater, container, false)
-
+        binding.btnLogout.setOnClickListener {
+            activity?.finish()
+        }
         return binding.root
     }
 }

@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.veritas.TMapp.R
 import com.veritas.TMapp.beacon.BeaconScannerApplication
 import com.veritas.TMapp.beacon.BeaconSensorManager
 import com.veritas.TMapp.database.AppDatabase
@@ -38,12 +39,14 @@ class MainFragment(
                 beaconManager.startMonitoring(beaconScannerApplication.region)
                 beaconManager.startRangingBeacons(beaconScannerApplication.region)
                 binding.tvThread.text = "비콘 활성화 상태"
+                binding.btnStart.setImageResource(R.drawable.btn_on)
                 flag = false
             } else {
                 beaconSensorManager.sensorControl(false)
                 beaconManager.stopMonitoring(beaconScannerApplication.region)
                 beaconManager.stopRangingBeacons(beaconScannerApplication.region)
                 binding.tvThread.text = "비콘 중지 상태"
+                binding.btnStart.setImageResource(R.drawable.btn_off)
                 flag = true
                 dbController.sendAllContacts(db)
             }
