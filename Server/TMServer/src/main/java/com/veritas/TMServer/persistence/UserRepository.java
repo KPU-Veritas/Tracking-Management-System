@@ -22,10 +22,10 @@ public interface UserRepository extends JpaRepository<UserEntity, String> { // �
     List<UserEntity> findSearchList(@Param("search") String search);
 
     @Query(value = "SELECT RISK FROM USER_ENTITY WHERE UUID = :uuid", nativeQuery = true)
-    float findRiskByUuid(@Param("uuid") String uuid);
+    Float findRiskByUuid(@Param("uuid") String uuid);
 
     @Query(value = "SELECT CONTACT_DEGREE FROM USER_ENTITY WHERE UUID = :uuid", nativeQuery = true)
-    int findContactDegreeByUuid(@Param("uuid") String uuid);
+    Integer findContactDegreeByUuid(@Param("uuid") String uuid);
 
     // 임시 모든 FCM 토큰 리스트 받아오기
     @Query(value = "SELECT FCM_TOKEN FROM USER_ENTITY", nativeQuery = true)

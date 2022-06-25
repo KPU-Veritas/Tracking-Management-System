@@ -398,9 +398,13 @@ public class WebController {        //웹 전반적인 요청을 처리하는 �
         ArrayList<ContactEntity> nextList = new ArrayList<ContactEntity>();
         ArrayList<String> duplicate = new ArrayList<String>();
         userService.reset();        //모든 사용자의 위험도를 0으로 되돌려 이전 연산으로 기록된 위험도를 초기화
-        log.info(String.valueOf(contactList));
+
+        if (contactList.isEmpty()) return;
+
         for (int i = 0; i < contactList.size(); ++i) {      //1차 접촉기록의 수만큼 반복연산
+
             ContactEntity entity = contactList.get(i);
+
             if (!duplicate.contains(entity.getContactTargetUuid())) {
                 duplicate.add(entity.getContactTargetUuid());
                 nextList.add(entity);       //서로다른 접촉이나 중복된 uuid일 경우 최초 접촉기록만을 nextList에 저장
@@ -412,14 +416,18 @@ public class WebController {        //웹 전반적인 요청을 처리하는 �
     }
 
     public void continuousCalculation(ContactEntity contactEntity, int contactDegree) {     //n차 접촉 연산 함수
+
         ArrayList<ContactEntity> contactList = new ArrayList<ContactEntity>(contactService.findContinuousContactList(contactEntity.getContactTargetUuid(), contactEntity.getDate(), contactEntity.getFirstTime()));
         ArrayList<ContactEntity> nextList = new ArrayList<ContactEntity>();
         ArrayList<String> duplicate = new ArrayList<String>();
 
-        float superRisk = userService.findRiskByUuid(contactEntity.getContactTargetUuid());
+        if (contactList.isEmpty()) return;
+
+        Float superRisk = userService.findRiskByUuid(contactEntity.getContactTargetUuid());
 
         for (int i = 0; i < contactList.size(); ++i) {      //n차 접촉기록의 수만큼 반복연산
             ContactEntity entity = contactList.get(i);
+
             if(!duplicate.contains(entity.getContactTargetUuid())) {
                 duplicate.add(entity.getContactTargetUuid());
                 nextList.add(entity);       //서로다른 접촉이나 중복된 uuid일 경우 최초 접촉기록만을 nextList에 저장
@@ -437,21 +445,28 @@ public class WebController {        //웹 전반적인 요청을 처리하는 �
 
 
     public void riskCalculation(ContactEntity entity, int thisContactDegree, float superRisk) {     //위험도 계산 함수
+
         String uuid = entity.getContactTargetUuid();
-        float contactTime = (float)entity.getContactTime() / 300;
-        int contactDegree  = userService.findContactDegreeByUuid(uuid);
+        float contactTime = (float) entity.getContactTime() / 300;
+        Integer contactDegree = userService.findContactDegreeByUuid(uuid);
+
+        if (contactDegree == null) return;
+
         float risk = userService.findRiskByUuid(uuid);
-        float halfRisk = superRisk * 1/2;       //피접촉자는 접촉자의 위험도 50%에서 시작
+        float halfRisk = superRisk * 1 / 2;       //피접촉자는 접촉자의 위험도 50%에서 시작
 
+        if (contactTime > 1) {
+            contactTime = 1;
+        }       //5분 이상 접촉 시 최대치 위험도 부여
 
-        if (contactTime > 1) { contactTime = 1; }       //5분 이상 접촉 시 최대치 위험도 부여
-        float calculatedRisk = (halfRisk * contactTime) * 4/5 + halfRisk;     //피접촉자는 접촉자의 위험도로부터 최소 50% 최대 90% 까지 부여
+        float calculatedRisk = (halfRisk * contactTime) * 4 / 5 + halfRisk;     //피접촉자는 접촉자의 위험도로부터 최소 50% 최대 90% 까지 부여
 
-        if(contactDegree == 0 ||  contactDegree > thisContactDegree) {      //접촉차수는 모든 기록 중 가장 확진자로부터 근접한 차수로 기록
+        if (contactDegree == 0 || contactDegree > thisContactDegree) {      //접촉차수는 모든 기록 중 가장 확진자로부터 근접한 차수로 기록
             userService.updateContactDegree(uuid, thisContactDegree);
         }
 
-        if(risk < calculatedRisk) userService.updateRisk(uuid, calculatedRisk);
+        if (risk < calculatedRisk) userService.updateRisk(uuid, calculatedRisk);
+
 
     }
 
