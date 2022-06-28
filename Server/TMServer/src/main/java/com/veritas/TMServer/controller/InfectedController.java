@@ -5,8 +5,10 @@ import com.veritas.TMServer.dto.ResponseDTO;
 import com.veritas.TMServer.model.InfectedEntity;
 import com.veritas.TMServer.model.UserEntity;
 import com.veritas.TMServer.service.InfectedService;
+import com.veritas.TMServer.service.RiskService;
 import com.veritas.TMServer.service.UserService;
 import com.veritas.TMServer.service.WebService;
+import jdk.management.jfr.RecordingInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -25,7 +27,8 @@ public class InfectedController {   // 감염 정보 컨트롤러
     @Autowired
     private UserService userService;
     @Autowired
-    private WebController controller;
+    private RiskService riskService;
+
     @PostMapping("/addinfected")
     public ResponseEntity<?> createInfected(    // 감염 정보를 등록할 때 사용하는 url
             @AuthenticationPrincipal String uuid,
@@ -36,7 +39,7 @@ public class InfectedController {   // 감염 정보 컨트롤러
             entity.setUuid(uuid);
             List<InfectedEntity> entities = service.create(entity);
 
-            controller.firstCalculation(entities.get(0));
+            riskService.firstCalculation(entities.get(0));
             long risk = webService.getLevel();
             List<UserEntity> riskOverList = userService.findOverRisk(risk);
 
@@ -44,7 +47,7 @@ public class InfectedController {   // 감염 정보 컨트롤러
             if(riskOverList.indexOf(userEntity) >= 0) riskOverList.remove(riskOverList.indexOf(userEntity));
 
             for(int i = 0; i < riskOverList.size(); i++) {
-                controller.notificate(riskOverList.get(i), "You are the" + riskOverList.get(i).getContactDegree() + "contact with COVID-19.",
+                riskService.notificate(riskOverList.get(i), "You are the" + riskOverList.get(i).getContactDegree() + "contact with COVID-19.",
                         "Your risk is" + riskOverList.get(i).getRisk() + "%.");
             }       //설정된 위험도를 초과한 접촉자들에게 알림을 보냄
 

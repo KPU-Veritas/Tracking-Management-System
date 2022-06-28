@@ -17,7 +17,7 @@ public class InfectedService {
 
     public List<InfectedEntity> create(final InfectedEntity entity){
         validate(entity);
-
+        log.info("create InfectedEntity In Service" + entity);
         repository.save(entity);
         log.info("Entity Id : {} is saved.", entity.getId());
         return repository.findByUuid(entity.getUuid());
