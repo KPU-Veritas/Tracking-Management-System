@@ -51,16 +51,16 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
     // Retrofit2로 서버와의 통신 구현
-    implementation group: 'com.squareup.retrofit2', name: 'retrofit', version: 'latest.integration'
-    implementation group: 'com.squareup.retrofit2', name: 'converter-gson', version: 'latest.integration'
-    implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: 'latest.integration'
+    implementation group: 'com.squareup.retrofit2', name: 'retrofit', version: '2.9.0'
+    implementation group: 'com.squareup.retrofit2', name: 'converter-gson', version: '2.9.0'
+    implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '4.9.1'
 
     // beacon
     implementation 'org.altbeacon:android-beacon-library:2.19.3'
 
     // coroutines
-    implementation group: 'org.jetbrains.kotlinx', name: 'kotlinx-coroutines-core', version: 'latest.integration'
-    implementation group: 'org.jetbrains.kotlinx', name: 'kotlinx-coroutines-android', version: 'latest.integration'
+    implementation group: 'org.jetbrains.kotlinx', name: 'kotlinx-coroutines-core', version: '1.6.1'
+    implementation group: 'org.jetbrains.kotlinx', name: 'kotlinx-coroutines-android', version: '1.6.0'
 
     // coroutine scopes
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.2.0"
