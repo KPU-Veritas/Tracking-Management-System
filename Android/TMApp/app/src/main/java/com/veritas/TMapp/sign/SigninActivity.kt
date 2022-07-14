@@ -1,5 +1,6 @@
 package com.veritas.TMapp.sign
 
+import android.bluetooth.BluetoothAdapter
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -20,11 +21,23 @@ class SigninActivity : AppCompatActivity() {    // 로그인 Activity
     private var signinBinding: ActivitySigninBinding? = null
     private val binding get() = signinBinding!!
     lateinit var user: ResponseSigninModel
+    private var bluetoothAdapter : BluetoothAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         signinBinding = ActivitySigninBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
+        if(bluetoothAdapter!=null){
+            // Device doesn't support Bluetooth
+            if(bluetoothAdapter?.isEnabled==false){
+                val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
+                startActivityForResult(enableBtIntent, 1)
+            }
+        }else{
+            Log.d("블루투스","기기가 블루투스를 지원하지 않습니다.")
+        }
 
         if(processedUuid != null){
             val mainIntent = Intent(this, MainActivity::class.java)
@@ -34,7 +47,6 @@ class SigninActivity : AppCompatActivity() {    // 로그인 Activity
         binding.buttonSignin.setOnClickListener {
             val email = binding.editTextEmailAddress.text.toString()
             val password = binding.editTextPassword.text.toString()
-
             val data = SigninModel(email,password)
 
             signApi.requestSignin(data).enqueue(object: Callback<ResponseSigninModel> { // 로그인 시도 (서버에 요청)

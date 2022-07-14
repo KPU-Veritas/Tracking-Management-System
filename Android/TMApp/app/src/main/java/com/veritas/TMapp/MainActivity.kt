@@ -40,7 +40,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var beaconScannerApplication: BeaconScannerApplication
     var db: AppDatabase?= null
     private var dbController: DBController? = null
-    private var bluetoothAdapter : BluetoothAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,16 +47,7 @@ class MainActivity : AppCompatActivity() {
         mBinding = ActivityMainBinding.inflate(layoutInflater)
         // getRoot 메서드로 레이아웃 내부의 최상위 위치 뷰의 인스턴스를 활용하여 생성된 뷰를 액티비티에 표시
         setContentView(binding.root)
-        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
-        if(bluetoothAdapter!=null){
-            // Device doesn't support Bluetooth
-            if(bluetoothAdapter?.isEnabled==false){
-                val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
-                startActivityForResult(enableBtIntent, 1)
-            }
-        }else{
-            Log.d("블루투스","기기가 블루투스를 지원하지 않습니다.")
-        }
+
         db = AppDatabase.getInstance(this)
         dbController = DBController()
         beaconScannerApplication = application as BeaconScannerApplication
