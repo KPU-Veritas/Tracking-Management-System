@@ -47,8 +47,8 @@ public class InfectedController {   // 감염 정보 컨트롤러
             if(riskOverList.indexOf(userEntity) >= 0) riskOverList.remove(riskOverList.indexOf(userEntity));
 
             for(int i = 0; i < riskOverList.size(); i++) {
-                riskService.notificate(riskOverList.get(i), "You are the" + riskOverList.get(i).getContactDegree() + "contact with COVID-19.",
-                        "Your risk is" + riskOverList.get(i).getRisk() + "%.");
+                riskService.notificate(riskOverList.get(i), "You are the " + riskOverList.get(i).getContactDegree() + " contact with COVID-19.",
+                        "Your risk is " + riskOverList.get(i).getRisk() + "%.");
             }       //설정된 위험도를 초과한 접촉자들에게 알림을 보냄
 
             List<InfectedDTO> dtos = entities.stream().map(InfectedDTO::new).collect(Collectors.toList());

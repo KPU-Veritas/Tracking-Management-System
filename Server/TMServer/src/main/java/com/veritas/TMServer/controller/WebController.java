@@ -216,7 +216,7 @@ public class WebController {        //웹 전반적인 요청을 처리하는 �
             if(riskOverList.indexOf(userEntity) >= 0) riskOverList.remove(riskOverList.indexOf(userEntity));
 
             for(int i = 0; i < riskOverList.size(); i++) {
-                riskService.notificate(riskOverList.get(i), "You are the" + riskOverList.get(i).getContactDegree() + "contact with COVID-19.",
+                riskService.notificate(riskOverList.get(i), "You are the " + riskOverList.get(i).getContactDegree() + " contact with COVID-19.",
                         "Your risk is " + riskOverList.get(i).getRisk() + "%.");
             }       //설정된 위험도를 초과한 접촉자들에게 알림을 보냄
 
@@ -232,7 +232,7 @@ public class WebController {        //웹 전반적인 요청을 처리하는 �
     public void notificateIndividual(@RequestBody UserDTO userDTO) {        //개인 알림 송신
 
         UserEntity userEntity = userService.findByUuid(userDTO.getUuid());
-        riskService.notificate(userEntity, "You are in close COVID19 with a coronavirus patient.", "Your risk is" + userEntity.getRisk() + "%.");
+        riskService.notificate(userEntity, "You are in close COVID19 with a coronavirus patient.", "Your risk is " + userEntity.getRisk() + "%.");
 
     }
 
