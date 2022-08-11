@@ -54,6 +54,7 @@ dependencies {
     implementation group: 'com.squareup.retrofit2', name: 'retrofit', version: '2.9.0'
     implementation group: 'com.squareup.retrofit2', name: 'converter-gson', version: '2.9.0'
     implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '4.9.1'
+    implementation group: 'com.squareup.retrofit2', name: 'converter-scalars', version: '2.5.0'
 
     // beacon
     implementation 'org.altbeacon:android-beacon-library:2.19.3'

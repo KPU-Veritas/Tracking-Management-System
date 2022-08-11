@@ -67,7 +67,7 @@ class DBController {
                         }
 
                         override fun onFailure(call: Call<String>, t: Throwable) {
-                            Log.e(SigninActivity.TAG, "서버와의 연결에 실패: ${t.message.toString()}")
+                            Log.e(TAG, "서버와의 연결에 실패: ${t.message.toString()}")
                         }
                     })
                 }

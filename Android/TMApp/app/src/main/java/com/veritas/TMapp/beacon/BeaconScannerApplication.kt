@@ -10,6 +10,7 @@ import com.veritas.TMapp.MainActivity
 import com.veritas.TMapp.database.AppDatabase
 import com.veritas.TMapp.database.DBController
 import org.altbeacon.beacon.*
+import kotlin.reflect.typeOf
 
 class BeaconScannerApplication: Application() {
     lateinit var region: Region
@@ -68,6 +69,10 @@ class BeaconScannerApplication: Application() {
     private val centralRangingObserver = Observer<Collection<Beacon>> { beacons ->
         Log.d(TAG, "감지된 비콘 수 : ${beacons.count()}")
         for (beacon: Beacon in beacons) {
+            if (beacon.id2.toInt() != 1 || beacon.id3.toInt() != 7){
+                continue
+            }
+
             if (beacon.distance <=3.0){
                 dbController?.recordTime(db!!, beacon.id1.toString())
             }

@@ -7,6 +7,7 @@ import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.scalars.ScalarsConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Headers
 // FCM 알림 정보를 받아올 때 사용하는 REST API
@@ -27,6 +28,7 @@ interface FCMAPIS {
 
             return Retrofit.Builder()
                 .baseUrl(ServerSetting.BASE_URL)
+                .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .client(httpClient)
                 .build()

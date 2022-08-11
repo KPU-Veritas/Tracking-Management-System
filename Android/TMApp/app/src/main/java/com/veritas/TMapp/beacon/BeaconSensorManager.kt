@@ -24,7 +24,7 @@ class BeaconSensorManager {
         beacon = Beacon.Builder()
             .setId1(uuid)
             .setId2("1")
-            .setId3("2")
+            .setId3("7")
             .setManufacturer(76)
             .setTxPower(-59)
             .setDataFields(listOf(0L))
