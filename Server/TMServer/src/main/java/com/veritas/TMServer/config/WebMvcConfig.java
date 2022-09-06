@@ -11,7 +11,7 @@ public class WebMvcConfig implements WebMvcConfigurer { // MVC 패턴 적용, RE
         long MAX_AGE_SECS = 3600;
 
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:3000", "http://3.34.11.186:3000")
+                .allowedOrigins("http://localhost:3000", "http://3.34.11.186:3000", "http://211.245.10.65:3000/")
                 .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
                 .allowCredentials(true)
