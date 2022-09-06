@@ -1,7 +1,7 @@
 package com.veritas.TMapp.server
 // 서버와의 연결 설정 정보를 저장하는 전역 변수
 object ServerSetting {
-    const val BASE_URL = "http://TMS-SERVER.us-west-2.elasticbeanstalk.com"
+    const val BASE_URL = "http://TMS-SERVER.ap-northeast-2.elasticbeanstalk.com"
     var processedUuid : String? = null
     lateinit var token: String
     lateinit var username: String
