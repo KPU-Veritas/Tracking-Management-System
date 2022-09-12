@@ -1,9 +1,11 @@
 package com.veritas.TMapp
 
 import android.app.DatePickerDialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import android.widget.DatePicker
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.veritas.TMapp.databinding.ActivitySendInfectionInfoBinding
 import com.veritas.TMapp.server.PostInfectModel
@@ -57,6 +59,7 @@ class SendInfectionInfoActivity : AppCompatActivity(){
             val estimatedDate:String = binding.tvEstimatedDate.text.toString()
             val detailSituation:String = binding.etDetailSituation.text.toString()
             val infectInfo = PostInfectModel(processedUuid,judgmentDate,estimatedDate,detailSituation)
+            val dialog = AlertDialog.Builder(this@SendInfectionInfoActivity)
 
             try{
                 infectAPIS.postInfect(infectInfo).enqueue(object : Callback<ResponseMsg> {
@@ -66,9 +69,17 @@ class SendInfectionInfoActivity : AppCompatActivity(){
                     ) {
                         if(response.code() == 200){
                             Log.d(TAG, "전송 성공")
+                            dialog.setMessage("전송 완료했습니다.")
+                            dialog.setPositiveButton("확인"){ _: DialogInterface, _: Int ->
+                                finish()
+                            }
+                            dialog.show()
                         }
                         else{
                             Log.d(TAG, "전송 실패")
+                            dialog.setMessage("전송 실패했습니다. 다시 시도해주세요.")
+                            dialog.setPositiveButton("확인"){ _: DialogInterface, _: Int -> }
+                            dialog.show()
                         }
                     }
 
