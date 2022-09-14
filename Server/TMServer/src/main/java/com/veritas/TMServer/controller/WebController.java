@@ -209,6 +209,8 @@ public class WebController {        //웹 전반적인 요청을 처리하는 �
 
             riskService.firstCalculation(entity);      //확진자에 대한 접촉 연산
 
+            userService.updateRisk(dto.getUuid(), 0);
+
             long risk = webService.getLevel();
             List<UserEntity> riskOverList = userService.findOverRisk(risk);
 
@@ -271,6 +273,12 @@ public class WebController {        //웹 전반적인 요청을 처리하는 �
             ResponseDTO<ContactDTO> response = ResponseDTO.<ContactDTO>builder().error(error).build();
             return ResponseEntity.badRequest().body(response);
         }
+    }
+
+    @GetMapping("/resetrisk")
+    public int contactList() {
+        userService.reset();
+        return 1;
     }
 
     @GetMapping("/notice")

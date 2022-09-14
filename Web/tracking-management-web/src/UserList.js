@@ -27,24 +27,24 @@ class UserList extends React.Component {
         <Container>
         <table id="list" align="center">
             <thead>
-                <tr>
-                    <th>E-Mail&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
-                    <th>이름&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
-                    <th>전화번호&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
-                    <th>주소&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
-                    <th>위험도&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                <tr align="left">
+                    <th>&nbsp;&nbsp;&nbsp;E-Mail&nbsp;&nbsp;&nbsp;</th>
+                    <th>&nbsp;&nbsp;&nbsp;이름&nbsp;&nbsp;&nbsp;</th>
+                    <th>&nbsp;&nbsp;&nbsp;전화번호&nbsp;&nbsp;&nbsp;</th>
+                    <th>&nbsp;&nbsp;&nbsp;주소&nbsp;&nbsp;&nbsp;</th>
+                    <th>&nbsp;&nbsp;&nbsp;위험도&nbsp;&nbsp;&nbsp;</th>
                     <th></th>
                     <th></th>
                     <th></th>    
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>{user.email}</td>
-                    <td>{user.username}</td>
-                    <td>{user.phoneNumber}</td>
-                    <td>{user.simpleAddress}</td>
-                    <td>{user.risk}</td>
+                <tr align="center">
+                    <td>{user.email}&nbsp;&nbsp;&nbsp;</td>
+                    <td>{user.username}&nbsp;&nbsp;&nbsp;</td>
+                    <td>{user.phoneNumber}&nbsp;&nbsp;&nbsp;</td>
+                    <td>{user.simpleAddress}&nbsp;&nbsp;&nbsp;</td>
+                    <td>{user.risk}&nbsp;&nbsp;&nbsp;</td>
                     <td>{<Button onClick={this.pushNotification}>경고전송</Button>}</td>
                     <>
                     <td>{<Link to={link}>
@@ -58,7 +58,7 @@ class UserList extends React.Component {
             
             <br></br>
 
-            </Container>
+        </Container>
             
         );
     }

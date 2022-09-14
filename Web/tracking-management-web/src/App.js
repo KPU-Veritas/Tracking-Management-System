@@ -49,7 +49,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    setInterval(this.updateCount, 2000);
+    //setInterval(this.updateCount, 2000);
   }
 
   updateCount() {
@@ -118,6 +118,15 @@ class App extends React.Component {
         this.userList();
       }
       );
+  }
+
+  resetRisk() {
+    call("/system/resetrisk", "GET", null).then((response) => {
+    }
+    );
+    alert("모든 회원의 위험도가 0으로 초기화 되었습니다.");
+    window.location.replace("/main")
+    this.setState({ page : 2 })
   }
 
   searchContactKeyboard = (e) => {
@@ -215,7 +224,10 @@ class App extends React.Component {
             fullwidth="true"
             onChange={this.editEventHandler}
             onKeyPress={this.searchUserKeyboard}></input><button name="search" onClick={this.searchUser}>검색</button> 
+        <p>
 
+        </p>
+        <button onClick={this.resetRisk}>위험도 초기화</button>
         <List>
           {this.state.userList.map((user, idx) => (
             <UserList
@@ -224,6 +236,7 @@ class App extends React.Component {
             />
           ))}
         </List>
+        <container></container>
         <Pagination activePage={this.state.activePage}
           itemsCountPerPage={10}
           totalItemsCount={this.state.totalItem}

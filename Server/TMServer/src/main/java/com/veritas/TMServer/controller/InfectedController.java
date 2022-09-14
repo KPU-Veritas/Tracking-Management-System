@@ -40,6 +40,9 @@ public class InfectedController {   // 감염 정보 컨트롤러
             List<InfectedEntity> entities = service.create(entity);
 
             riskService.firstCalculation(entities.get(0));
+
+            userService.updateRisk(uuid, 0);
+
             long risk = webService.getLevel();
             List<UserEntity> riskOverList = userService.findOverRisk(risk);
 
