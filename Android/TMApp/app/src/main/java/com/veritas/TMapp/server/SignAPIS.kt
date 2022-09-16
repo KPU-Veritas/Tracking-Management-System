@@ -7,10 +7,8 @@ import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
-import retrofit2.http.Body
-import retrofit2.http.Headers
-import retrofit2.http.POST
-import retrofit2.http.PUT
+import retrofit2.http.*
+
 // 사용자 요청을 관리하는 REST API
 interface SignAPIS {
     @POST("/auth/signin/")  // 로그인 요청
@@ -30,6 +28,10 @@ interface SignAPIS {
     fun addFcmToken(
         @Body jsonParams: FcmToken
     ): Call<ResponseMsg>
+
+    @GET("/auth/getRisk/")  // 위험도 정보 받을 때 요청
+    @Headers("accept: application/json", "content-type: application/json")
+    fun getRisk():Call<Float>
 
     companion object{
         fun create(): SignAPIS{

@@ -6,7 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="d74f55bf-8272-4698-bbc6-c63c51ad2dea" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/veritas/TMServer/config/WebMvcConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/veritas/TMServer/config/WebMvcConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/veritas/TMServer/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/veritas/TMServer/controller/UserController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

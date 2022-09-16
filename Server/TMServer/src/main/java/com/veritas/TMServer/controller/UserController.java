@@ -1,22 +1,19 @@
 package com.veritas.TMServer.controller;
 
-import com.veritas.TMServer.dto.InfectedDTO;
 import com.veritas.TMServer.dto.ResponseDTO;
 import com.veritas.TMServer.dto.UserDTO;
 import com.veritas.TMServer.model.UserEntity;
 import com.veritas.TMServer.security.TokenProvider;
 import com.veritas.TMServer.service.UserService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -85,5 +82,19 @@ public class UserController {   // 사용자의 정보 컨트롤러
         return ResponseEntity.ok().body(response);
     }
 
+    @GetMapping("/getRisk")
+    public ResponseEntity<?> getRisk(@AuthenticationPrincipal String uuid){ // 사용자가 자신의 위험도를 확인할 때 사용하는 url
+        float risk = userService.findRiskByUuid(uuid);
+        ResponseDTO<Float> response = ResponseDTO.<Float>builder().data(Collections.singletonList(risk)).build();
+        return ResponseEntity.ok().body(response);
+    }
 
 }
+////@GetMapping("/fcmlist")
+//    public ResponseEntity<?> fcmList(@AuthenticationPrincipal String uuid){ // 사용자가 받은 알림 목록을 요청 할때 사용하는 url
+//        List<FCMEntity> entities = service.retrieve(uuid);
+//        List<FCMDTO> dtos = entities.stream().map(FCMDTO::new).collect(Collectors.toList());
+//        ResponseDTO<FCMDTO> response = ResponseDTO.<FCMDTO>builder().data(dtos).build();
+//        return ResponseEntity.ok(response);
+//
+//    }//
