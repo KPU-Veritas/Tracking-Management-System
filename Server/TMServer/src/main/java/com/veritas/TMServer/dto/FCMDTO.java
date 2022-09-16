@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 public class FCMDTO { // FCM 알림 기록 DTO
     private Long id;
     private String uuid;
+    private String email;
     private String date;
     private String time;
     private String title;

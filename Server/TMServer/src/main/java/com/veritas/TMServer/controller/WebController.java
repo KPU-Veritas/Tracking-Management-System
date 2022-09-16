@@ -230,14 +230,6 @@ public class WebController {        //웹 전반적인 요청을 처리하는 �
         }
     }
 
-    @PostMapping("/notificateindividual")
-    public void notificateIndividual(@RequestBody UserDTO userDTO) {        //개인 알림 송신
-
-        UserEntity userEntity = userService.findByUuid(userDTO.getUuid());
-        riskService.notificate(userEntity, "You are in close COVID19 with a coronavirus patient.", "Your risk is " + userEntity.getRisk() + "%.");
-
-    }
-
     @PostMapping("/userlist")
     public ResponseEntity<?> userList(@RequestBody int page){        //회원목록
 
@@ -404,121 +396,16 @@ public class WebController {        //웹 전반적인 요청을 처리하는 �
         }
     }
 
-//    public void firstCalculation(InfectedEntity infectedEntity) {       //1차 접촉자 판별 함수
-//        ArrayList<ContactEntity> contactList = new ArrayList<ContactEntity>(contactService.findFirstContactList(infectedEntity.getUuid(), infectedEntity.getEstimatedDate()));
-//        ArrayList<ContactEntity> nextList = new ArrayList<ContactEntity>();
-//        ArrayList<String> duplicate = new ArrayList<String>();
-//        userService.reset();        //모든 사용자의 위험도를 0으로 되돌려 이전 연산으로 기록된 위험도를 초기화
-//
-//        if (contactList.isEmpty()) return;
-//
-//        for (int i = 0; i < contactList.size(); ++i) {      //1차 접촉기록의 수만큼 반복연산
-//
-//            ContactEntity entity = contactList.get(i);
-//
-//            if (!duplicate.contains(entity.getContactTargetUuid())) {
-//                duplicate.add(entity.getContactTargetUuid());
-//                nextList.add(entity);       //서로다른 접촉이나 중복된 uuid일 경우 최초 접촉기록만을 nextList에 저장
-//            }
-//            this.riskCalculation(entity, 1, 100);       //해당 접촉기록에 대한 위험도 연산
-//        }
-//
-//        for (int j = 0; j < nextList.size(); ++j) this.continuousCalculation(nextList.get(j), 2);       //nextList에 담긴 접촉 기록으로부터 2차 접촉 연산 수행
-//    }
-//
-//    public void continuousCalculation(ContactEntity contactEntity, int contactDegree) {     //n차 접촉 연산 함수
-//
-//        ArrayList<ContactEntity> contactList = new ArrayList<ContactEntity>(contactService.findContinuousContactList(contactEntity.getContactTargetUuid(), contactEntity.getDate(), contactEntity.getFirstTime()));
-//        ArrayList<ContactEntity> nextList = new ArrayList<ContactEntity>();
-//        ArrayList<String> duplicate = new ArrayList<String>();
-//
-//        if (contactList.isEmpty()) return;
-//
-//        Float superRisk = userService.findRiskByUuid(contactEntity.getContactTargetUuid());
-//
-//        for (int i = 0; i < contactList.size(); ++i) {      //n차 접촉기록의 수만큼 반복연산
-//            ContactEntity entity = contactList.get(i);
-//
-//            if(!duplicate.contains(entity.getContactTargetUuid())) {
-//                duplicate.add(entity.getContactTargetUuid());
-//                nextList.add(entity);       //서로다른 접촉이나 중복된 uuid일 경우 최초 접촉기록만을 nextList에 저장
-//            }
-//            this.riskCalculation(entity, contactDegree, superRisk);         //해당 접촉기록에 대한 위험도 연산
-//        }
-//
-//        for (int j = 0; j < nextList.size(); ++j) {     //해당 함수의 연산이 2차 접촉이라면 3차로 변경후 3차접촉 연산, 3차 접촉이라면 종료
-//            if (contactDegree == 2) contactDegree = 3;
-//            else if (contactDegree == 3) break;
-//
-//            this.continuousCalculation(nextList.get(j), contactDegree);
-//        }
-//    }
-//
-//
-//    public void riskCalculation(ContactEntity entity, int thisContactDegree, float superRisk) {     //위험도 계산 함수
-//
-//        String uuid = entity.getContactTargetUuid();
-//        float contactTime = (float) entity.getContactTime() / 300;
-//        Integer contactDegree = userService.findContactDegreeByUuid(uuid);
-//
-//        if (contactDegree == null) return;
-//
-//        float risk = userService.findRiskByUuid(uuid);
-//        float halfRisk = superRisk * 1 / 2;       //피접촉자는 접촉자의 위험도 50%에서 시작
-//
-//        if (contactTime > 1) {
-//            contactTime = 1;
-//        }       //5분 이상 접촉 시 최대치 위험도 부여
-//
-//        float calculatedRisk = (halfRisk * contactTime) * 4 / 5 + halfRisk;     //피접촉자는 접촉자의 위험도로부터 최소 50% 최대 90% 까지 부여
-//
-//        if (contactDegree == 0 || contactDegree > thisContactDegree) {      //접촉차수는 모든 기록 중 가장 확진자로부터 근접한 차수로 기록
-//            userService.updateContactDegree(uuid, thisContactDegree);
-//        }
-//
-//        if (risk < calculatedRisk) userService.updateRisk(uuid, calculatedRisk);
-//
-//
-//    }
-//
-//
-//    public void notificate(UserEntity userEntity, String titleMessage, String bodyMessage) {        //FCM 알림을 전송하고, 그 내용을 DB에 저장
-//
-//        String notifications = AndroidPushPeriodicNotifications.PeriodicNotificationJson(userEntity, titleMessage, bodyMessage);
-//        HttpEntity<String> request = new HttpEntity<>(notifications);
-//
-//        CompletableFuture<String> pushNotification = androidPushNotificationsService.send(request);
-//        CompletableFuture.allOf(pushNotification).join();
-//
-//        try{
-//            String firebaseResponse = pushNotification.get();
-//        }
-//        catch (InterruptedException e){
-//            log.debug("got interrupted!");
-//        }
-//        catch (ExecutionException e){
-//            log.debug("execution error!");
-//        }
-//
-//        LocalTime now = LocalTime.now();
-//
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-//
-//        String formatedNow = now.format(formatter);
-//
-//        FCMEntity fcmEntity = new FCMEntity();
-//
-//        fcmEntity.setUuid(userEntity.getUuid());
-//        fcmEntity.setDate(String.valueOf(LocalDate.now()));
-//        fcmEntity.setTime(String.valueOf(now));
-//        fcmEntity.setTitle(titleMessage);
-//        fcmEntity.setBody(bodyMessage);
-//        fcmEntity.setRisk(userEntity.getRisk());
-//        fcmEntity.setContactDegree(userEntity.getContactDegree());
-//        fcmService.create(fcmEntity);
-//
-//
-//    }
+    @PutMapping("/notificateindividual")
+    public ResponseEntity<Integer> notificateIndividual(@RequestBody FCMDTO fcmDto) {        //개인 알림 송신
+        try {
+            UserEntity userEntity = userService.findByEmail(fcmDto.getEmail());
+            riskService.notificate(userEntity, fcmDto.getTitle(), fcmDto.getBody());
 
+            return ResponseEntity.ok().body(1);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(1);
+        }
+    }
 
 }

@@ -13,16 +13,16 @@ class ContactList extends React.Component {
         <>
             <table id="list" align="center">
             <thead>
-                <tr>
-                    <th>이용자 UUID</th>
-                    <th>접촉자 UUID</th>
-                    <th>접촉일자</th>
-                    <th>첫 접촉시각</th>
-                    <th>마지막 접촉시각</th>
+                <tr align="left">
+                    <th>이용자 UUID&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</th>
+                    <th>접촉자 UUID&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</th>
+                    <th>접촉일자&emsp;&emsp;</th>
+                    <th>첫 접촉시각&emsp;&emsp;</th>
+                    <th>마지막 접촉시각&emsp;&emsp;</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
+                <tr align="left">
                     <td>{contact.uuid}</td>
                     <td>{contact.contactTargetUuid}</td>
                     <td>{contact.date}</td>

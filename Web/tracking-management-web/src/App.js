@@ -214,7 +214,7 @@ class App extends React.Component {
       </Paper>;
 
     var userList = this.state.userList.length > 0 && (
-      <Paper style={{ margin: 16 }}>
+      <Paper elevation={3} style={{ margin: 16 }}>
         <input 
             inputprops={{
               "aria-label": "naked",
@@ -224,9 +224,9 @@ class App extends React.Component {
             fullwidth="true"
             onChange={this.editEventHandler}
             onKeyPress={this.searchUserKeyboard}></input><button name="search" onClick={this.searchUser}>검색</button> 
-        <p>
-
-        </p>
+        <pre>
+            
+        </pre>
         <button onClick={this.resetRisk}>위험도 초기화</button>
         <List>
           {this.state.userList.map((user, idx) => (
@@ -236,7 +236,6 @@ class App extends React.Component {
             />
           ))}
         </List>
-        <container></container>
         <Pagination activePage={this.state.activePage}
           itemsCountPerPage={10}
           totalItemsCount={this.state.totalItem}

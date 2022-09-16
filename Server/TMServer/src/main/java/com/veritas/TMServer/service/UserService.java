@@ -39,6 +39,7 @@ public class UserService {
     }
 
     public UserEntity findByUuid(String uuid) { return userRepository.findByUuid(uuid); }
+    public UserEntity findByEmail(String email) { return userRepository.findByEmail(email); }
     public List<UserEntity> userList(int page, int size) {
         PageRequest pageRequest = PageRequest.of(page,size);
         return userRepository.findAll(pageRequest).getContent();

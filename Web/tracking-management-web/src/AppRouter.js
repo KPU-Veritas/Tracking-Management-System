@@ -10,6 +10,7 @@ import Typography from "@material-ui/core/Typography";
 import AddDevice from "./AddDevice";
 import AddInfected from "./AddInfected";
 import ModifyUser from "./ModifyUser";
+import Notification from "./Notification";
 
 
 class AppRouter extends React.Component {
@@ -33,6 +34,9 @@ class AppRouter extends React.Component {
               </Route>
               <Route path="/main">
                 <App />
+              </Route>
+              <Route path="/notification/:email">
+                <Notification />
               </Route>
               <Route path="/">
                 <Login />
