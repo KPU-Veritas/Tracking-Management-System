@@ -81,20 +81,4 @@ public class UserController {   // 사용자의 정보 컨트롤러
         ResponseDTO<String> response = ResponseDTO.<String>builder().data(Collections.singletonList(msg)).build();
         return ResponseEntity.ok().body(response);
     }
-
-    @GetMapping("/getRisk")
-    public ResponseEntity<?> getRisk(@AuthenticationPrincipal String uuid){ // 사용자가 자신의 위험도를 확인할 때 사용하는 url
-        float risk = userService.findRiskByUuid(uuid);
-        ResponseDTO<Float> response = ResponseDTO.<Float>builder().data(Collections.singletonList(risk)).build();
-        return ResponseEntity.ok().body(response);
-    }
-
 }
-////@GetMapping("/fcmlist")
-//    public ResponseEntity<?> fcmList(@AuthenticationPrincipal String uuid){ // 사용자가 받은 알림 목록을 요청 할때 사용하는 url
-//        List<FCMEntity> entities = service.retrieve(uuid);
-//        List<FCMDTO> dtos = entities.stream().map(FCMDTO::new).collect(Collectors.toList());
-//        ResponseDTO<FCMDTO> response = ResponseDTO.<FCMDTO>builder().data(dtos).build();
-//        return ResponseEntity.ok(response);
-//
-//    }//

@@ -57,6 +57,10 @@ class FCMInfoList(
     val fcmInfoList: List<FCMInfo>
 )
 
+class MyRisk(
+    @SerializedName("data")
+    val risk: List<Float>
+)
 @Entity(tableName = "tb_contacts")  // 접촉 기록을 저장하는 테이블, RoomDB 사용
 data class Contacts(
     @PrimaryKey

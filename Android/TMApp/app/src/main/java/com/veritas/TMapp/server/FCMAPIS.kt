@@ -16,6 +16,10 @@ interface FCMAPIS {
     @Headers("accept: application/json", "content-type: application/json")
     fun getFcmList():Call<FCMInfoList>
 
+    @GET("/fcm/getRisk/")  // 위험도 정보 받을 때 요청
+    @Headers("accept: application/json", "content-type: application/json")
+    fun getRisk():Call<MyRisk>
+
     companion object{
         fun create(): FCMAPIS{
             val gson:Gson = GsonBuilder().setLenient().create()

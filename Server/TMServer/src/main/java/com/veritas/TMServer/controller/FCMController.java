@@ -4,17 +4,21 @@ import com.veritas.TMServer.dto.FCMDTO;
 import com.veritas.TMServer.dto.ResponseDTO;
 import com.veritas.TMServer.model.FCMEntity;
 import com.veritas.TMServer.service.FCMService;
+import com.veritas.TMServer.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/fcm")
 public class FCMController {    // fcm 알림 기록 컨트롤러
+    @Autowired
+    private UserService userService;
     @Autowired
     private FCMService service;
 
@@ -62,5 +66,12 @@ public class FCMController {    // fcm 알림 기록 컨트롤러
             ResponseDTO<FCMDTO> response = ResponseDTO.<FCMDTO>builder().error(error).build();
             return ResponseEntity.badRequest().body(response);
         }
+    }
+
+    @GetMapping("/getRisk")
+    public ResponseEntity<?> getRisk(@AuthenticationPrincipal String uuid){ // 사용자가 자신의 위험도를 확인할 때 사용하는 url
+        float risk = userService.findRiskByUuid(uuid);
+        ResponseDTO<Float> response = ResponseDTO.<Float>builder().data(Collections.singletonList(risk)).build();
+        return ResponseEntity.ok(response);
     }
 }

@@ -29,10 +29,6 @@ interface SignAPIS {
         @Body jsonParams: FcmToken
     ): Call<ResponseMsg>
 
-    @GET("/auth/getRisk/")  // 위험도 정보 받을 때 요청
-    @Headers("accept: application/json", "content-type: application/json")
-    fun getRisk():Call<Float>
-
     companion object{
         fun create(): SignAPIS{
             val gson: Gson = GsonBuilder().setLenient().create()
