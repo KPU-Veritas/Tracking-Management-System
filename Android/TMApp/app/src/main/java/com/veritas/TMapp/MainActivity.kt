@@ -8,6 +8,8 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.google.android.gms.tasks.OnCompleteListener
@@ -83,7 +85,21 @@ class MainActivity : AppCompatActivity() {
             Log.d(TAG, "권한 요청 결과: ${permissions[i]}: ${grantResults[i]}")
         }
     }
-
+    // 액션 버튼 메뉴 액션바에 집어 넣기
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu, menu)
+        return true
+    }
+    //액션 버튼 클릭 했을 때
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when(item?.itemId) {
+            R.id.action_btnLogout -> {
+                finish()
+                super.onOptionsItemSelected(item)
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
     private fun checkPermissions() {
         // basepermissions are for M and higher
         var permissions = arrayOf( Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_BACKGROUND_LOCATION)
