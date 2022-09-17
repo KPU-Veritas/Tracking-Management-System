@@ -2,8 +2,6 @@ package com.veritas.TMapp
 
 import android.Manifest
 import android.app.AlertDialog
-import android.bluetooth.BluetoothAdapter
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -11,19 +9,16 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
-import org.altbeacon.beacon.Beacon
 import org.altbeacon.beacon.BeaconManager
-import org.altbeacon.beacon.MonitorNotifier
 import com.veritas.TMapp.beacon.BeaconScannerApplication
 import com.veritas.TMapp.database.AppDatabase
 import com.veritas.TMapp.database.DBController
 import com.veritas.TMapp.databinding.ActivityMainBinding
 import com.veritas.TMapp.fragment.MainFragment
 import com.veritas.TMapp.fragment.ContactInfoFragment
-import com.veritas.TMapp.fragment.OptionFragment
+import com.veritas.TMapp.fragment.RiskFragment
 import com.veritas.TMapp.fragment.PagerAdapter
 import com.veritas.TMapp.server.FcmToken
 import com.veritas.TMapp.server.ResponseMsg
@@ -59,7 +54,7 @@ class MainActivity : AppCompatActivity() {
         val adapter = PagerAdapter(supportFragmentManager)
         adapter.addFragment(MainFragment(beaconScannerApplication,beaconManager, db!!, dbController!!), "메인")
         adapter.addFragment(ContactInfoFragment(), "접촉 정보")
-        adapter.addFragment(OptionFragment(), "환경 설정")
+        adapter.addFragment(RiskFragment(), "위험도 확인")
         binding.afterLoginViewpager.adapter = adapter
         binding.afterLoginTablayout.setupWithViewPager(binding.afterLoginViewpager)
     }
@@ -188,7 +183,6 @@ class MainActivity : AppCompatActivity() {
                 }
                 fcmToken = task.result.toString()
                 val data = FcmToken(processedUuid, fcmToken)
-                val dialog = androidx.appcompat.app.AlertDialog.Builder(this@MainActivity)
 
                 signApi.addFcmToken(data).enqueue(object : Callback<ResponseMsg>{
                     override fun onResponse(call: Call<ResponseMsg>, response: Response<ResponseMsg>) {
