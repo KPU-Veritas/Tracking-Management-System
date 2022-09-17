@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import com.veritas.TMapp.databinding.FragmentRiskBinding
 import com.veritas.TMapp.server.MyRisk
 import com.veritas.TMapp.server.ServerSetting.fcmAPIS
+import com.veritas.TMapp.server.ServerSetting.risk
 import com.veritas.TMapp.server.ServerSetting.username
 import retrofit2.Call
 import retrofit2.Callback
@@ -23,7 +24,6 @@ class RiskFragment : Fragment()
     ): View
     {
         val binding = FragmentRiskBinding.inflate(inflater, container, false)
-        var risk = 0.0F
 
         fcmAPIS.getRisk().enqueue(object: Callback<MyRisk>{
             override fun onResponse(call: Call<MyRisk>, response: Response<MyRisk>) {

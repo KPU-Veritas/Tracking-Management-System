@@ -7,9 +7,11 @@ object ServerSetting {
     lateinit var token: String
     lateinit var username: String
     lateinit var fcmToken: String
+    var risk: Float = 0.0F
     lateinit var contactAPIS:ContactAPIS
     lateinit var fcmAPIS: FCMAPIS
     lateinit var infectAPIS: InfectAPIS
+
     val signApi = SignAPIS.create()
 
     fun setUserInfo(uuid: String?, token: String?, username: String?){

@@ -16,7 +16,7 @@
             android:id="@+id/tvUsername"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="정회민"
+            android:text="사용자"
             android:textSize="45dp"
             android:textColor="@color/black"/>
         <TextView

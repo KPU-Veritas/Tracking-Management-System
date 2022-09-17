@@ -21,9 +21,13 @@ import com.veritas.TMapp.fragment.ContactInfoFragment
 import com.veritas.TMapp.fragment.RiskFragment
 import com.veritas.TMapp.fragment.PagerAdapter
 import com.veritas.TMapp.server.FcmToken
+import com.veritas.TMapp.server.MyRisk
 import com.veritas.TMapp.server.ResponseMsg
+import com.veritas.TMapp.server.ServerSetting
+import com.veritas.TMapp.server.ServerSetting.fcmAPIS
 import com.veritas.TMapp.server.ServerSetting.fcmToken
 import com.veritas.TMapp.server.ServerSetting.processedUuid
+import com.veritas.TMapp.server.ServerSetting.risk
 import com.veritas.TMapp.server.ServerSetting.signApi
 import retrofit2.Call
 import retrofit2.Callback
@@ -57,6 +61,20 @@ class MainActivity : AppCompatActivity() {
         adapter.addFragment(RiskFragment(), "위험도 확인")
         binding.afterLoginViewpager.adapter = adapter
         binding.afterLoginTablayout.setupWithViewPager(binding.afterLoginViewpager)
+
+
+        fcmAPIS.getRisk().enqueue(object: Callback<MyRisk>{
+            override fun onResponse(call: Call<MyRisk>, response: Response<MyRisk>) {
+                if (response.code() == 200){
+                    risk = response.body()?.risk!![0]
+                    Log.d("RISK", "$risk")
+                }
+            }
+
+            override fun onFailure(call: Call<MyRisk>, t: Throwable) {
+                Log.e("RISK", "서버와의 연결에 실패: ${t.message.toString()}")
+            }
+        })
     }
     // 다른 Activiy가 활성화 되었을 때 호출
     override fun onPause() {
