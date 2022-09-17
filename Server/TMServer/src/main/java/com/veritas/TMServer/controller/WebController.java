@@ -209,8 +209,6 @@ public class WebController {        //웹 전반적인 요청을 처리하는 �
 
             riskService.firstCalculation(entity);      //확진자에 대한 접촉 연산
 
-            userService.updateRisk(dto.getUuid(), 0);
-
             long risk = webService.getLevel();
             List<UserEntity> riskOverList = userService.findOverRisk(risk);
 
@@ -221,6 +219,8 @@ public class WebController {        //웹 전반적인 요청을 처리하는 �
                 riskService.notificate(riskOverList.get(i), "You are the " + riskOverList.get(i).getContactDegree() + " contact with COVID-19.",
                         "Your risk is " + riskOverList.get(i).getRisk() + "%.");
             }       //설정된 위험도를 초과한 접촉자들에게 알림을 보냄
+
+            userService.updateRisk(dto.getUuid(), 100);
 
             return ResponseEntity.ok(response);
         }catch (Exception e){

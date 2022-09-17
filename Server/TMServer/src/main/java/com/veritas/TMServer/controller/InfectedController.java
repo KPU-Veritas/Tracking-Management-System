@@ -41,8 +41,6 @@ public class InfectedController {   // 감염 정보 컨트롤러
 
             riskService.firstCalculation(entities.get(0));
 
-            userService.updateRisk(uuid, 0);
-
             long risk = webService.getLevel();
             List<UserEntity> riskOverList = userService.findOverRisk(risk);
 
@@ -53,6 +51,8 @@ public class InfectedController {   // 감염 정보 컨트롤러
                 riskService.notificate(riskOverList.get(i), "You are the " + riskOverList.get(i).getContactDegree() + " contact with COVID-19.",
                         "Your risk is " + riskOverList.get(i).getRisk() + "%.");
             }       //설정된 위험도를 초과한 접촉자들에게 알림을 보냄
+
+            userService.updateRisk(uuid, 100);
 
             List<InfectedDTO> dtos = entities.stream().map(InfectedDTO::new).collect(Collectors.toList());
             ResponseDTO<InfectedDTO> response = ResponseDTO.<InfectedDTO>builder().data(dtos).build();
