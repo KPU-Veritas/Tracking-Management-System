@@ -14,18 +14,26 @@
         android:padding="20dp">
 
         <ImageButton
-            android:id="@+id/btnConfirm"
+            android:id="@+id/btn_Confirm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            tools:srcCompat="@tools:sample/avatars" />
+            android:maxWidth="300dp"
+            android:maxHeight="300dp"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/btn_confirm" />
 
         <ImageButton
-            android:id="@+id/btnNotification"
+            android:id="@+id/btn_Notification"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            tools:srcCompat="@tools:sample/avatars" />
+            android:maxWidth="300dp"
+            android:maxHeight="300dp"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/btn_notification" />
     </LinearLayout>
 
 </LinearLayout>
