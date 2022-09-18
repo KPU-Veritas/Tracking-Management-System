@@ -14,7 +14,7 @@
         android:padding="20dp">
 
         <ImageButton
-            android:id="@+id/btn_Confirm"
+            android:id="@+id/btnConfirm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -25,7 +25,7 @@
             app:srcCompat="@drawable/btn_confirm" />
 
         <ImageButton
-            android:id="@+id/btn_Notification"
+            android:id="@+id/btnNotification"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
