@@ -32,6 +32,10 @@ class MainFragment(
         activity?.let {
             beaconSensorManager.init(formatUUIDForBeacon(processedUuid!!), it.applicationContext)
         }
+        if (!flag) {
+            binding.tvThread.text = "비콘 활성화 상태"
+            binding.btnStart.setImageResource(R.drawable.btn_on)
+        }
         // 비콘 센서 제어
         binding.btnStart.setOnClickListener {
             if (flag) {

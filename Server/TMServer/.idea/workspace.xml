@@ -5,13 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d74f55bf-8272-4698-bbc6-c63c51ad2dea" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../../Android/TMApp/app/src/main/res/drawable/btn_confirm.png" beforeDir="false" afterPath="$PROJECT_DIR$/../../Android/TMApp/app/src/main/res/drawable/btn_confirm.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Android/TMApp/app/src/main/res/drawable/btn_notification.png" beforeDir="false" afterPath="$PROJECT_DIR$/../../Android/TMApp/app/src/main/res/drawable/btn_notification.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Android/TMApp/app/src/main/res/layout/fragment_contact_info.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../Android/TMApp/app/src/main/res/layout/fragment_contact_info.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/7.3.2/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.3.2/executionHistory/executionHistory.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/7.3.2/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.3.2/fileHashes/fileHashes.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -39,7 +32,8 @@
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Tracking-Management-System/Server/TMServer/build.gradle&quot;
   }
 }</component>
   <component name="RecentsManager">
