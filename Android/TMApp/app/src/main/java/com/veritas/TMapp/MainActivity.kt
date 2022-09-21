@@ -56,7 +56,7 @@ class MainActivity : AppCompatActivity() {
         val beaconManager = BeaconManager.getInstanceForApplication(this)
         // 뷰페이저의 페이지뷰를 생성하기 위해 사용되는 어댑터 클래스
         val adapter = PagerAdapter(supportFragmentManager)
-        adapter.addFragment(MainFragment(beaconScannerApplication,beaconManager, db!!, dbController!!), "메인")
+        adapter.addFragment(MainFragment(beaconScannerApplication, beaconManager, db!!, dbController!!), "메인")
         adapter.addFragment(ContactInfoFragment(), "접촉 정보")
         adapter.addFragment(RiskFragment(), "위험도 확인")
         binding.afterLoginViewpager.adapter = adapter

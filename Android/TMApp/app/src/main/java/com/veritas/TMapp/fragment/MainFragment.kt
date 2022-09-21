@@ -1,10 +1,15 @@
 package com.veritas.TMapp.fragment
 
+import android.content.Context
+import android.content.Intent
+import android.location.LocationManager
 import android.os.Bundle
+import android.provider.Settings
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import com.veritas.TMapp.R
 import com.veritas.TMapp.beacon.BeaconScannerApplication
 import com.veritas.TMapp.beacon.BeaconSensorManager
@@ -36,9 +41,15 @@ class MainFragment(
             binding.tvThread.text = "비콘 활성화 상태"
             binding.btnStart.setImageResource(R.drawable.btn_on)
         }
+        var mContext : Context
+        mContext = requireActivity()
+        val locationManager = mContext.getSystemService(AppCompatActivity.LOCATION_SERVICE) as LocationManager
         // 비콘 센서 제어
         binding.btnStart.setOnClickListener {
             if (flag) {
+                if(!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                    startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
+                }
                 beaconSensorManager.sensorControl(true)
                 beaconManager.startMonitoring(beaconScannerApplication.region)
                 beaconManager.startRangingBeacons(beaconScannerApplication.region)

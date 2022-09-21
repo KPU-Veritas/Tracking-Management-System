@@ -1,11 +1,13 @@
 package com.veritas.TMapp.sign
 
 import android.bluetooth.BluetoothAdapter
+import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import com.veritas.TMapp.MainActivity
 import com.veritas.TMapp.databinding.ActivitySigninBinding
 import com.veritas.TMapp.server.ResponseSigninModel
@@ -37,6 +39,12 @@ class SigninActivity : AppCompatActivity() {    // 로그인 Activity
             }
         }else{
             Log.d("블루투스","기기가 블루투스를 지원하지 않습니다.")
+            val builder = AlertDialog.Builder(this)
+            builder.setTitle("애플리케이션 이용 불가")
+                .setMessage("사용중인 기기가 블루투스를 지원하지 않습니다.")
+                .setPositiveButton("확인") { dialogInterface : DialogInterface, i : Int -> finish() }
+                .setOnDismissListener { finish() }
+            finish()
         }
 
         if(processedUuid != null){
