@@ -1,6 +1,7 @@
 package com.veritas.TMapp.fragment
 
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.location.LocationManager
 import android.os.Bundle
@@ -9,6 +10,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.veritas.TMapp.R
 import com.veritas.TMapp.beacon.BeaconScannerApplication
@@ -48,7 +50,11 @@ class MainFragment(
         binding.btnStart.setOnClickListener {
             if (flag) {
                 if(!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                    startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
+                    val builder = activity?.let { it1 -> AlertDialog.Builder(it1) }
+                    builder?.setMessage("접촉을 기록하려면 GPS를 켜야합니다.")
+                        ?.setPositiveButton("확인") { dialogInterface : DialogInterface, i : Int -> }
+                        ?.setOnDismissListener {  startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)) }
+                    builder?.show()
                 }
                 beaconSensorManager.sensorControl(true)
                 beaconManager.startMonitoring(beaconScannerApplication.region)

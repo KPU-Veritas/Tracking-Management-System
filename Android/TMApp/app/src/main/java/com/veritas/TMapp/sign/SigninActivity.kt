@@ -42,9 +42,9 @@ class SigninActivity : AppCompatActivity() {    // 로그인 Activity
             val builder = AlertDialog.Builder(this)
             builder.setTitle("애플리케이션 이용 불가")
                 .setMessage("사용중인 기기가 블루투스를 지원하지 않습니다.")
-                .setPositiveButton("확인") { dialogInterface : DialogInterface, i : Int -> finish() }
+                .setPositiveButton("확인") { dialogInterface : DialogInterface, i : Int -> }
                 .setOnDismissListener { finish() }
-            finish()
+            builder.show()
         }
 
         if(processedUuid != null){
