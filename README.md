@@ -11,7 +11,7 @@
     프로젝트 명: TMApp
     패키지 이름: com.veritas.TMapp
     언어: Kotlin
-    최소 SDK: API 21: Android 5.0 (Lollipop)
+    최소 SDK: API 26: Android 8.0 (Oreo)
 
 #### * 서버
     프레임워크: 스프링 부트
